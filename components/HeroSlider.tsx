@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const slides = [
@@ -9,18 +10,21 @@ const slides = [
     text: "Ekspresowo wycenimy Twoją nieruchomość i wypłacimy Ci środki",
     button: "Dowiedz się więcej",
     bg: "/images/slide-1.jpg",
+    alt: "Pożyczki pod nieruchomości",
   },
   {
     heading: "EKSPRESOWE POŻYCZKI DLA FIRM",
     text: "Skontaktuj się z nami i poznaj możliwości rozwoju swojej firmy",
     button: "Dowiedz się więcej",
     bg: "/images/slide-2.jpg",
+    alt: "Ekspresowe pożyczki dla firm",
   },
   {
     heading: "DORADZTWO FINANSOWE",
     text: "Otrzymaj środki już w 24 godziny!",
     button: "Dowiedz się więcej",
     bg: "/images/slide-3.jpg",
+    alt: "Doradztwo finansowe",
   },
 ];
 
@@ -44,8 +48,17 @@ export default function HeroSlider() {
           className={`absolute inset-0 transition-opacity duration-700 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
-          style={{ backgroundImage: `url(${slide.bg})`, backgroundSize: "cover", backgroundPosition: "center" }}
         >
+          <Image
+            src={slide.bg}
+            alt={slide.alt}
+            fill
+            sizes="100vw"
+            quality={85}
+            priority={i === 0}
+            className="object-cover object-center"
+          />
+
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/45" />
 

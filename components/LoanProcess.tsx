@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const steps = [
@@ -25,10 +26,15 @@ const steps = [
 
 export default function LoanProcess() {
   return (
-    <section
-      className="relative bg-cover bg-center bg-fixed"
-      style={{ backgroundImage: "url(/images/signing-form.jpg)" }}
-    >
+    <section className="relative overflow-hidden">
+      <Image
+        src="/images/signing-form.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={85}
+        className="object-cover object-center"
+      />
       <div className="absolute inset-0 bg-white/60" />
       <div className="relative z-10 py-16">
         <div className="max-w-[1330px] mx-auto px-4">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -30,11 +31,15 @@ export default function ContactForm() {
   };
 
   return (
-    <section
-      id="contact-form"
-      className="relative bg-cover bg-center"
-      style={{ backgroundImage: "url(/images/contact-bg.png)" }}
-    >
+    <section id="contact-form" className="relative overflow-hidden">
+      <Image
+        src="/images/contact-bg.png"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={85}
+        className="object-cover object-center"
+      />
       <div className="absolute inset-0 bg-white/[0.86]" />
       <div className="relative z-10 py-16">
         <div className="max-w-[1330px] mx-auto px-4">

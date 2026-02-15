@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const services = [
@@ -61,10 +62,15 @@ export default function OurOffer() {
   return (
     <>
       {/* Heading section with parallax */}
-      <section
-        className="relative bg-cover bg-center bg-fixed py-[150px]"
-        style={{ backgroundImage: "url(/images/mbr-1.jpg)" }}
-      >
+      <section className="relative py-[150px] overflow-hidden">
+        <Image
+          src="/images/mbr-1.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={85}
+          className="object-cover object-center"
+        />
         <div className="absolute inset-0 bg-[rgba(38,38,38,0.44)]" />
         <div className="relative z-10 max-w-[1330px] mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-[4.2rem] font-semibold text-white leading-tight mb-4">

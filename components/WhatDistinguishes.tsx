@@ -55,12 +55,19 @@ const features = [
   },
 ];
 
+import Image from "next/image";
+
 export default function WhatDistinguishes() {
   return (
-    <section
-      className="relative bg-cover bg-center bg-fixed py-[200px]"
-      style={{ backgroundImage: "url(/images/hand-shaking.jpg)" }}
-    >
+    <section className="relative py-[200px] overflow-hidden">
+      <Image
+        src="/images/hand-shaking.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={85}
+        className="object-cover object-center"
+      />
       <div className="absolute inset-0 bg-[rgba(86,86,86,0.97)]" />
       <div className="relative z-10 max-w-[1330px] mx-auto px-4">
         <h2 className="section-heading text-white mb-12">CO NAS WYRÓŻNIA</h2>

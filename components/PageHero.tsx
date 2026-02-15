@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface PageHeroProps {
@@ -10,10 +11,16 @@ interface PageHeroProps {
 
 export default function PageHero({ heading, text, buttonText, buttonHref, bgImage }: PageHeroProps) {
   return (
-    <section
-      className="relative bg-cover bg-center py-[150px]"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <section className="relative py-[150px] overflow-hidden">
+      <Image
+        src={bgImage}
+        alt=""
+        fill
+        sizes="100vw"
+        quality={85}
+        priority
+        className="object-cover object-center"
+      />
       <div className="absolute inset-0 bg-black/45" />
       <div className="relative z-10 max-w-[1330px] mx-auto px-4 text-center">
         <h1 className="text-3xl md:text-[4.2rem] font-medium text-white leading-tight mb-6">
