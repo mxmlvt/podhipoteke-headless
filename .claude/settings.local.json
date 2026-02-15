@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:podhipoteke24.pl)",
+      "WebFetch(domain:srv106163.seohost.com.pl)",
+      "Bash(npm run build:*)",
+      "Bash(dir:*)",
+      "Bash(done)",
+      "Bash(find:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -File - <<'PSEOF'\n$content = Get-Content 'C:\\\\Users\\\\maksy\\\\Desktop\\\\podhipoteke24.pl\\\\public_html\\\\wp-content\\\\et-cache\\\\11\\\\et-divi-dynamic-11.css' -Raw\n$content.Substring\\(0, [Math]::Min\\($content.Length, 15000\\)\\)\nPSEOF)",
+      "Bash(curl -s \"https://srv106163.seohost.com.pl/graphql\" -H \"Content-Type: application/json\" -d '{\"\"query\"\":\"\"{ page\\(id: \\\\\"\"strona-glowna\\\\\"\", idType: URI\\) { title content featuredImage { node { sourceUrl } } } }\"\"}')",
+      "Bash(powershell -NoProfile -Command \"$body = @{query = ''{ page\\(id: \"\"strona-glowna\"\", idType: URI\\) { title content featuredImage { node { sourceUrl } } } }''} | ConvertTo-Json; $r = Invoke-RestMethod -Uri ''https://srv106163.seohost.com.pl/graphql'' -Method POST -ContentType ''application/json'' -Body $body; $r.data.page | ConvertTo-Json -Depth 10\")",
+      "Bash(node fetch-pages.mjs:*)",
+      "Bash(node:*)",
+      "Bash(del:*)",
+      "Bash(curl:*)",
+      "Bash(npx next build:*)"
+    ]
+  }
+}
