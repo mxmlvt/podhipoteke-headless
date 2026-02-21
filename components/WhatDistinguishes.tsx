@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const features = [
   {
     icon: (
@@ -55,8 +57,6 @@ const features = [
   },
 ];
 
-import Image from "next/image";
-
 export default function WhatDistinguishes() {
   return (
     <section className="relative py-[200px] overflow-hidden">
@@ -70,12 +70,14 @@ export default function WhatDistinguishes() {
       />
       <div className="absolute inset-0 bg-[rgba(86,86,86,0.97)]" />
       <div className="relative z-10 max-w-[1330px] mx-auto px-4">
-        <h2 className="section-heading text-white mb-12">CO NAS WYRÓŻNIA</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+          CO NAS WYRÓŻNIA
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <div key={i} className="service-card flex flex-col items-center text-center gap-4">
+            <div key={i} className="bg-white/10 rounded-xl p-8 flex flex-col items-center text-center gap-4">
               <div className="text-white mb-2">{f.icon}</div>
-              <h3>{f.title}</h3>
+              <h3 className="text-lg font-bold text-white">{f.title}</h3>
               <p className="text-white/90">{f.desc}</p>
             </div>
           ))}

@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Clock, Calendar } from "lucide-react";
 import client from "@/lib/apollo";
 import { GET_POST_BY_SLUG, GET_ALL_SLUGS } from "@/lib/queries";
+import { parseWPContent, getTableOfContents } from "@/lib/content-parser";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import CTABox from "@/components/shared/CTABox";
+import { Badge } from "@/components/ui/badge";
+import ContactForm from "@/components/ContactForm";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -63,102 +69,165 @@ export default async function SinglePost({ params }: Props) {
     day: "numeric",
   });
 
+  const parsedContent = parseWPContent(post.content, slug);
+  const toc = post.content ? getTableOfContents(post.content) : [];
+  const category = post.categories?.nodes?.[0]?.name;
+
   return (
-    <main className="py-12">
-      <article className="max-w-[780px] mx-auto px-4">
-        {/* Breadcrumbs */}
-        <nav className="mb-8 text-sm">
-          <ol className="flex items-center gap-2 text-text-secondary">
-            <li>
-              <Link href="/" className="hover:text-primary transition-colors">
-                Strona główna
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href="/blog" className="hover:text-primary transition-colors">
-                Blog
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-text-primary truncate max-w-[300px]">{post.title}</li>
-          </ol>
-        </nav>
+    <main>
+      {/* Breadcrumbs bar */}
+      <div className="bg-[#f7f8fa] border-b border-[#e5e7eb] py-3">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <Breadcrumbs
+            items={[
+              { label: "Strona główna", href: "/" },
+              { label: "Blog", href: "/blog" },
+              { label: post.title },
+            ]}
+          />
+        </div>
+      </div>
 
-        {/* Header */}
-        <header className="mb-8">
-          {post.categories?.nodes?.[0] && (
-            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
-              {post.categories.nodes[0].name}
-            </span>
+      <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-10">
+        <div className="flex gap-10">
+          {/* Main content */}
+          <article className="flex-1 min-w-0">
+            {/* Category */}
+            {category && (
+              <Badge className="mb-4 bg-[#e8f4f6] text-[#2299AA] hover:bg-[#e8f4f6] text-xs font-semibold uppercase">
+                {category}
+              </Badge>
+            )}
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-[#111827] leading-tight mb-5">
+              {post.title}
+            </h1>
+
+            {/* Meta */}
+            <div className="flex flex-wrap items-center gap-4 text-[#6b7280] text-sm mb-8 pb-6 border-b border-[#e5e7eb]">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4" />
+                <time dateTime={post.date}>{formattedDate}</time>
+              </span>
+              {parsedContent?.readTime && (
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4" />
+                  {parsedContent.readTime} min czytania
+                </span>
+              )}
+            </div>
+
+            {/* Featured Image */}
+            {post.featuredImage?.node?.sourceUrl && (
+              <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-8">
+                <Image
+                  src={post.featuredImage.node.sourceUrl}
+                  alt={post.featuredImage.node.altText || post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 760px"
+                />
+              </div>
+            )}
+
+            {/* Content - first half */}
+            {parsedContent ? (
+              <>
+                <div className="wp-content text-[#374151] leading-relaxed">
+                  {parsedContent.firstHalf}
+                </div>
+
+                {/* Inline CTA */}
+                <CTABox
+                  heading={parsedContent.cta.heading}
+                  text={parsedContent.cta.text}
+                  primaryAction={{
+                    label: parsedContent.cta.primaryLabel,
+                    href: parsedContent.cta.href,
+                  }}
+                  secondaryAction={{
+                    label: "Skontaktuj się",
+                    href: "/kontakt",
+                  }}
+                  variant="accent"
+                />
+
+                {/* Content - second half */}
+                <div className="wp-content text-[#374151] leading-relaxed">
+                  {parsedContent.secondHalf}
+                </div>
+              </>
+            ) : (
+              <div
+                className="wp-content text-[#374151] leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: post.content || "" }}
+              />
+            )}
+
+            {/* CTA sekcja – diagnostyka */}
+            <div className="mt-12 pt-8 border-t border-[#e5e7eb]">
+              <CTABox
+                heading="Sprawdź czy się kwalifikujesz"
+                text="Odpowiedz na kilka pytań i dowiedz się czy możesz uzyskać pożyczkę pod zastaw nieruchomości."
+                primaryAction={{ label: "Zrób diagnostykę", href: "/narzedzia/diagnostyka" }}
+                secondaryAction={{ label: "Wróć do bloga", href: "/blog" }}
+                variant="primary"
+              />
+            </div>
+          </article>
+
+          {/* Sidebar – widoczny tylko na lg+ */}
+          {toc.length > 0 && (
+            <aside className="hidden lg:block w-72 shrink-0">
+              <div className="sticky top-24 space-y-6">
+                {/* Spis treści */}
+                <div className="bg-[#f7f8fa] rounded-xl p-5 border border-[#e5e7eb]">
+                  <h3 className="font-bold text-[#111827] text-sm uppercase tracking-wider mb-4">
+                    Spis treści
+                  </h3>
+                  <ul className="space-y-2">
+                    {toc.map((item) => (
+                      <li key={item.id}>
+                        <span className="text-sm text-[#374151] hover:text-[#1c435e] transition-colors cursor-pointer leading-relaxed block">
+                          {item.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Sidebar CTA 1 */}
+                <div className="bg-[#1c435e] rounded-xl p-5 text-white">
+                  <h3 className="font-bold text-base mb-2">Sprawdź czy się kwalifikujesz</h3>
+                  <p className="text-white/75 text-sm mb-4">Diagnostyka finansowa w 2 minuty.</p>
+                  <Link
+                    href="/narzedzia/diagnostyka"
+                    className="block text-center py-2.5 rounded-lg bg-[#2299AA] text-white text-sm font-semibold hover:bg-[#2bb5c7] transition-colors"
+                  >
+                    Zrób diagnostykę
+                  </Link>
+                </div>
+
+                {/* Sidebar CTA 2 */}
+                <div className="bg-white rounded-xl p-5 border border-[#e5e7eb]">
+                  <h3 className="font-bold text-[#111827] text-base mb-2">Oblicz ratę</h3>
+                  <p className="text-[#6b7280] text-sm mb-4">Kalkulator raty pożyczki hipotecznej.</p>
+                  <Link
+                    href="/narzedzia/kalkulator-raty"
+                    className="block text-center py-2.5 rounded-lg border-2 border-[#1c435e] text-[#1c435e] text-sm font-semibold hover:bg-[#1c435e] hover:text-white transition-colors"
+                  >
+                    Otwórz kalkulator
+                  </Link>
+                </div>
+              </div>
+            </aside>
           )}
-          <h1 className="text-3xl md:text-4xl font-bold text-text-heading leading-tight mt-2 mb-4">
-            {post.title}
-          </h1>
-          <div className="flex items-center gap-4 text-text-secondary text-sm">
-            <time dateTime={post.date}>{formattedDate}</time>
-          </div>
-        </header>
-
-        {/* Featured Image */}
-        {post.featuredImage?.node?.sourceUrl && (
-          <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden mb-8">
-            <Image
-              src={post.featuredImage.node.sourceUrl}
-              alt={post.featuredImage.node.altText || post.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 780px) 100vw, 780px"
-            />
-          </div>
-        )}
-
-        {/* Content */}
-        <div
-          className="wp-content text-text-primary leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-
-        {/* Back to blog */}
-        <div className="mt-12 pt-8 border-t border-border-light">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
-            </svg>
-            Wróć do bloga
-          </Link>
         </div>
-      </article>
+      </div>
 
-      {/* CTA */}
-      <section className="mt-16 py-12 bg-bg-light">
-        <div className="max-w-[780px] mx-auto px-4 text-center">
-          <h2 className="text-2xl font-semibold text-text-heading mb-4">
-            Potrzebujesz pożyczki pod hipotekę?
-          </h2>
-          <p className="text-text-secondary mb-6">
-            Skontaktuj się z nami i otrzymaj ofertę dopasowaną do Twoich potrzeb.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/kontakt"
-              className="bg-secondary text-white px-8 py-3 rounded-full font-semibold hover:bg-primary transition-colors"
-            >
-              Złóż wniosek
-            </Link>
-            <a
-              href="tel:577873616"
-              className="border-2 border-primary text-primary px-8 py-3 rounded-full font-semibold hover:bg-primary hover:text-white transition-colors"
-            >
-              Zadzwoń: 577 873 616
-            </a>
-          </div>
-        </div>
-      </section>
+      <ContactForm />
     </main>
   );
 }

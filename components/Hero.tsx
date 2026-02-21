@@ -1,50 +1,46 @@
+import Image from "next/image";
 import Link from "next/link";
+import TrustBadges from "@/components/shared/TrustBadges";
 
 export default function Hero() {
   return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="max-w-[1080px] mx-auto px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-5xl lg:text-[4.2rem] font-bold text-primary leading-tight mb-6">
+    <section className="relative min-h-[580px] md:min-h-[680px] flex items-center overflow-hidden">
+      {/* Background image */}
+      <Image
+        src="/images/slide-1.jpg"
+        alt="Pożyczki pod hipotekę nieruchomości"
+        fill
+        className="object-cover object-center"
+        priority
+        sizes="100vw"
+      />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#152f45]/90 via-[#1c435e]/80 to-[#1c435e]/60" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-6 w-full py-16">
+        <div className="max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
             Ekspresowe pożyczki pod hipotekę nieruchomości
           </h1>
-          <p className="text-lg md:text-xl text-text-primary leading-relaxed mb-4">
-            Oferujemy szybkie pożyczki pod zastaw nieruchomości. Kwoty od{" "}
-            <strong>50 000 zł</strong> do <strong>2 000 000 zł</strong>.
+          <p className="text-xl text-white/85 mb-8 leading-relaxed">
+            Kwoty od 50 000 do 2 000 000 zł. Bez BIK. Decyzja w 24h.
           </p>
-          <p className="text-lg text-text-secondary mb-8">
-            Bez sprawdzania BIK, BIG, KRD i ERIF. Decyzja nawet w 24 godziny.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 mb-10">
             <Link
               href="/kontakt"
-              className="bg-secondary text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary transition-colors inline-block"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#2299AA] text-white font-bold text-base hover:bg-[#2bb5c7] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               Złóż wniosek
             </Link>
             <Link
-              href="/oferta"
-              className="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-primary hover:text-white transition-colors inline-block"
+              href="/narzedzia/ile-moge-pozyczyc"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-white text-white font-bold text-base hover:bg-white hover:text-[#1c435e] transition-all duration-300"
             >
-              Sprawdź ofertę
+              Sprawdź ile możesz pożyczyć
             </Link>
           </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-16 border-t border-border-light">
-          <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-primary mb-2">20</div>
-            <p className="text-text-secondary text-lg">lat na rynku</p>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-primary mb-2">3 000</div>
-            <p className="text-text-secondary text-lg">udzielonych pożyczek</p>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-primary mb-2">2 500</div>
-            <p className="text-text-secondary text-lg">zadowolonych klientów</p>
-          </div>
+          <TrustBadges dark />
         </div>
       </div>
     </section>

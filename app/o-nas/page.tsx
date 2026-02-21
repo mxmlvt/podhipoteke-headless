@@ -1,71 +1,103 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import StatsCounter from "@/components/StatsCounter";
 import ContactForm from "@/components/ContactForm";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import WhyTrustUs from "@/components/WhyTrustUs";
 
 export const metadata: Metadata = {
-  title: "O nas - PODHIPOTEKE24.PL",
-  description: "Poznaj naszą firmę. 20 lat doświadczenia na rynku pożyczek pod hipotekę. Ponad 3000 udzielonych pożyczek i 2500 zadowolonych klientów.",
+  title: "O nas – 20 lat doświadczenia na rynku pożyczek | PODHIPOTEKE24.PL",
+  description:
+    "Poznaj naszą firmę. 20 lat doświadczenia na rynku pożyczek pod hipotekę. Ponad 1000 udzielonych pożyczek. Działamy dyskretnie i ekspresowo.",
 };
 
 export default function ONasPage() {
   return (
-    <>
+    <main>
       <PageHero
-        heading="Dlaczego warto nam zaufać?"
-        text="Jesteśmy firmą która spełnia oczekiwania swoich klientów. Działamy szybko i rzetelnie, a współpraca z nami to czysta przyjemność!"
-        buttonText="Dowiedz się więcej"
-        buttonHref="#about-content"
+        heading="O nas"
+        text="Jesteśmy firmą, która spełnia oczekiwania swoich klientów. Działamy szybko, rzetelnie i dyskretnie od ponad 20 lat."
         bgImage="/images/combining-experience.jpg"
       />
 
+      <div className="bg-[#f7f8fa] border-b border-[#e5e7eb] py-3">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <Breadcrumbs
+            items={[{ label: "Strona główna", href: "/" }, { label: "O nas" }]}
+          />
+        </div>
+      </div>
+
       <StatsCounter />
 
-      <section id="about-content" className="py-16 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4 space-y-20">
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6 space-y-20">
           {/* Row 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6">Jesteśmy na rynku od 2003 roku</h2>
-              <p className="text-text-body text-[1.1rem] leading-relaxed">
-                Nasza firma na rynku działa już ponad 20 lat. Od samego początku, kierujemy się wartościami które pozwoliły nam zaistnieć w branży, której dziś jesteśmy liderem. Naszą misją jest bezkompromisowa pomoc w spełnianiu marzeń naszych klientów.
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-6">
+                Jesteśmy na rynku od 2003 roku
+              </h2>
+              <p className="text-[#374151] text-lg leading-relaxed">
+                Nasza firma na rynku działa już ponad 20 lat. Od samego początku kierujemy się wartościami, które pozwoliły nam zaistnieć w branży, której dziś jesteśmy liderem. Naszą misją jest bezkompromisowa pomoc w spełnianiu celów finansowych naszych klientów.
               </p>
             </div>
             <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-              <Image src="/images/mbr-about-1.jpg" alt="20 lat na rynku" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image
+                src="/images/mbr-about-1.jpg"
+                alt="20 lat na rynku"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           </div>
 
           {/* Row 2 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[4/3] rounded-xl overflow-hidden order-2 lg:order-1">
-              <Image src="/images/mbr-about-2.jpg" alt="Ogromne doświadczenie" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image
+                src="/images/mbr-about-2.jpg"
+                alt="Ogromne doświadczenie"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
             <div className="order-1 lg:order-2">
-              <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6">Posiadamy ogromne doświadczenie</h2>
-              <p className="text-text-body text-[1.1rem] leading-relaxed">
-                Od 2003 roku udzieliliśmy ponad 3000 pożyczek. Przez ponad 20 lat zdobywaliśmy doświadczenie, dzięki któremu dziś możemy pomagać w spełnieniu marzeń każdego naszego klienta.
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-6">
+                Posiadamy ogromne doświadczenie
+              </h2>
+              <p className="text-[#374151] text-lg leading-relaxed">
+                Od 2003 roku udzieliliśmy ponad 1000 pożyczek. Przez ponad 20 lat zdobywaliśmy doświadczenie, dzięki któremu dziś możemy skutecznie pomagać każdemu klientowi – niezależnie od sytuacji finansowej czy historii kredytowej.
               </p>
-            </div>
-          </div>
-
-          {/* Row 3 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-6">Pomogliśmy spełnić marzenia ponad 2500 osób</h2>
-              <p className="text-text-body text-[1.1rem] leading-relaxed">
-                Marzenia są po to, by je spełniać. A my istniejemy po to, by pomagać je realizować. Potwierdzi to ponad 2500 osób, które już zrealizowały swoje cele. Skontaktuj się z nami już dziś i pozwól by Twoje marzenia stały się rzeczywistością!
-              </p>
-            </div>
-            <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-              <Image src="/images/sailboat.jpg" alt="2500 zadowolonych klientów" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             </div>
           </div>
         </div>
       </section>
 
+      <WhyTrustUs />
+
+      <section className="py-12 md:py-16 bg-[#1c435e]">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Chcesz z nami współpracować?
+          </h2>
+          <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
+            Skontaktuj się z nami i dowiedz się jak możemy Ci pomóc.
+          </p>
+          <Link
+            href="/kontakt"
+            className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#2299AA] text-white font-bold hover:bg-[#2bb5c7] transition-colors"
+          >
+            Skontaktuj się
+          </Link>
+        </div>
+      </section>
+
       <ContactForm />
-    </>
+    </main>
   );
 }

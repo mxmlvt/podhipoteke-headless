@@ -71,7 +71,10 @@ export default function HeroSlider() {
               <p className="text-white text-lg md:text-2xl mb-8 max-w-3xl mx-auto">
                 {slide.text}
               </p>
-              <Link href="/kontakt" className="btn-primary !px-8 !py-3 !text-lg">
+              <Link
+                href="/kontakt"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-[#1c435e] text-white font-bold text-lg hover:bg-[#254d6b] transition-colors"
+              >
                 {slide.button}
               </Link>
             </div>
@@ -79,7 +82,7 @@ export default function HeroSlider() {
         </div>
       ))}
 
-      {/* Slider dots - Divi style controllers */}
+      {/* Slider dots */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
         {slides.map((_, i) => (
           <button

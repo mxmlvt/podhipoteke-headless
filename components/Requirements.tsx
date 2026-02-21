@@ -30,16 +30,16 @@ const criteria = [
 
 export default function Requirements() {
   return (
-    <section className="py-16 bg-primary">
+    <section className="py-16 bg-[#1c435e]">
       <div className="max-w-[1330px] mx-auto px-4">
-        <h2 className="section-heading text-white mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
           Co musisz zrobić by otrzymać pożyczkę?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {criteria.map((c, i) => (
-            <div key={i} className="service-card flex flex-col items-center text-center gap-4 !bg-card !shadow-none">
+            <div key={i} className="bg-white/10 rounded-xl p-8 flex flex-col items-center text-center gap-4">
               <div className="text-white">{c.icon}</div>
-              <h3>{c.title}</h3>
+              <h3 className="text-lg font-bold text-white">{c.title}</h3>
               <p className="text-white/90">{c.desc}</p>
             </div>
           ))}

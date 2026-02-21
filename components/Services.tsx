@@ -68,10 +68,10 @@ export default function Services() {
     <section className="py-16 bg-white">
       <div className="max-w-[1080px] mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-medium text-primary mb-4">
+          <h2 className="text-3xl md:text-4xl font-medium text-[#1c435e] mb-4">
             Co oferujemy?
           </h2>
-          <p className="text-text-secondary text-lg max-w-2xl mx-auto">
+          <p className="text-[#6b7280] text-lg max-w-2xl mx-auto">
             Kompleksowa obsługa finansowa - od pożyczek pod zastaw nieruchomości po pomoc prawną
           </p>
         </div>
@@ -80,15 +80,15 @@ export default function Services() {
             <Link
               key={service.title}
               href={service.href}
-              className="group p-6 rounded-lg border border-border-light hover:border-primary hover:shadow-lg transition-all"
+              className="group p-6 rounded-lg border border-[#e5e7eb] hover:border-[#1c435e] hover:shadow-lg transition-all"
             >
-              <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+              <div className="w-14 h-14 rounded-full bg-[#1c435e]/10 text-[#1c435e] flex items-center justify-center mb-4 group-hover:bg-[#1c435e] group-hover:text-white transition-colors">
                 {service.icon}
               </div>
-              <h3 className="text-lg font-semibold text-text-heading mb-2 group-hover:text-primary transition-colors">
+              <h3 className="text-lg font-semibold text-[#111827] mb-2 group-hover:text-[#1c435e] transition-colors">
                 {service.title}
               </h3>
-              <p className="text-text-secondary text-sm leading-relaxed">
+              <p className="text-[#6b7280] text-sm leading-relaxed">
                 {service.description}
               </p>
             </Link>

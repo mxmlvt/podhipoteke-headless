@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import client from "@/lib/apollo";
 import { GET_ALL_POSTS } from "@/lib/queries";
 import BlogCard from "@/components/BlogCard";
+import PageHero from "@/components/PageHero";
 
 export const metadata: Metadata = {
-  title: "Blog - PODHIPOTEKE24.PL",
+  title: "Blog – wiedza o pożyczkach i kredytach | PODHIPOTEKE24.PL",
   description:
-    "Artykuły o pożyczkach pod hipotekę, kredytach pod zastaw nieruchomości i finansach. Porady ekspertów.",
+    "Artykuły o pożyczkach pod hipotekę, kredytach pod zastaw nieruchomości i finansach. Porady ekspertów. Wiedza, która pomoże Ci podjąć świadomą decyzję.",
 };
 
 interface Post {
@@ -37,33 +38,35 @@ export default async function BlogPage() {
   const posts: Post[] = data.posts.nodes;
 
   return (
-    <main className="py-12">
-      <div className="max-w-[1080px] mx-auto px-4">
-        {/* Page header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-[4rem] font-medium text-primary mb-4">
-            Blog
-          </h1>
-          <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Artykuły i porady dotyczące pożyczek pod hipotekę, kredytów pod zastaw nieruchomości i finansów
-          </p>
-        </div>
+    <main>
+      <PageHero
+        heading="Blog – wiedza o pożyczkach i kredytach"
+        text="Artykuły i porady z zakresu pożyczek hipotecznych, finansów osobistych i prawa kredytowego."
+        bgImage="/images/faq-bg.jpg"
+      />
 
-        {/* Posts grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
-            <BlogCard
-              key={post.id}
-              title={post.title}
-              slug={post.slug}
-              excerpt={post.excerpt}
-              date={post.date}
-              featuredImage={post.featuredImage}
-              category={post.categories?.nodes?.[0]?.name}
-            />
-          ))}
+      <section className="py-12 md:py-16 bg-[#f7f8fa]">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="mb-8 flex items-center justify-between">
+            <p className="text-[#6b7280] text-sm">
+              Łącznie <span className="font-semibold text-[#111827]">{posts.length}</span> artykułów
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post) => (
+              <BlogCard
+                key={post.id}
+                title={post.title}
+                slug={post.slug}
+                excerpt={post.excerpt}
+                date={post.date}
+                featuredImage={post.featuredImage}
+                category={post.categories?.nodes?.[0]?.name}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

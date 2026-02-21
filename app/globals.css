@@ -1,39 +1,144 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-primary: #2299AA;
-  --color-primary-dark: #1d8a99;
-  --color-primary-hover: #229CAD;
-  --color-secondary: #40B0BF;
-  --color-card: #2da2b2;
-  --color-card-hover: #6ec7f2;
-  --color-accent: #7EBEC5;
-  --color-text-body: #333333;
-  --color-text-dark: #111111;
-  --color-text-secondary: #666666;
-  --color-text-heading: #333333;
-  --color-bg-light: #f4f4f4;
-  --color-border-light: #d3d3d3;
-  --color-border-medium: #d9d9d9;
-  --color-white: #ffffff;
-  --color-overlay-dark: rgba(38, 38, 38, 0.44);
-  --color-overlay-darker: rgba(86, 86, 86, 0.97);
-  --color-overlay-light: rgba(255, 255, 255, 0.6);
-  --color-overlay-lighter: rgba(255, 255, 255, 0.86);
+  /* Brand colors */
+  --color-primary: #1c435e;
+  --color-primary-light: #254d6b;
+  --color-primary-dark: #152f45;
+  --color-accent: #2299AA;
+  --color-accent-light: #2bb5c7;
+  --color-bg-light: #f7f8fa;
+  --color-bg-white: #ffffff;
+  --color-text-body: #374151;
+  --color-text-heading: #111827;
+  --color-text-muted: #6b7280;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
+
+  /* shadcn token mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
   --font-sans: var(--font-jost);
 }
 
-/* Base body - from Divi customizer: font-size 15px, color #333, font Jost */
+:root {
+  --radius: 0.5rem;
+
+  /* shadcn component tokens mapped to brand */
+  --background: #ffffff;
+  --foreground: #374151;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #374151;
+  --primary: #1c435e;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f8fa;
+  --secondary-foreground: #1c435e;
+  --muted: #f7f8fa;
+  --muted-foreground: #6b7280;
+  --accent: #2299AA;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #2299AA;
+
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: #f7f8fa;
+  --sidebar-foreground: #374151;
+  --sidebar-primary: #1c435e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2299AA;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #2299AA;
+}
+
+.dark {
+  --background: #111827;
+  --foreground: #f9fafb;
+  --card: #1f2937;
+  --card-foreground: #f9fafb;
+  --popover: #1f2937;
+  --popover-foreground: #f9fafb;
+  --primary: #2299AA;
+  --primary-foreground: #ffffff;
+  --secondary: #1f2937;
+  --secondary-foreground: #f9fafb;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #2299AA;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #374151;
+  --input: #374151;
+  --ring: #2299AA;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ── Base typography ─────────────────────────────────────── */
 body {
   background: #ffffff;
-  color: #333333;
+  color: #374151;
   font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: inherit;
+  color: #111827;
   font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
   line-height: 1.2;
 }
@@ -44,220 +149,32 @@ a {
   transition: color 0.3s ease;
 }
 
-a:hover {
-  color: inherit;
-}
-
-/* Default link color for body-text contexts (wp-content, articles, etc.) */
+/* ── WordPress content styles ────────────────────────────── */
 .wp-content a {
   color: #2299aa;
 }
 .wp-content a:hover {
-  color: #229CAD;
+  color: #2bb5c7;
 }
 
-/* Divi pill-shaped button base */
-.btn-primary {
-  display: inline-block;
-  background-color: #40b0bf;
-  color: #ffffff !important;
-  border: 0;
-  border-radius: 30px;
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 8px 20px 10px;
-  box-shadow: 10px 10px 35px -13px rgba(0,0,0,0.2);
-  transition: background-color 300ms ease;
-  cursor: pointer;
-  text-align: center;
-}
-.btn-primary:hover {
-  background-color: #2299AA;
-  color: #ffffff !important;
-}
-
-.btn-secondary {
-  display: inline-block;
-  background-color: #2299AA;
-  color: #ffffff !important;
-  border: 0;
-  border-radius: 60px;
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 19px;
-  font-weight: 600;
-  padding: 9px 1em 11px;
-  transition: background-color 300ms ease;
-  cursor: pointer;
-  text-align: center;
-}
-.btn-secondary:hover {
-  background-color: #229CAD;
-  color: #ffffff !important;
-}
-
-/* Section heading style - from Divi 4.2rem, color set per-component */
-.section-heading {
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-weight: 600;
-  font-size: 4.2rem;
-  text-align: center;
-  line-height: 1.2;
-}
-@media (max-width: 767px) {
-  .section-heading {
-    font-size: 2rem;
-  }
-}
-
-/* Parallax overlay sections */
-.parallax-section {
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  position: relative;
-}
-.parallax-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(38, 38, 38, 0.44);
-}
-.parallax-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Teal service cards - from Divi blurb cards */
-.service-card {
-  background-color: #2da2b2;
-  border-radius: 10px;
-  overflow: hidden;
-  min-height: 400px;
-  padding: 50px;
-  color: #ffffff;
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 1.1rem;
-  transition: background-color 300ms ease, background-image 300ms ease;
-  box-shadow: 10px 10px 34px -9px #6ec7f2;
-}
-.service-card:hover {
-  background-color: #6ec7f2;
-}
-.service-card h3 {
-  font-weight: 600;
-  font-size: 1.2rem;
-  text-align: center;
-  color: #ffffff;
-}
-.service-card p {
-  text-align: center;
-}
-
-/* Small benefit card variant */
-.benefit-card {
-  background-color: #2da2b2;
-  border-radius: 10px;
-  overflow: hidden;
-  min-height: 250px;
-  padding: 50px;
-  color: #ffffff;
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 1.1rem;
-  transition: background-color 300ms ease;
-}
-.benefit-card:hover {
-  background-color: #6ec7f2;
-}
-.benefit-card h3 {
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: #ffffff;
-}
-
-/* Icon circle - from Divi blurb icon */
-.icon-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 60px;
-  background-color: #2299aa;
-  color: #ffffff;
-  padding: 10px;
-}
-.icon-circle-dark {
-  background-color: #111111;
-}
-.icon-circle-large {
-  width: 94px;
-  height: 94px;
-}
-
-/* Form inputs - from Divi contact form */
-.form-input {
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 15px;
-  color: #111111;
-  border: 1px solid #d3d3d3;
-  border-radius: 60px;
-  padding: 20px;
-  width: 100%;
-  outline: none;
-  transition: border-color 300ms ease;
-}
-.form-input:focus {
-  border-color: #2299AA;
-}
-.form-input::placeholder {
-  color: #111111;
-}
-textarea.form-input {
-  border-radius: 20px;
-  min-height: 120px;
-  resize: vertical;
-}
-
-/* Accordion - from Divi FAQ */
-.accordion-title {
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-size: 19px;
-  color: #2299AA;
-  cursor: pointer;
-  padding: 15px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #d9d9d9;
-}
-.accordion-content {
-  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
-  font-weight: 300;
-  font-size: 1.2rem;
-  color: #333;
-  line-height: 1.5em;
-  padding: 15px 0;
-}
-
-/* WordPress content styles */
 .wp-content h2 {
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 2rem 0 1rem;
-  color: #2299AA;
+  color: #1c435e;
 }
 
 .wp-content h3 {
   font-size: 1.375rem;
   font-weight: 600;
   margin: 1.5rem 0 0.75rem;
-  color: #333;
+  color: #111827;
 }
 
 .wp-content p {
   margin-bottom: 1rem;
   line-height: 1.7;
+  color: #374151;
 }
 
 .wp-content ul,
@@ -280,7 +197,7 @@ textarea.form-input {
   border-left: 4px solid #2299AA;
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
-  background: #f4f4f4;
+  background: #f7f8fa;
   border-radius: 0 8px 8px 0;
 }
 
@@ -292,33 +209,47 @@ textarea.form-input {
 
 .wp-content th,
 .wp-content td {
-  border: 1px solid #d9d9d9;
+  border: 1px solid #e5e7eb;
   padding: 0.75rem 1rem;
   text-align: left;
 }
 
 .wp-content th {
-  background: #f4f4f4;
+  background: #f7f8fa;
   font-weight: 600;
+  color: #111827;
 }
 
-/* Slider */
-.slider-container {
-  position: relative;
-  overflow: hidden;
+/* ── Fade-in animation ───────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.slide {
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ── Parallax overlay ────────────────────────────────────── */
+.parallax-section {
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   position: relative;
 }
-.slide::before {
+.parallax-section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(28, 67, 94, 0.7);
 }
-.slide > * {
+.parallax-section > * {
   position: relative;
   z-index: 1;
 }

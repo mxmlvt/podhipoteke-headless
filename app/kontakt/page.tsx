@@ -1,51 +1,133 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Kontakt - PODHIPOTEKE24.PL",
-  description: "Skontaktuj się z nami. Telefon: 577 873 616, email: kontakt@podhipoteke24.pl. Wypełnij formularz kontaktowy.",
+  title: "Kontakt – złóż wniosek o pożyczkę | PODHIPOTEKE24.PL",
+  description:
+    "Skontaktuj się z nami. Telefon: 577 873 616, email: kontakt@podhipoteke24.pl. Wypełnij formularz kontaktowy i otrzymaj decyzję w 24h.",
 };
 
 export default function KontaktPage() {
   return (
-    <>
+    <main>
       <PageHero
-        heading="KONTAKT"
-        text="Masz pytania odnośnie naszej oferty? Skontaktuj się z nami: wyślij do nas wiadomość lub zadzwoń do nas."
+        heading="Kontakt"
+        text="Masz pytania odnośnie naszej oferty? Skontaktuj się z nami – odpiszemy w ciągu kilku godzin."
         bgImage="/images/faq-bg.jpg"
       />
 
-      {/* Contact info */}
-      <section className="py-12 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4">
-          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-            <a href="tel:577873616" className="flex items-center gap-3 text-text-body text-lg hover:text-primary transition-colors">
-              <span className="icon-circle">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-              </span>
-              577 873 616
-            </a>
-            <a href="mailto:kontakt@podhipoteke24.pl" className="flex items-center gap-3 text-text-body text-lg hover:text-primary transition-colors">
-              <span className="icon-circle">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-              </span>
-              kontakt@podhipoteke24.pl
-            </a>
+      <div className="bg-[#f7f8fa] border-b border-[#e5e7eb] py-3">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <Breadcrumbs
+            items={[{ label: "Strona główna", href: "/" }, { label: "Kontakt" }]}
+          />
+        </div>
+      </div>
+
+      <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Contact info */}
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-8">
+                Dane kontaktowe
+              </h2>
+              <div className="space-y-6">
+                <a
+                  href="tel:577873616"
+                  className="flex items-start gap-4 group"
+                >
+                  <div className="p-3 rounded-xl bg-[#e8f4f6] shrink-0 group-hover:bg-[#d0ecf0] transition-colors">
+                    <Phone className="w-5 h-5 text-[#2299AA]" />
+                  </div>
+                  <div>
+                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Telefon</p>
+                    <p className="text-[#111827] text-lg font-semibold group-hover:text-[#1c435e] transition-colors">
+                      577 873 616
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href="mailto:kontakt@podhipoteke24.pl"
+                  className="flex items-start gap-4 group"
+                >
+                  <div className="p-3 rounded-xl bg-[#e8f4f6] shrink-0 group-hover:bg-[#d0ecf0] transition-colors">
+                    <Mail className="w-5 h-5 text-[#2299AA]" />
+                  </div>
+                  <div>
+                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">E-mail</p>
+                    <p className="text-[#111827] text-lg font-semibold group-hover:text-[#1c435e] transition-colors">
+                      kontakt@podhipoteke24.pl
+                    </p>
+                  </div>
+                </a>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl bg-[#e8f4f6] shrink-0">
+                    <MapPin className="w-5 h-5 text-[#2299AA]" />
+                  </div>
+                  <div>
+                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Zasięg</p>
+                    <p className="text-[#111827] text-lg font-semibold">
+                      Cała Polska
+                    </p>
+                    <p className="text-[#6b7280] text-sm mt-1">
+                      Obsługujemy klientów z całego kraju, w tym online.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-xl bg-[#e8f4f6] shrink-0">
+                    <Clock className="w-5 h-5 text-[#2299AA]" />
+                  </div>
+                  <div>
+                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Czas reakcji</p>
+                    <p className="text-[#111827] text-lg font-semibold">
+                      Odpowiadamy w ciągu kilku godzin
+                    </p>
+                    <p className="text-[#6b7280] text-sm mt-1">
+                      Decyzję kredytową wydajemy w 24 godziny.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-10 p-6 rounded-xl bg-[#1c435e] text-white">
+                <h3 className="text-lg font-bold mb-2">
+                  Masz pilną sprawę?
+                </h3>
+                <p className="text-white/75 text-sm mb-4">
+                  Zadzwoń bezpośrednio – nasi doradcy odbierają w godzinach roboczych.
+                </p>
+                <a
+                  href="tel:577873616"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#2299AA] text-white font-semibold text-sm hover:bg-[#2bb5c7] transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  Zadzwoń teraz
+                </a>
+              </div>
+            </div>
+
+            {/* Contact form placeholder */}
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-8">
+                Formularz kontaktowy
+              </h2>
+              <p className="text-[#6b7280] mb-6">
+                Wypełnij formularz poniżej, a nasz doradca skontaktuje się z Tobą w ciągu kilku godzin.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA text */}
-      <section className="py-8 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-primary">
-            Masz inne pytanie? Z przyjemnością odpowiemy na każde!
-          </h2>
-        </div>
-      </section>
-
       <ContactForm />
-    </>
+    </main>
   );
 }

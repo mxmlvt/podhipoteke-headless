@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface BlogCardProps {
   title: string;
@@ -29,61 +32,61 @@ export default function BlogCard({
     day: "numeric",
   });
 
-  // Strip HTML tags from excerpt
   const cleanExcerpt = excerpt.replace(/<[^>]*>/g, "").trim();
 
   return (
-    <article className="bg-white rounded-lg overflow-hidden shadow-sm border border-border-light hover:shadow-md transition-shadow group">
-      <Link href={`/blog/${slug}`} className="block">
-        {featuredImage?.node?.sourceUrl ? (
-          <div className="relative w-full aspect-[16/10] overflow-hidden">
-            <Image
-              src={featuredImage.node.sourceUrl}
-              alt={featuredImage.node.altText || title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-          </div>
-        ) : (
-          <div className="w-full aspect-[16/10] bg-bg-light flex items-center justify-center">
-            <svg className="w-12 h-12 text-border-medium" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-            </svg>
-          </div>
-        )}
-      </Link>
-      <div className="p-5">
-        <div className="flex items-center gap-3 mb-3">
-          {category && (
-            <span className="text-xs font-semibold text-secondary uppercase tracking-wider">
-              {category}
-            </span>
+    <article>
+      <Card className="h-full border border-[#e5e7eb] overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
+        <Link href={`/blog/${slug}`} className="block">
+          {featuredImage?.node?.sourceUrl ? (
+            <div className="relative w-full aspect-[16/10] overflow-hidden">
+              <Image
+                src={featuredImage.node.sourceUrl}
+                alt={featuredImage.node.altText || title}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+          ) : (
+            <div className="w-full aspect-[16/10] bg-[#f7f8fa] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#e8f4f6] flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#2299AA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                </svg>
+              </div>
+            </div>
           )}
-          <time className="text-sm text-text-secondary" dateTime={date}>
-            {formattedDate}
-          </time>
-        </div>
-        <Link href={`/blog/${slug}`}>
-          <h3 className="text-lg font-semibold text-text-heading hover:text-primary transition-colors leading-snug mb-2 line-clamp-2">
-            {title}
-          </h3>
         </Link>
-        {cleanExcerpt && (
-          <p className="text-text-secondary text-sm leading-relaxed line-clamp-3">
-            {cleanExcerpt}
-          </p>
-        )}
-        <Link
-          href={`/blog/${slug}`}
-          className="inline-flex items-center gap-1 mt-4 text-primary font-medium text-sm hover:gap-2 transition-all"
-        >
-          Czytaj więcej
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
-          </svg>
-        </Link>
-      </div>
+        <CardContent className="p-5 flex flex-col gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
+            {category && (
+              <Badge variant="secondary" className="text-[#2299AA] bg-[#e8f4f6] hover:bg-[#e8f4f6] text-xs font-semibold uppercase">
+                {category}
+              </Badge>
+            )}
+            <time className="text-xs text-[#6b7280]" dateTime={date}>
+              {formattedDate}
+            </time>
+          </div>
+          <Link href={`/blog/${slug}`}>
+            <h3 className="text-base font-semibold text-[#111827] hover:text-[#1c435e] transition-colors leading-snug line-clamp-2">
+              {title}
+            </h3>
+          </Link>
+          {cleanExcerpt && (
+            <p className="text-[#6b7280] text-sm leading-relaxed line-clamp-2">
+              {cleanExcerpt}
+            </p>
+          )}
+          <Link
+            href={`/blog/${slug}`}
+            className="inline-flex items-center gap-1 text-[#2299AA] font-semibold text-sm hover:gap-2 transition-all mt-auto"
+          >
+            Czytaj dalej <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </CardContent>
+      </Card>
     </article>
   );
 }
