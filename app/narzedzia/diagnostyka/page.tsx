@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, ShieldCheck, Clock, Star } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const DiagnosticQuiz = dynamic(() => import("@/components/tools/DiagnosticQuiz"), { ssr: false });
+import DiagnosticQuiz from "@/components/tools/DiagnosticQuiz";
 
 export const metadata: Metadata = {
   title: "Diagnostyka finansowa – sprawdź kwalifikację | PODHIPOTEKE24.PL",

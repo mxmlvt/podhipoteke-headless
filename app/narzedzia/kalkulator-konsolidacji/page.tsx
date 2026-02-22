@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const ConsolidationCalculator = dynamic(
-  () => import("@/components/tools/ConsolidationCalculator"),
-  { ssr: false }
-);
+import ConsolidationCalculator from "@/components/tools/ConsolidationCalculator";
 
 export const metadata: Metadata = {
   title: "Kalkulator konsolidacji zobowiązań | PODHIPOTEKE24.PL",

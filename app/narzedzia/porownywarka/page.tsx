@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const LoanComparison = dynamic(
-  () => import("@/components/tools/LoanComparison"),
-  { ssr: false }
-);
+import LoanComparison from "@/components/tools/LoanComparison";
 
 export const metadata: Metadata = {
   title: "Porównywarka pożyczek hipotecznych | PODHIPOTEKE24.PL",
