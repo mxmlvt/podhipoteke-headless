@@ -7,13 +7,13 @@ import { Phone, ChevronDown, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const ofertaItems = [
-  { label: "Kredyt hipoteczny", path: "/kredyt-hipoteczny" },
-  { label: "Kredyt pod zastaw mieszkania", path: "/kredyt-pod-zastaw-mieszkania" },
-  { label: "Pożyczki pod zastaw nieruchomości", path: "/pozyczki-pod-zastaw-nieruchomosci" },
-  { label: "Pożyczki pod zastaw domu", path: "/pozyczki-pod-zastaw-domu" },
-  { label: "Pożyczki pod zastaw działki", path: "/pozyczki-pod-zastaw-dzialki" },
-  { label: "Pożyczki oddłużeniowe", path: "/pozyczki-oddluzeniowe" },
-  { label: "Pożyczki hipoteczne dla firm", path: "/pozyczki-hipoteczne-dla-firm" },
+  { label: "Kredyt hipoteczny", path: "/oferta/kredyt-hipoteczny" },
+  { label: "Kredyt pod zastaw mieszkania", path: "/oferta/kredyt-pod-zastaw-mieszkania" },
+  { label: "Pożyczki pod zastaw nieruchomości", path: "/oferta/pozyczki-pod-zastaw-nieruchomosci" },
+  { label: "Pożyczki pod zastaw domu", path: "/oferta/pozyczki-pod-zastaw-domu" },
+  { label: "Pożyczki pod zastaw działki", path: "/oferta/pozyczki-pod-zastaw-dzialki" },
+  { label: "Pożyczki oddłużeniowe", path: "/oferta/pozyczki-oddluzeniowe-2" },
+  { label: "Pożyczki hipoteczne dla firm", path: "/oferta/pozyczki-hipoteczne-dla-firm" },
 ];
 
 const narzedziaItems = [
@@ -112,12 +112,12 @@ export default function Header() {
               <Phone className="w-4 h-4" />
               577 873 616
             </a>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-semibold text-sm transition-colors shadow-sm"
+            <a
+              href="#formularz"
+              className="btn-cta-shine !px-6 !py-2 !text-sm"
             >
               Złóż wniosek
-            </Link>
+            </a>
           </div>
 
           {/* Mobile: phone + hamburger */}
@@ -205,13 +205,13 @@ export default function Header() {
                       <Phone className="w-4 h-4" />
                       577 873 616
                     </a>
-                    <Link
-                      href="/kontakt"
-                      className="flex items-center justify-center w-full py-3 rounded-full bg-[#2299AA] text-white font-semibold text-sm hover:bg-[#2bb5c7] transition-colors"
+                    <a
+                      href="#formularz"
+                      className="btn-cta-shine w-full !py-3 !text-sm flex items-center justify-center"
                       onClick={() => setMobileOpen(false)}
                     >
                       Złóż wniosek
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </SheetContent>

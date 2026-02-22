@@ -105,9 +105,11 @@ export const GET_PAGE_BY_SLUG = gql`
 
 export const GET_ALL_PAGE_SLUGS = gql`
 	query GetAllPageSlugs {
-		pages(first: 100) {
+		pages(first: 200, where: { status: PUBLISH }) {
 			nodes {
 				slug
+				uri
+				status
 			}
 		}
 	}

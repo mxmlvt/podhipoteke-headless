@@ -8,21 +8,21 @@ const slides = [
   {
     heading: "POŻYCZKI POD NIERUCHOMOŚCI",
     text: "Ekspresowo wycenimy Twoją nieruchomość i wypłacimy Ci środki",
-    button: "Dowiedz się więcej",
+    button: "Złóż wniosek",
     bg: "/images/slide-1.jpg",
     alt: "Pożyczki pod nieruchomości",
   },
   {
     heading: "EKSPRESOWE POŻYCZKI DLA FIRM",
     text: "Skontaktuj się z nami i poznaj możliwości rozwoju swojej firmy",
-    button: "Dowiedz się więcej",
+    button: "Złóż wniosek",
     bg: "/images/slide-2.jpg",
     alt: "Ekspresowe pożyczki dla firm",
   },
   {
     heading: "DORADZTWO FINANSOWE",
     text: "Otrzymaj środki już w 24 godziny!",
-    button: "Dowiedz się więcej",
+    button: "Złóż wniosek",
     bg: "/images/slide-3.jpg",
     alt: "Doradztwo finansowe",
   },
@@ -71,12 +71,12 @@ export default function HeroSlider() {
               <p className="text-white text-lg md:text-2xl mb-8 max-w-3xl mx-auto">
                 {slide.text}
               </p>
-              <Link
-                href="/kontakt"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-[#1c435e] text-white font-bold text-lg hover:bg-[#254d6b] transition-colors"
+              <a
+                href="#formularz"
+                className="btn-cta-shine !px-8 !py-3 !text-lg"
               >
                 {slide.button}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

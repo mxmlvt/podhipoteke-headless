@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Phone, Mail, MapPin, Award, ShieldOff, Clock, Banknote } from "lucide-react";
 
 const ofertaLinks = [
-  { label: "Kredyt hipoteczny", path: "/kredyt-hipoteczny" },
-  { label: "Kredyt pod zastaw mieszkania", path: "/kredyt-pod-zastaw-mieszkania" },
-  { label: "Pożyczki pod zastaw nieruchomości", path: "/pozyczki-pod-zastaw-nieruchomosci" },
-  { label: "Pożyczki pod zastaw domu", path: "/pozyczki-pod-zastaw-domu" },
-  { label: "Pożyczki pod zastaw działki", path: "/pozyczki-pod-zastaw-dzialki" },
-  { label: "Pożyczki oddłużeniowe", path: "/pozyczki-oddluzeniowe" },
-  { label: "Pożyczki hipoteczne dla firm", path: "/pozyczki-hipoteczne-dla-firm" },
+  { label: "Kredyt hipoteczny", path: "/oferta/kredyt-hipoteczny" },
+  { label: "Kredyt pod zastaw mieszkania", path: "/oferta/kredyt-pod-zastaw-mieszkania" },
+  { label: "Pożyczki pod zastaw nieruchomości", path: "/oferta/pozyczki-pod-zastaw-nieruchomosci" },
+  { label: "Pożyczki pod zastaw domu", path: "/oferta/pozyczki-pod-zastaw-domu" },
+  { label: "Pożyczki pod zastaw działki", path: "/oferta/pozyczki-pod-zastaw-dzialki" },
+  { label: "Pożyczki oddłużeniowe", path: "/oferta/pozyczki-oddluzeniowe-2" },
+  { label: "Pożyczki hipoteczne dla firm", path: "/oferta/pozyczki-hipoteczne-dla-firm" },
 ];
 
 const narzedziaLinks = [
@@ -49,8 +49,9 @@ export default function Footer() {
               alt="PodHipoteke24.pl"
               width={160}
               height={90}
-              className="mb-5 brightness-0 invert"
+              className="mb-2 brightness-0 invert"
             />
+            <p className="text-white font-semibold text-sm mb-4">podhipoteke24.pl</p>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
               Ekspresowe pożyczki pod hipotekę nieruchomości. Ponad 20 lat doświadczenia na rynku finansowym. Działamy dyskretnie i sprawnie.
             </p>
@@ -126,12 +127,12 @@ export default function Footer() {
               </div>
             </div>
 
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-semibold text-sm transition-colors"
+            <a
+              href="#formularz"
+              className="btn-cta-shine !px-6 !py-2.5 !text-sm"
             >
               Złóż wniosek
-            </Link>
+            </a>
           </div>
         </div>
       </div>

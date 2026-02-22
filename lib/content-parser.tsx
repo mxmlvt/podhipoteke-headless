@@ -77,6 +77,9 @@ export function cleanContent(html: string): string {
     .replace(/\[\/et_pb_[^\]]*\]/g, "")
     .replace(/\[\/?[a-zA-Z_]+[^\]]*\]/g, "")
     .replace(/<div[^>]*class="[^"]*et_pb[^"]*"[^>]*>\s*<\/div>/gi, "")
+    .replace(/\b2023\b/g, "2026")
+    .replace(/\b2024\b/g, "2026")
+    .replace(/\b2025\b/g, "2026")
     .trim();
 }
 

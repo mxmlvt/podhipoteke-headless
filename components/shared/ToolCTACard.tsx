@@ -21,7 +21,7 @@ export default function ToolCTACard({
     <Link
       href={href}
       className={cn(
-        "group flex flex-col p-6 rounded-xl bg-white shadow-sm border border-[#e5e7eb]",
+        "tool-card group flex flex-col p-6 rounded-xl bg-white shadow-sm border border-[#e5e7eb]",
         "hover:shadow-md hover:-translate-y-0.5 transition-all duration-300",
         variant === "featured" && "border-t-4 border-t-[#2299AA]"
       )}

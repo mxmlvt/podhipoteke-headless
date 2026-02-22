@@ -21,6 +21,8 @@
   --color-success: #16a34a;
   --color-warning: #f59e0b;
   --color-danger: #dc2626;
+  --color-cta-green: #00d2a0;
+  --color-cta-green-hover: #00b88a;
 
   /* shadcn token mappings */
   --color-background: var(--background);
@@ -269,6 +271,98 @@ a {
 
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ── CTA green button with shine animation ───────────────── */
+@keyframes cta-shine {
+  0%   { transform: translateX(-120%) skewX(-15deg); }
+  100% { transform: translateX(320%) skewX(-15deg); }
+}
+
+.btn-cta-shine {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #00d2a0 0%, #00b88a 100%);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-cta-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: translateX(-120%) skewX(-15deg);
+  animation: cta-shine 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-cta-shine:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 20px rgba(0, 210, 160, 0.4);
+}
+
+/* ── Scroll-triggered animations ─────────────────────────── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll.from-left {
+  transform: translateX(-28px);
+}
+.animate-on-scroll.from-left.visible {
+  transform: translateX(0);
+}
+
+.animate-on-scroll.from-right {
+  transform: translateX(28px);
+}
+.animate-on-scroll.from-right.visible {
+  transform: translateX(0);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+
+/* ── Tool card hover underline ───────────────────────────── */
+.tool-card {
+  position: relative;
+}
+.tool-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00d2a0, #2299AA);
+  border-radius: 0 0 12px 12px;
+  transition: width 0.3s ease;
+}
+.tool-card:hover::after {
+  width: 100%;
 }
 
 /* ── Parallax overlay ────────────────────────────────────── */

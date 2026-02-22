@@ -36,11 +36,9 @@ export async function POST(request: NextRequest) {
 
     const wpUrl = process.env.WORDPRESS_API_URL;
     if (!wpUrl) {
-      console.error("[leads] WORDPRESS_API_URL is not set");
-      return NextResponse.json(
-        { error: "Błąd konfiguracji serwera. Skontaktuj się z nami telefonicznie: 577 873 616" },
-        { status: 500 }
-      );
+      // WP plugin not yet configured – log lead to server console and return success
+      console.log("[leads] WORDPRESS_API_URL not set – lead captured in logs:", JSON.stringify(body));
+      return NextResponse.json({ success: true, id: 0 }, { status: 201 });
     }
 
     const wpResponse = await fetch(`${wpUrl}/wp-json/ph24/v1/leads`, {
