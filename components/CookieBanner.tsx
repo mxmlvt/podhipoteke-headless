@@ -33,7 +33,7 @@ export default function CookieBanner() {
         <div className="flex flex-col sm:flex-row items-center gap-4 justify-between">
           <p className="text-sm text-[#374151] leading-relaxed">
             Ta strona korzysta z plików cookies w celu zapewnienia najlepszej jakości usług.{" "}
-            <Link href="/polityka-cookies" className="text-[#2299AA] underline hover:text-[#1c435e]">
+            <Link href="/polityka-cookies" className="text-[#00cc9b] underline hover:text-[#1c435e]">
               Dowiedz się więcej
             </Link>
           </p>

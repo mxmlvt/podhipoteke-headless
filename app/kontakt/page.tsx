@@ -276,7 +276,7 @@ export default function KontaktPage() {
                       onChange={handleSimple} required className="mt-0.5 w-4 h-4 accent-[#00d2a0] shrink-0" />
                     <span className="text-xs text-[#6b7280] leading-relaxed">
                       Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z{" "}
-                      <a href="/polityka-prywatnosci" className="text-[#2299AA] underline">
+                      <a href="/polityka-prywatnosci" className="text-[#00cc9b] underline">
                         polityką prywatności
                       </a>.
                     </span>

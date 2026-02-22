@@ -6,7 +6,7 @@ import ContactForm from "@/components/ContactForm";
 import TrustBadgesBar from "@/components/TrustBadgesBar";
 import ToolCTACard from "@/components/shared/ToolCTACard";
 import ServiceContentSection from "@/components/ServiceContentSection";
-import { cleanContent } from "@/lib/content-parser";
+import { cleanContent, parseContent } from "@/lib/content-parser";
 import { getToolsForPage } from "@/lib/tool-mapping";
 import { isServicePageSlug, getServiceTemplate } from "@/lib/page-templates";
 
@@ -82,7 +82,7 @@ export default async function OfertaSlugPage({ params }: Props) {
       {hasContent ? (
         <section className="py-12 md:py-16 bg-white">
           <div className="max-w-[780px] mx-auto px-4 md:px-6">
-            <div className="wp-content" dangerouslySetInnerHTML={{ __html: cleaned }} />
+            <div className="wp-content">{parseContent(page.content)}</div>
           </div>
         </section>
       ) : (

@@ -126,11 +126,11 @@ export default function KalkulatorRatyPage() {
 
           <p className="text-[#374151] leading-relaxed">
             Chcesz poznać dokładne warunki pożyczki dopasowane do Twojej sytuacji?{" "}
-            <Link href="/narzedzia/ile-moge-pozyczyc" className="text-[#2299AA] underline">
+            <Link href="/narzedzia/ile-moge-pozyczyc" className="text-[#00cc9b] underline">
               Sprawdź ile możesz pożyczyć
             </Link>{" "}
             lub{" "}
-            <Link href="/narzedzia/diagnostyka" className="text-[#2299AA] underline">
+            <Link href="/narzedzia/diagnostyka" className="text-[#00cc9b] underline">
               wykonaj diagnostykę finansową
             </Link>
             .

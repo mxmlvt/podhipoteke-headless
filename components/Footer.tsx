@@ -33,7 +33,7 @@ export default function Footer() {
       {/* RRSO Disclaimer */}
       <div className="border-b border-white/10 py-4">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <p className="text-white/40 text-[11px] leading-relaxed text-center">
+          <p className="text-white/70 text-[11px] leading-relaxed text-center">
             Maksymalna rzeczywista roczna stopa oprocentowania (RRSO). Modelowy przykład całkowitego kosztu pożyczki: Kwota pożyczki: 10.000,00 zł, okres spłaty: 12 miesięcy. Maksymalna Rzeczywista Roczna Stopa Oprocentowania wynosi do 30%. Roczna stopa procentowa dla wszystkich pożyczek wynosi do 30%. Powyższa kalkulacja została dokonana na dzień 08.05.2025 r. Minimalny okres spłaty pożyczki wynosi 12 miesięcy. Maksymalny okres spłaty pożyczki wynosi 119 miesięcy.
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-[#2299AA] shrink-0" />
                 kontakt@podhipoteke24.pl
               </a>
-              <div className="flex items-start gap-2 text-white/60 text-sm">
+              <div className="flex items-start gap-2 text-white/70 text-sm">
                 <MapPin className="w-4 h-4 text-[#2299AA] shrink-0 mt-0.5" />
                 <span>Polska – obsługujemy cały kraj</span>
               </div>
@@ -141,19 +141,19 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-white/40 text-xs">
+            <p className="text-white/70 text-xs">
               &copy; {new Date().getFullYear()} PODHIPOTEKE24.PL | NIP: 5261073354 | REGON: 220048812
             </p>
             <div className="flex items-center gap-4">
               <Link
                 href="/polityka-prywatnosci"
-                className="text-white/40 hover:text-white/70 text-xs transition-colors"
+                className="text-white/70 hover:text-white text-xs transition-colors"
               >
                 Polityka prywatności
               </Link>
               <Link
                 href="/polityka-cookies"
-                className="text-white/40 hover:text-white/70 text-xs transition-colors"
+                className="text-white/70 hover:text-white text-xs transition-colors"
               >
                 Polityka cookies
               </Link>

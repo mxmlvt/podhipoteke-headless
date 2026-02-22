@@ -91,7 +91,7 @@ const parserOptions = {
           }
 
           return (
-            <Link href={path} className="text-[#2299AA] hover:text-[#2bb5c7] underline">
+            <Link href={path} className="text-[#00cc9b] hover:text-[#00a882] underline">
               {domToReact(el.children as DOMNode[])}
             </Link>
           );
@@ -144,6 +144,11 @@ export function parseWPContent(html: string, slug: string) {
   };
 }
 
+
+export function parseContent(html: string) {
+  const cleaned = cleanContent(html);
+  return parse(cleaned, parserOptions);
+}
 export function getTableOfContents(html: string): { id: string; text: string }[] {
   const matches = [...html.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi)];
   return matches.map((match, i) => ({

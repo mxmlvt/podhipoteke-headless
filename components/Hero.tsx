@@ -165,7 +165,7 @@ export default function Hero() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-[#00d2a0] hover:bg-[#00b88a] text-white font-semibold text-base transition-colors disabled:opacity-70"
+                    className="w-full btn-cta-shine !py-3 disabled:opacity-70"
                   >
                     {loading ? "Wysyłanie..." : (
                       <>
