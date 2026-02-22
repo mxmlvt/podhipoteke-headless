@@ -22,7 +22,7 @@ export default function PageHero({ heading, text, buttonText, buttonHref, bgImag
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-black/45" />
-      <div className="relative z-10 max-w-[1330px] mx-auto px-4 text-center">
+      <div className="relative z-10 max-w-[1330px] mx-auto px-6 md:px-4 text-center">
         <h1 className="text-3xl md:text-[4.2rem] font-medium text-white leading-tight mb-6">
           {heading}
         </h1>

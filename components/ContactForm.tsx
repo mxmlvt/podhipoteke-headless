@@ -42,7 +42,7 @@ export default function ContactForm() {
       />
       <div className="absolute inset-0 bg-white/[0.86]" />
       <div className="relative z-10 py-16">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left side - Benefits */}
             <div>

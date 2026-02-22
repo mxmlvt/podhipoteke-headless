@@ -32,7 +32,7 @@ export default async function Home() {
 
       {/* RRSO Disclaimer */}
       <section className="py-4 bg-white border-y-[48px] border-primary">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <p className="text-text-secondary text-[10px] leading-relaxed text-center">
             Maksymalna rzeczywista roczna stopa oprocentowania (RRSO). Modelowy przykład całkowitego kosztu pożyczki: Kwota pożyczki: 10.000,00 zł, okres spłaty: 12 miesięcy. Maksymalna Rzeczywista Roczna Stopa Oprocentowania wynosi do 30%. Roczna stopa procentowa dla wszystkich pożyczek wynosi do 30%. Powyższa kalkulacja została dokonana na dzień 08.05.2025 r. Minimalny okres spłaty pożyczki wynosi 12 miesięcy. Maksymalny okres spłaty pożyczki wynosi 119 miesięcy.
           </p>

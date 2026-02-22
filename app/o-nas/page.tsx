@@ -23,7 +23,7 @@ export default function ONasPage() {
       <StatsCounter />
 
       <section id="about-content" className="py-16 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4 space-y-20">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4 space-y-20">
           {/* Row 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>

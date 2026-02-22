@@ -72,7 +72,7 @@ export default function OurOffer() {
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-[rgba(38,38,38,0.44)]" />
-        <div className="relative z-10 max-w-[1330px] mx-auto px-4 text-center">
+        <div className="relative z-10 max-w-[1330px] mx-auto px-6 md:px-4 text-center">
           <h2 className="text-3xl md:text-[4.2rem] font-semibold text-white leading-tight mb-4">
             NASZA OFERTA
           </h2>
@@ -83,7 +83,7 @@ export default function OurOffer() {
 
       {/* Service cards */}
       <section className="py-16 bg-primary">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, i) => (
               <Link key={i} href="/kontakt" className="service-card flex flex-col items-center text-center gap-4 cursor-pointer">

@@ -123,7 +123,7 @@ export default async function DynamicPage({ params }: Props) {
       />
 
       <section className="py-16 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           {cleaned ? (
             <div
               className="wp-content max-w-[780px] mx-auto"

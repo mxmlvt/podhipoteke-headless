@@ -39,7 +39,7 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
 export default function StatsCounter() {
   return (
     <section id="counters" className="py-16 bg-white">
-      <div className="max-w-[1330px] mx-auto px-4">
+      <div className="max-w-[1330px] mx-auto px-6 md:px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
           <div>
             <AnimatedNumber target={20} />

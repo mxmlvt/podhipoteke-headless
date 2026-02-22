@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <section className="bg-white py-16 md:py-24">
-      <div className="max-w-[1080px] mx-auto px-4">
+      <div className="max-w-[1080px] mx-auto px-6 md:px-4">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-5xl lg:text-[4.2rem] font-bold text-primary leading-tight mb-6">
             Ekspresowe pożyczki pod hipotekę nieruchomości

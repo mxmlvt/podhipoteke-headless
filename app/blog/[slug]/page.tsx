@@ -65,7 +65,7 @@ export default async function SinglePost({ params }: Props) {
 
   return (
     <main className="py-12">
-      <article className="max-w-[780px] mx-auto px-4">
+      <article className="max-w-[780px] mx-auto px-6 md:px-4">
         {/* Breadcrumbs */}
         <nav className="mb-8 text-sm">
           <ol className="flex items-center gap-2 text-text-secondary">
@@ -136,7 +136,7 @@ export default async function SinglePost({ params }: Props) {
 
       {/* CTA */}
       <section className="mt-16 py-12 bg-bg-light">
-        <div className="max-w-[780px] mx-auto px-4 text-center">
+        <div className="max-w-[780px] mx-auto px-6 md:px-4 text-center">
           <h2 className="text-2xl font-semibold text-text-heading mb-4">
             Potrzebujesz pożyczki pod hipotekę?
           </h2>

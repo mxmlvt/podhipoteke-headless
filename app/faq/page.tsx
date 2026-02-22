@@ -25,7 +25,7 @@ export default function FaqPage() {
 
       {/* Contact info */}
       <section className="py-12 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
             <a href="tel:577873616" className="flex items-center gap-3 text-text-body text-lg hover:text-primary transition-colors">
               <span className="icon-circle">

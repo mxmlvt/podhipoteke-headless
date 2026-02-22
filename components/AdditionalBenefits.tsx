@@ -16,7 +16,7 @@ const benefits = [
 export default function AdditionalBenefits() {
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-[1330px] mx-auto px-4">
+      <div className="max-w-[1330px] mx-auto px-6 md:px-4">
         <h2 className="section-heading text-primary mb-4">DODATKOWE KORZYŚCI</h2>
         <p className="text-center text-text-body text-lg max-w-4xl mx-auto mb-12">
           Naszych klientów traktujemy w pełni indywidualnie i z należytą starannością. Na życzenie pokrywamy koszty umowy notarialnej lub dokonujemy szybkiego zakupu nieruchomości. Bezpłatna pomoc prawna jest dostępna na każdym kroku.

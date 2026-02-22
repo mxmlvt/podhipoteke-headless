@@ -18,7 +18,7 @@ export default function KontaktPage() {
 
       {/* Contact info */}
       <section className="py-12 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
             <a href="tel:577873616" className="flex items-center gap-3 text-text-body text-lg hover:text-primary transition-colors">
               <span className="icon-circle">
@@ -38,7 +38,7 @@ export default function KontaktPage() {
 
       {/* CTA text */}
       <section className="py-8 bg-white">
-        <div className="max-w-[1330px] mx-auto px-4 text-center">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-primary">
             Masz inne pytanie? Z przyjemnością odpowiemy na każde!
           </h2>

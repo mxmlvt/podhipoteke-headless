@@ -31,7 +31,7 @@ const criteria = [
 export default function Requirements() {
   return (
     <section className="py-16 bg-primary">
-      <div className="max-w-[1330px] mx-auto px-4">
+      <div className="max-w-[1330px] mx-auto px-6 md:px-4">
         <h2 className="section-heading text-white mb-12">
           Co musisz zrobić by otrzymać pożyczkę?
         </h2>

@@ -38,7 +38,7 @@ export default function FAQ() {
 
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-[1330px] mx-auto px-4">
+      <div className="max-w-[1330px] mx-auto px-6 md:px-4">
         <h2 className="section-heading text-primary mb-12">CZĘSTO ZADAWANE PYTANIA</h2>
         <div className="max-w-3xl mx-auto">
           {faqItems.map((item, i) => (

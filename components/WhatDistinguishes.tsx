@@ -69,7 +69,7 @@ export default function WhatDistinguishes() {
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[rgba(86,86,86,0.97)]" />
-      <div className="relative z-10 max-w-[1330px] mx-auto px-4">
+      <div className="relative z-10 max-w-[1330px] mx-auto px-6 md:px-4">
         <h2 className="section-heading text-white mb-12">CO NAS WYRÓŻNIA</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (

@@ -29,7 +29,7 @@ interface BlogGridProps {
 export default function BlogGrid({ posts, title, showMoreLink = false }: BlogGridProps) {
   return (
     <section className="py-16 bg-bg-light">
-      <div className="max-w-[1080px] mx-auto px-4">
+      <div className="max-w-[1080px] mx-auto px-6 md:px-4">
         {title && (
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-medium text-primary">{title}</h2>

@@ -12,7 +12,7 @@ export default function WhyTrustUs() {
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-[rgba(38,38,38,0.44)]" />
-      <div className="relative z-10 max-w-[1330px] mx-auto px-4 text-center">
+      <div className="relative z-10 max-w-[1330px] mx-auto px-6 md:px-4 text-center">
         <h2 className="text-3xl md:text-[4.2rem] font-semibold text-white leading-tight mb-6">
           Dlaczego warto nam zaufać?
         </h2>

@@ -37,7 +37,7 @@ export default function LoanProcess() {
       />
       <div className="absolute inset-0 bg-white/60" />
       <div className="relative z-10 py-16">
-        <div className="max-w-[1330px] mx-auto px-4">
+        <div className="max-w-[1330px] mx-auto px-6 md:px-4">
           <h2 className="section-heading text-primary mb-4">Jak wygląda proces udzielania pożyczki?</h2>
           <p className="text-center text-text-body text-lg mb-12">
             Proces udzielania pożyczki jest niezwykle szybki i prosty
