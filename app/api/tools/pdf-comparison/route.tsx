@@ -1,0 +1,244 @@
+import { NextRequest, NextResponse } from "next/server";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  renderToBuffer,
+  Font,
+} from "@react-pdf/renderer";
+import { LOAN_PRODUCTS, calcMonthlyPayment, calcTotalCost } from "@/lib/comparison-data";
+
+export const dynamic = "force-dynamic";
+
+Font.register({
+  family: "Inter",
+  fonts: [
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiA.woff2", fontWeight: 700 },
+  ],
+});
+
+const C = {
+  primary: "#1c435e",
+  accent: "#2299AA",
+  accentSoft: "#e6f7f9",
+  mint: "#f0fafb",
+  gray: "#6b7280",
+  grayLight: "#f3f4f6",
+  text: "#374151",
+  dark: "#111827",
+  white: "#ffffff",
+  green: "#16a34a",
+  red: "#dc2626",
+};
+
+const styles = StyleSheet.create({
+  page: { fontFamily: "Inter", backgroundColor: C.white, paddingBottom: 50 },
+  header: { backgroundColor: C.primary, padding: "28 36 24 36" },
+  headerTitle: { color: C.white, fontSize: 20, fontWeight: 700, marginBottom: 4 },
+  headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
+  paramBox: { backgroundColor: C.accentSoft, marginTop: 12, borderRadius: 8, padding: "8 14", flexDirection: "row", gap: 20 },
+  paramItem: { flexDirection: "row", gap: 6, alignItems: "center" },
+  paramLabel: { fontSize: 8, color: C.accent },
+  paramValue: { fontSize: 9, fontWeight: 700, color: C.primary },
+  body: { padding: "24 36" },
+  sectionTitle: { fontSize: 9, fontWeight: 700, color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
+
+  tableHeader: { flexDirection: "row", backgroundColor: C.dark, borderRadius: "6 6 0 0", padding: "7 8" },
+  tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "8 8" },
+  tableRowHighlight: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.accentSoft, padding: "8 8", backgroundColor: "#f0fafb" },
+  tableFooter: { borderRadius: "0 0 6 6", backgroundColor: C.grayLight, padding: "6 8" },
+
+  thCell: { fontSize: 7, fontWeight: 700, color: C.white, textTransform: "uppercase" },
+  tdCell: { fontSize: 8, color: C.text },
+  tdBold: { fontSize: 8, fontWeight: 700, color: C.dark },
+  tdAccent: { fontSize: 9, fontWeight: 700, color: C.accent },
+
+  /* widths */
+  colProduct: { flex: 2.2 },
+  colRate: { flex: 1.1, textAlign: "center" },
+  colLtv: { flex: 0.7, textAlign: "center" },
+  colBik: { flex: 0.7, textAlign: "center" },
+  colMonthly: { flex: 1.1, textAlign: "right" },
+  colTotal: { flex: 1.1, textAlign: "right" },
+  colComm: { flex: 0.7, textAlign: "right" },
+
+  bestBox: { backgroundColor: C.primary, borderRadius: 12, padding: "14 18", marginTop: 16, flexDirection: "row", gap: 12, alignItems: "flex-start" },
+  bestLabel: { fontSize: 8, color: "rgba(255,255,255,0.6)", fontWeight: 700, textTransform: "uppercase", marginBottom: 3 },
+  bestValue: { fontSize: 12, fontWeight: 700, color: C.white },
+  bestSub: { fontSize: 8, color: "rgba(255,255,255,0.7)", marginTop: 2 },
+
+  ctaBox: { backgroundColor: C.accent, borderRadius: 12, padding: "14 18", marginTop: 12 },
+  ctaText: { color: C.white, fontSize: 11, fontWeight: 700, marginBottom: 4 },
+  ctaSub: { color: "rgba(255,255,255,0.85)", fontSize: 9, lineHeight: 1.5 },
+
+  footer: {
+    position: "absolute", bottom: 0, left: 0, right: 0,
+    borderTopWidth: 1, borderTopColor: C.grayLight,
+    flexDirection: "row", justifyContent: "space-between",
+    padding: "10 36", backgroundColor: C.white,
+  },
+  footerText: { fontSize: 8, color: C.gray },
+  disclaimer: { fontSize: 7, color: C.gray, marginTop: 10, textAlign: "center", lineHeight: 1.6 },
+});
+
+function fmtPLN(n: number) {
+  return new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 }).format(n);
+}
+function fmtPct(n: number) {
+  return n.toFixed(1).replace(".", ",") + "%";
+}
+
+function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number }) {
+  const today = new Date().toLocaleDateString("pl-PL", { day: "2-digit", month: "long", year: "numeric" });
+
+  const rows = LOAN_PRODUCTS.map((p) => {
+    const midRate = (p.rate_min + p.rate_max) / 2;
+    const monthly = calcMonthlyPayment(loanAmount, midRate, term);
+    const total = calcTotalCost(loanAmount, midRate, term, p.commission, p.monthly_fee);
+    return { product: p, monthly, total };
+  });
+
+  const best = rows
+    .filter((r) => r.product.highlighted)
+    .sort((a, b) => a.monthly - b.monthly)[0];
+
+  return (
+    <Document title="Porównanie pożyczek – PodHipoteke24">
+      <Page size="A4" orientation="landscape" style={styles.page}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Porównanie ofert pożyczek hipotecznych</Text>
+          <Text style={styles.headerSub}>PODHIPOTEKE24.PL • podhipoteke24.pl • tel. 577 873 616</Text>
+          <View style={styles.paramBox}>
+            <View style={styles.paramItem}>
+              <Text style={styles.paramLabel}>Kwota:</Text>
+              <Text style={styles.paramValue}>{fmtPLN(loanAmount)}</Text>
+            </View>
+            <View style={styles.paramItem}>
+              <Text style={styles.paramLabel}>Okres:</Text>
+              <Text style={styles.paramValue}>{term} mies. ({Math.round(term / 12)} lat)</Text>
+            </View>
+            <View style={styles.paramItem}>
+              <Text style={styles.paramLabel}>Data:</Text>
+              <Text style={styles.paramValue}>{today}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.body}>
+          <Text style={styles.sectionTitle}>Zestawienie ofert</Text>
+
+          {/* Table */}
+          <View style={styles.tableHeader}>
+            <Text style={[styles.thCell, styles.colProduct]}>Produkt / Dostawca</Text>
+            <Text style={[styles.thCell, styles.colRate]}>Oprocentowanie</Text>
+            <Text style={[styles.thCell, styles.colLtv]}>LTV max</Text>
+            <Text style={[styles.thCell, styles.colBik]}>BIK</Text>
+            <Text style={[styles.thCell, styles.colMonthly]}>Rata mies.</Text>
+            <Text style={[styles.thCell, styles.colTotal]}>Koszt całk.</Text>
+            <Text style={[styles.thCell, styles.colComm]}>Prowizja</Text>
+          </View>
+
+          {rows.map(({ product: p, monthly, total }) => (
+            <View key={p.id} style={p.highlighted ? styles.tableRowHighlight : styles.tableRow}>
+              <View style={styles.colProduct}>
+                <Text style={styles.tdBold}>{p.highlighted ? "★ " : ""}{p.name}</Text>
+                <Text style={[styles.tdCell, { fontSize: 7, color: C.gray }]}>{p.provider}</Text>
+                {p.advantages.slice(0, 2).map((a) => (
+                  <Text key={a} style={[styles.tdCell, { fontSize: 7, color: C.accent }]}>✓ {a}</Text>
+                ))}
+              </View>
+              <Text style={[p.highlighted ? styles.tdAccent : styles.tdCell, styles.colRate]}>
+                {fmtPct(p.rate_min)}–{fmtPct(p.rate_max)}
+              </Text>
+              <Text style={[styles.tdCell, styles.colLtv]}>
+                {p.ltv_max > 0 ? `${p.ltv_max}%` : "–"}
+              </Text>
+              <Text style={[styles.tdCell, styles.colBik]}>
+                {p.bik_check ? "Tak" : "Nie"}
+              </Text>
+              <Text style={[p.highlighted ? styles.tdAccent : styles.tdBold, styles.colMonthly]}>
+                {fmtPLN(Math.round(monthly))}
+              </Text>
+              <Text style={[styles.tdBold, styles.colTotal]}>
+                {fmtPLN(Math.round(total))}
+              </Text>
+              <Text style={[styles.tdCell, styles.colComm]}>
+                {fmtPct(p.commission)}
+              </Text>
+            </View>
+          ))}
+
+          <View style={styles.tableFooter}>
+            <Text style={[styles.tdCell, { fontSize: 7, color: C.gray }]}>
+              * Rata annuitetowa dla środka przedziału oprocentowania. Wyniki szacunkowe.
+            </Text>
+          </View>
+
+          {/* Best offer */}
+          {best && (
+            <View style={styles.bestBox}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.bestLabel}>Nasza rekomendacja dla Twoich parametrów</Text>
+                <Text style={styles.bestValue}>{best.product.name}</Text>
+                <Text style={styles.bestSub}>
+                  Rata: {fmtPLN(Math.round(best.monthly))}/mies. • Koszt: {fmtPLN(Math.round(best.total))}
+                </Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.bestLabel}>Zalety</Text>
+                {best.product.advantages.map((a) => (
+                  <Text key={a} style={[styles.bestSub, { marginTop: 2 }]}>✓ {a}</Text>
+                ))}
+              </View>
+            </View>
+          )}
+
+          {/* CTA */}
+          <View style={styles.ctaBox}>
+            <Text style={styles.ctaText}>Umów bezpłatną konsultację z doradcą</Text>
+            <Text style={styles.ctaSub}>
+              Zadzwoń: 577 873 616 lub napisz na kontakt@podhipoteke24.pl • Pracujemy pon–pt 8:00–18:00
+            </Text>
+          </View>
+
+          <Text style={styles.disclaimer}>
+            Niniejsze zestawienie ma charakter wyłącznie informacyjny i nie stanowi oferty w rozumieniu Kodeksu cywilnego.{"\n"}
+            Rzeczywiste warunki zależą od indywidualnej analizy, wyceny nieruchomości i decyzji doradcy kredytowego.
+          </Text>
+        </View>
+
+        <View style={styles.footer} fixed>
+          <Text style={styles.footerText}>PODHIPOTEKE24.PL – Porównanie ofert</Text>
+          <Text style={styles.footerText}>podhipoteke24.pl • 577 873 616</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+}
+
+export async function GET(request: NextRequest) {
+  const p = request.nextUrl.searchParams;
+  const loanAmount = Number(p.get("loan_amount") ?? 300_000);
+  const term = Number(p.get("term") ?? 120);
+
+  try {
+    const buffer = await renderToBuffer(
+      <ComparisonPDF loanAmount={loanAmount} term={term} />
+    );
+
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=porownanie-pozyczek-podhipoteke24.pdf",
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (err) {
+    console.error("[pdf-comparison] error:", err);
+    return NextResponse.json({ error: "PDF generation failed" }, { status: 500 });
+  }
+}

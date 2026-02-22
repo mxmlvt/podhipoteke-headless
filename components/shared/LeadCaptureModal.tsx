@@ -1,136 +1,153 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-
-export interface LeadData {
-  name?: string;
-  phone?: string;
-  email?: string;
-  city?: string;
-  message?: string;
-}
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Loader2, CheckCircle } from "lucide-react";
+import { submitLead, type LeadData } from "@/lib/leads";
 
 type FieldName = "name" | "phone" | "email" | "city" | "message";
 
 interface LeadCaptureModalProps {
-  trigger: ReactNode;
+  open: boolean;
+  onClose: () => void;
   heading: string;
   description: string;
-  onSubmit: (data: LeadData) => void;
   fields?: FieldName[];
+  /** Dane niezwiązane z formularzem (source, tool_data) */
+  leadData: Omit<LeadData, "name" | "phone" | "email" | "city" | "message">;
+  /** Wywołane po udanym submitcie leada */
+  onSuccess?: () => void;
+  /** Tekst na przycisku submit */
+  submitLabel?: string;
 }
 
+const fieldConfig: Record<FieldName, { type: string; placeholder: string; required: boolean }> = {
+  name:    { type: "text",     placeholder: "Imię i nazwisko *",    required: true },
+  phone:   { type: "tel",      placeholder: "Numer telefonu *",     required: true },
+  email:   { type: "email",    placeholder: "Adres e-mail *",       required: true },
+  city:    { type: "text",     placeholder: "Miasto (opcjonalnie)", required: false },
+  message: { type: "textarea", placeholder: "Wiadomość (opcjonalnie)", required: false },
+};
+
 export default function LeadCaptureModal({
-  trigger,
+  open,
+  onClose,
   heading,
   description,
-  onSubmit,
   fields = ["name", "phone", "email"],
+  leadData,
+  onSuccess,
+  submitLabel = "Pobierz bezpłatnie",
 }: LeadCaptureModalProps) {
-  const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState<LeadData>({});
-  const [rodo, setRodo] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", email: "", city: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleClose = () => {
+    if (!loading) {
+      setSent(false);
+      setError("");
+      onClose();
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!rodo) return;
-    onSubmit(formData);
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+
+    const result = await submitLead({ ...leadData, ...form });
+    setLoading(false);
+
+    if (result.success) {
+      setSent(true);
+      onSuccess?.();
+    } else {
+      setError(result.error ?? "Błąd wysyłania. Spróbuj ponownie.");
+    }
   };
 
-  const fieldLabels: Record<FieldName, string> = {
-    name: "Imię i nazwisko",
-    phone: "Telefon",
-    email: "E-mail",
-    city: "Miasto",
-    message: "Wiadomość",
-  };
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-[#e5e7eb] text-[#111827] placeholder:text-[#9ca3af] " +
+    "focus:outline-none focus:ring-2 focus:ring-[#2299AA]/30 focus:border-[#2299AA] transition-colors text-sm";
 
   return (
-    <>
-      <span onClick={() => setOpen(true)}>{trigger}</span>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="max-w-md rounded-2xl p-0 overflow-hidden">
+        <div className="bg-[#1c435e] px-6 py-5">
           <DialogHeader>
-            <DialogTitle className="text-[#111827] text-xl">{heading}</DialogTitle>
-            <DialogDescription className="text-[#6b7280]">{description}</DialogDescription>
+            <DialogTitle className="text-white text-lg font-bold">{heading}</DialogTitle>
+            <DialogDescription className="text-white/70 text-sm mt-1">{description}</DialogDescription>
           </DialogHeader>
-          {submitted ? (
-            <div className="py-8 text-center">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <p className="font-semibold text-[#111827] mb-1">Dziękujemy za kontakt!</p>
-              <p className="text-sm text-[#6b7280]">Odezwiemy się najszybciej jak to możliwe.</p>
+        </div>
+
+        <div className="p-6">
+          {sent ? (
+            <div className="text-center py-4">
+              <CheckCircle className="w-14 h-14 text-[#2299AA] mx-auto mb-3" />
+              <p className="text-lg font-bold text-[#111827] mb-1">Dziękujemy!</p>
+              <p className="text-[#6b7280] text-sm">
+                Twój raport zostanie pobrany automatycznie. Skontaktujemy się w ciągu 24h.
+              </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-              {fields.map((field) => (
-                <div key={field}>
-                  <Label htmlFor={field} className="text-sm font-medium text-[#374151]">
-                    {fieldLabels[field]}
-                  </Label>
-                  {field === "message" ? (
-                    <Textarea
-                      id={field}
-                      className="mt-1"
+            <form onSubmit={handleSubmit} className="space-y-3">
+              {fields.map((field) => {
+                const cfg = fieldConfig[field];
+                const value = form[field];
+                const onChange = (
+                  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                ) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+                if (cfg.type === "textarea") {
+                  return (
+                    <textarea
+                      key={field}
+                      placeholder={cfg.placeholder}
+                      required={cfg.required}
+                      value={value}
+                      onChange={onChange}
                       rows={3}
-                      value={formData[field] || ""}
-                      onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+                      className={inputClass + " resize-none"}
                     />
-                  ) : (
-                    <Input
-                      id={field}
-                      type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
-                      className="mt-1"
-                      value={formData[field] || ""}
-                      onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                    />
-                  )}
-                </div>
-              ))}
+                  );
+                }
+                return (
+                  <input
+                    key={field}
+                    type={cfg.type}
+                    placeholder={cfg.placeholder}
+                    required={cfg.required}
+                    value={value}
+                    onChange={onChange}
+                    className={inputClass}
+                  />
+                );
+              })}
 
-              <div className="flex items-start gap-2 pt-1">
-                <Checkbox
-                  id="rodo"
-                  checked={rodo}
-                  onCheckedChange={(v) => setRodo(!!v)}
-                />
-                <Label htmlFor="rodo" className="text-xs text-[#6b7280] leading-relaxed cursor-pointer">
-                  Wyrażam zgodę na przetwarzanie moich danych osobowych w celu udzielenia odpowiedzi na moje zapytanie, zgodnie z{" "}
-                  <a href="/polityka-prywatnosci" className="text-[#2299AA] underline">
-                    Polityką Prywatności
-                  </a>
-                  .
-                </Label>
-              </div>
+              {error && (
+                <p className="text-red-500 text-xs bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  {error}
+                </p>
+              )}
 
-              <Button
+              <button
                 type="submit"
-                disabled={!rodo}
-                className="w-full bg-[#1c435e] hover:bg-[#254d6b] text-white"
+                disabled={loading}
+                className="w-full py-3 rounded-full bg-[#2299AA] text-white font-bold hover:bg-[#2bb5c7] transition-colors disabled:opacity-60 flex items-center justify-center gap-2 text-sm"
               >
-                Wyślij zapytanie
-              </Button>
+                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                {loading ? "Wysyłanie…" : submitLabel}
+              </button>
+
+              <p className="text-xs text-[#9ca3af] text-center">
+                🔒 Dane są bezpieczne. Nie wysyłamy spamu.
+              </p>
             </form>
           )}
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

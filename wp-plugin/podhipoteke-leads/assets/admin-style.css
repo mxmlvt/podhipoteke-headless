@@ -1,0 +1,158 @@
+/* PodHipoteke24 – panel leadów */
+:root {
+  --ph-primary: #1c435e;
+  --ph-accent:  #2299AA;
+  --ph-mint:    #f0fafb;
+  --ph-border:  #e5e7eb;
+  --ph-text:    #111827;
+  --ph-muted:   #6b7280;
+}
+
+.ph24-wrap { max-width: 1400px; }
+
+.ph24-h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  color: var(--ph-primary);
+}
+
+.ph24-total-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--ph-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Filtry */
+.ph24-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 20px;
+  padding: 14px 16px;
+  background: var(--ph-mint);
+  border: 1px solid var(--ph-border);
+  border-radius: 8px;
+}
+
+.ph24-filters select,
+.ph24-filters input[type="date"] {
+  height: 34px;
+  border: 1px solid var(--ph-border);
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--ph-text);
+  background: #fff;
+}
+
+.ph24-export {
+  background: var(--ph-primary) !important;
+  color: #fff !important;
+  border-color: var(--ph-primary) !important;
+}
+.ph24-export:hover { background: #254d6b !important; }
+
+/* Tabela */
+.ph24-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid var(--ph-border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.ph24-table thead th {
+  background: var(--ph-primary);
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ph24-table tbody tr { border-bottom: 1px solid var(--ph-border); }
+.ph24-table tbody tr:hover { background: var(--ph-mint); }
+.ph24-table tbody td { padding: 9px 12px; vertical-align: middle; color: var(--ph-text); }
+
+.ph24-table a { color: var(--ph-accent); text-decoration: none; }
+.ph24-table a:hover { text-decoration: underline; }
+
+.ph24-date  { white-space: nowrap; color: var(--ph-muted); font-size: 12px; }
+.ph24-name  { font-weight: 600; }
+
+/* Badge źródła */
+.ph24-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+/* Select statusu */
+.ph24-status-select {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--ph-border);
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Dane narzędzia */
+.ph24-details summary {
+  cursor: pointer;
+  color: var(--ph-accent);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.ph24-tool-data {
+  margin-top: 8px;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 200px;
+}
+.ph24-tool-data td {
+  padding: 3px 8px;
+  border: 1px solid var(--ph-border);
+}
+.ph24-tool-data td:first-child {
+  background: #f9fafb;
+  white-space: nowrap;
+}
+
+/* Puste wyniki */
+.ph24-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--ph-muted);
+  font-size: 15px;
+  background: var(--ph-mint);
+  border: 1px solid var(--ph-border);
+  border-radius: 8px;
+}
+
+/* Paginacja */
+.ph24-pagination {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
