@@ -92,7 +92,7 @@ export default function KalkulatorRatyPage() {
 
       {/* Treść SEO */}
       <section className="py-14 bg-white">
-        <div className="max-w-[800px] mx-auto px-4 md:px-6 prose prose-slate max-w-none">
+        <div className="max-w-[780px] mx-auto px-4 md:px-6">
           <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-6">
             Jak obliczyć ratę pożyczki pod zastaw nieruchomości?
           </h2>

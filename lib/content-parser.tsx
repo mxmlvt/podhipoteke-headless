@@ -46,18 +46,52 @@ export function getToolCTAForSlug(slug: string) {
   return TOOL_CTA_MAP["default"];
 }
 
+// Slugi stron ofertowych – przekieruj na /oferta/[slug]
+const OFFER_SLUGS = [
+  "kredyt-hipoteczny",
+  "kredyt-pod-zastaw-nieruchomosci",
+  "kredyt-pod-zastaw-dzialki",
+  "kredyt-pod-zastaw-mieszkania",
+  "pozyczka-pod-zastaw-mieszkania",
+  "pozyczki-pod-zastaw-nieruchomosci",
+  "pozyczki-pod-zastaw-domu",
+  "pozyczki-pod-zastaw-dzialki",
+  "pozyczki-pod-zastaw-gruntow-rolnych",
+  "pozyczki-hipoteczne-dla-firm",
+  "pozyczki-oddluzeniowe-2",
+];
+
+// Sprawdź czy URL dotyczy naszej domeny
+function isInternalDomain(href: string): boolean {
+  return (
+    href.includes("podhipoteke24.pl") ||
+    href.includes("podhipoteke24.") ||
+    href.includes("srv106163.seohost.com.pl")
+  );
+}
+
 // Parser options: transform WP links to Next.js internal links
 const parserOptions = {
   replace: (domNode: DOMNode) => {
     const el = domNode as Element;
     if (el.type === "tag" && el.name === "a") {
       const href = el.attribs?.href || "";
-      if (href.includes("podhipoteke24.pl")) {
+
+      if (isInternalDomain(href)) {
         try {
-          const url = new URL(href);
-          const cleanPath = url.pathname.replace(/\/$/, "") || "/";
+          // Obsługa: https://, http://, //domain
+          const normalized = href.startsWith("//") ? "https:" + href : href;
+          const url = new URL(normalized);
+          let path = url.pathname.replace(/\/$/, "") || "/";
+
+          // Slug ofertowy? → /oferta/[slug]
+          const slug = path.replace(/^\//, "");
+          if (OFFER_SLUGS.includes(slug)) {
+            path = "/oferta/" + slug;
+          }
+
           return (
-            <Link href={cleanPath} className="text-[#2299AA] hover:text-[#2bb5c7] underline">
+            <Link href={path} className="text-[#2299AA] hover:text-[#2bb5c7] underline">
               {domToReact(el.children as DOMNode[])}
             </Link>
           );
@@ -95,7 +129,6 @@ export function parseWPContent(html: string, slug: string) {
   const cleaned = cleanContent(html);
   const readTime = estimateReadTime(cleaned);
 
-  // Split on h2/h3 boundaries to find midpoint
   const parts = cleaned.split(/(?=<h[23][^>]*>)/);
   const midpoint = Math.max(1, Math.floor(parts.length / 2));
   const cta = getToolCTAForSlug(slug);
@@ -114,7 +147,7 @@ export function parseWPContent(html: string, slug: string) {
 export function getTableOfContents(html: string): { id: string; text: string }[] {
   const matches = [...html.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi)];
   return matches.map((match, i) => ({
-    id: `heading-${i}`,
+    id: "heading-" + i,
     text: match[1].replace(/<[^>]*>/g, ""),
   }));
 }

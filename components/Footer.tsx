@@ -75,7 +75,7 @@ export default function Footer() {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="text-white/60 hover:text-[#2299AA] transition-colors text-sm leading-relaxed"
+                  className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed"
                 >
                   {link.label}
                 </Link>
@@ -93,7 +93,7 @@ export default function Footer() {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="text-white/60 hover:text-[#2299AA] transition-colors text-sm leading-relaxed"
+                  className="text-white/70 hover:text-white transition-colors text-sm leading-relaxed"
                 >
                   {link.label}
                 </Link>
@@ -109,14 +109,14 @@ export default function Footer() {
             <div className="flex flex-col gap-3 mb-6">
               <a
                 href="tel:577873616"
-                className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm"
               >
                 <Phone className="w-4 h-4 text-[#2299AA] shrink-0" />
                 577 873 616
               </a>
               <a
                 href="mailto:kontakt@podhipoteke24.pl"
-                className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
+                className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm"
               >
                 <Mail className="w-4 h-4 text-[#2299AA] shrink-0" />
                 kontakt@podhipoteke24.pl

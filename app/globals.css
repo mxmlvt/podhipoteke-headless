@@ -165,6 +165,29 @@
   background-color: #f0fafb;
 }
 
+/* ── Button contrast – ciemne sekcje ────────────────────── */
+.section-dark .btn-outline,
+.section-dark [data-variant="outline"],
+[class*="bg-primary"] .btn-outline {
+  color: white;
+  border-color: white;
+}
+.section-dark .btn-outline:hover,
+[class*="bg-primary"] .btn-outline:hover {
+  background-color: white;
+  color: #1c435e;
+}
+
+/* Wymuś biały tekst na linkach/buttonach wewnątrz ciemnych bg */
+.section-dark a:not([class*="btn-cta"]):not([class*="text-"]),
+.section-primary-dark a:not([class*="btn-cta"]):not([class*="text-"]) {
+  color: rgba(255, 255, 255, 0.85);
+}
+.section-dark a:not([class*="btn-cta"]):not([class*="text-"]):hover,
+.section-primary-dark a:not([class*="btn-cta"]):not([class*="text-"]):hover {
+  color: #ffffff;
+}
+
 /* ── Base typography ─────────────────────────────────────── */
 body {
   background: #ffffff;
