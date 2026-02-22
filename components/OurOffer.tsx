@@ -86,7 +86,7 @@ export default function OurOffer() {
         <div className="max-w-[1330px] mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, i) => (
-              <Link key={i} href="/kontakt" className="service-card flex flex-col items-center text-center gap-4 cursor-pointer">
+              <Link key={i} href="/kontakt" className="service-card tool-card flex flex-col items-center text-center gap-4 cursor-pointer">
                 <div className="text-white mb-2">{s.icon}</div>
                 <h3>{s.title}</h3>
                 <p className="text-white/90 text-[0.95rem]">{s.desc}</p>

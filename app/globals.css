@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #2299AA;
-  --color-primary-dark: #1d8a99;
-  --color-primary-hover: #229CAD;
+  --color-primary: #1c435e;
+  --color-primary-dark: #163850;
+  --color-primary-hover: #1f4d6b;
   --color-secondary: #40B0BF;
   --color-card: #2da2b2;
   --color-card-hover: #6ec7f2;
-  --color-accent: #7EBEC5;
+  --color-accent: #2299AA;
+  --color-accent-light: #40B0BF;
+  --color-cta-green: #00d2a0;
+  --color-cta-green-hover: #00b88a;
   --color-text-body: #333333;
   --color-text-dark: #111111;
   --color-text-secondary: #666666;
@@ -59,7 +62,7 @@ a:hover {
 /* Divi pill-shaped button base */
 .btn-primary {
   display: inline-block;
-  background-color: #40b0bf;
+  background-color: #1c435e;
   color: #ffffff !important;
   border: 0;
   border-radius: 30px;
@@ -73,7 +76,7 @@ a:hover {
   text-align: center;
 }
 .btn-primary:hover {
-  background-color: #2299AA;
+  background-color: #1f4d6b;
   color: #ffffff !important;
 }
 
@@ -92,8 +95,66 @@ a:hover {
   text-align: center;
 }
 .btn-secondary:hover {
-  background-color: #229CAD;
+  background-color: #40B0BF;
   color: #ffffff !important;
+}
+
+/* CTA green button with shine effect – primary conversion action */
+.btn-cta-shine {
+  display: inline-block;
+  position: relative;
+  background-color: #00d2a0;
+  color: #ffffff !important;
+  font-weight: bold;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
+  font-size: 1.1rem;
+  padding: 10px 24px 12px;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  transition: background-color 300ms ease;
+}
+.btn-cta-shine:hover {
+  background-color: #00b88a;
+  color: #ffffff !important;
+}
+.btn-cta-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+  animation: shine 3s infinite linear;
+  pointer-events: none;
+}
+
+/* Outline buttons */
+.btn-outline-white {
+  display: inline-block;
+  background-color: transparent;
+  color: #ffffff !important;
+  border: 2px solid #ffffff;
+  border-radius: 9999px;
+  font-family: var(--font-jost), 'Jost', Helvetica, Arial, Lucida, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 8px 20px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+.btn-outline-white:hover {
+  background-color: rgba(255,255,255,0.15);
+  color: #ffffff !important;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* Section heading style - from Divi 4.2rem, color set per-component */
@@ -300,6 +361,68 @@ textarea.form-input {
 .wp-content th {
   background: #f4f4f4;
   font-weight: 600;
+}
+
+/* ── Fade-in animations ─────────────────────────────────── */
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.animate-fade-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.animate-fade-in-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+
+/* ── Tool card hover underline effect ───────────────────── */
+.tool-card {
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #2299AA;
+  transition: width 0.3s ease;
+  border-radius: 0 0 1rem 1rem;
+}
+.tool-card:hover::after {
+  width: 100%;
+}
+
+/* ── wp-content links fix ───────────────────────────────── */
+.wp-content a {
+  color: #2299aa;
+  text-decoration: underline;
+}
+.wp-content a:hover {
+  color: #40B0BF;
 }
 
 /* Slider */

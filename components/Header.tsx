@@ -4,29 +4,29 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-// Column 1: Pożyczki pod zastaw nieruchomości (parent) + sub-items
+// Column 1: Pożyczki pod zastaw nieruchomości
 const col1 = {
-  parent: { label: "Pożyczki pod zastaw nieruchomości", path: "/pozyczki-pod-zastaw-nieruchomosci" },
+  parent: { label: "Pożyczki pod zastaw nieruchomości", path: "/oferta/pozyczki-pod-zastaw-nieruchomosci" },
   children: [
-    { label: "Pożyczki pod zastaw domu", path: "/pozyczki-pod-zastaw-domu" },
-    { label: "Pożyczki pod zastaw działki", path: "/pozyczki-pod-zastaw-dzialki" },
-    { label: "Pożyczki pod zastaw gruntów rolnych", path: "/pozyczki-pod-zastaw-gruntow-rolnych" },
-    { label: "Pożyczki hipoteczne dla firm", path: "/pozyczki-hipoteczne-dla-firm" },
-    { label: "Pożyczki oddłużeniowe", path: "/pozyczki-oddluzeniowe" },
+    { label: "Pożyczki pod zastaw domu", path: "/oferta/pozyczki-pod-zastaw-domu" },
+    { label: "Pożyczki pod zastaw działki", path: "/oferta/pozyczki-pod-zastaw-dzialki" },
+    { label: "Pożyczki pod zastaw gruntów rolnych", path: "/oferta/pozyczki-pod-zastaw-gruntow-rolnych" },
+    { label: "Pożyczki hipoteczne dla firm", path: "/oferta/pozyczki-hipoteczne-dla-firm" },
+    { label: "Pożyczki oddłużeniowe", path: "/oferta/pozyczki-oddluzeniowe-2" },
   ],
 };
 
-// Column 2: Kredyty hipoteczne (parent) + sub-items
+// Column 2: Kredyty hipoteczne
 const col2 = {
-  parent: { label: "Kredyty hipoteczne", path: "/kredyt-hipoteczny" },
+  parent: { label: "Kredyty hipoteczne", path: "/oferta/kredyt-hipoteczny" },
   children: [
-    { label: "Kredyt pod zastaw nieruchomości", path: "/kredyt-pod-zastaw-nieruchomosci" },
-    { label: "Kredyt pod zastaw działki", path: "/kredyt-pod-zastaw-dzialki" },
-    { label: "Kredyt pod zastaw mieszkania", path: "/kredyt-pod-zastaw-mieszkania" },
+    { label: "Kredyt pod zastaw nieruchomości", path: "/oferta/kredyt-pod-zastaw-nieruchomosci" },
+    { label: "Kredyt pod zastaw działki", path: "/oferta/kredyt-pod-zastaw-dzialki" },
+    { label: "Kredyt pod zastaw mieszkania", path: "/oferta/kredyt-pod-zastaw-mieszkania" },
   ],
 };
 
-// Column 3: Pożyczki w Polsce (parent) + city items
+// Column 3: Pożyczki w Polsce (miasta)
 const col3 = {
   parent: { label: "Pożyczki w Polsce", path: "/oferta" },
   children: [
@@ -43,15 +43,25 @@ const col3 = {
   ],
 };
 
-const topMenuItems = [
-  { label: "Oferta", path: "/oferta", hasMega: true },
-  { label: "FAQ", path: "/faq" },
-  { label: "Blog", path: "/blog" },
+// Narzędzia (nowe)
+const toolsItems = [
+  { label: "Kalkulator raty", path: "/kalkulator-raty" },
+  { label: "Ile mogę pożyczyć?", path: "/ile-moge-pozyczyc" },
+  { label: "Porównywarka kredytów", path: "/porownywarka-kredytow" },
+  { label: "Diagnostyka finansowa", path: "/diagnostyka-finansowa" },
+  { label: "Kalkulator konsolidacji", path: "/kalkulator-konsolidacji" },
 ];
+
+const ChevronDown = ({ className = "" }: { className?: string }) => (
+  <svg className={`w-3.5 h-3.5 ${className}`} fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+  </svg>
+);
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileOfferOpen, setMobileOfferOpen] = useState(false);
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const [mobileCol, setMobileCol] = useState<string | null>(null);
 
   return (
@@ -72,76 +82,98 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {topMenuItems.map((item) => (
-              <div key={item.path} className="relative group">
-                {item.hasMega ? (
-                  <>
-                    <button className="px-4 py-2 text-text-dark hover:text-primary font-semibold text-[1rem] transition-colors flex items-center gap-1">
-                      {item.label}
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
-                    </button>
-
-                    {/* Mega dropdown - 3 columns like original Divi */}
-                    <div className="absolute top-full right-0 bg-white shadow-2xl rounded-lg py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-border-light min-w-[700px]">
-                      <div className="grid grid-cols-3 gap-0 divide-x divide-border-light">
-                        {/* Col 1: Pożyczki pod zastaw nieruchomości */}
-                        <div className="px-5">
-                          <Link href={col1.parent.path} className="block py-2 text-text-dark hover:text-primary font-semibold text-[15px] transition-colors">
-                            {col1.parent.label} ›
-                          </Link>
-                          <div className="mt-1 space-y-0.5">
-                            {col1.children.map((c) => (
-                              <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-primary transition-colors text-[14px]">
-                                {c.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Col 2: Kredyty hipoteczne */}
-                        <div className="px-5">
-                          <Link href={col2.parent.path} className="block py-2 text-text-dark hover:text-primary font-semibold text-[15px] transition-colors">
-                            {col2.parent.label} ›
-                          </Link>
-                          <div className="mt-1 space-y-0.5">
-                            {col2.children.map((c) => (
-                              <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-primary transition-colors text-[14px]">
-                                {c.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Col 3: Pożyczki w Polsce (cities) */}
-                        <div className="px-5">
-                          <Link href={col3.parent.path} className="block py-2 text-text-dark hover:text-primary font-semibold text-[15px] transition-colors">
-                            {col3.parent.label} ›
-                          </Link>
-                          <div className="mt-1 space-y-0.5 max-h-[300px] overflow-y-auto">
-                            {col3.children.map((c) => (
-                              <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-primary transition-colors text-[14px]">
-                                {c.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <Link href={item.path} className="px-4 py-2 text-text-dark hover:text-primary font-semibold text-[1rem] transition-colors">
-                    {item.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-
-            {/* CTA buttons */}
-            <Link href="/kontakt" className="ml-3 btn-primary !px-5 !py-2">
-              Złóż zapytanie
+            {/* O nas */}
+            <Link href="/o-nas" className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors">
+              O nas
             </Link>
-            <Link href="/kontakt" className="ml-2 px-4 py-2 text-text-dark hover:text-primary font-semibold text-[1rem] transition-colors">
+
+            {/* Oferta dropdown */}
+            <div className="relative group">
+              <button className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors flex items-center gap-1">
+                Oferta
+                <ChevronDown />
+              </button>
+              <div className="absolute top-full left-0 bg-white shadow-2xl rounded-lg py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-border-light min-w-[700px]">
+                <div className="grid grid-cols-3 gap-0 divide-x divide-border-light">
+                  {/* Col 1 */}
+                  <div className="px-5">
+                    <Link href={col1.parent.path} className="block py-2 text-text-dark hover:text-accent font-semibold text-[15px] transition-colors">
+                      {col1.parent.label} ›
+                    </Link>
+                    <div className="mt-1 space-y-0.5">
+                      {col1.children.map((c) => (
+                        <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-accent transition-colors text-[14px]">
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Col 2 */}
+                  <div className="px-5">
+                    <Link href={col2.parent.path} className="block py-2 text-text-dark hover:text-accent font-semibold text-[15px] transition-colors">
+                      {col2.parent.label} ›
+                    </Link>
+                    <div className="mt-1 space-y-0.5">
+                      {col2.children.map((c) => (
+                        <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-accent transition-colors text-[14px]">
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Col 3: Pożyczki w Polsce */}
+                  <div className="px-5">
+                    <Link href={col3.parent.path} className="block py-2 text-text-dark hover:text-accent font-semibold text-[15px] transition-colors">
+                      {col3.parent.label} ›
+                    </Link>
+                    <div className="mt-1 space-y-0.5 max-h-[300px] overflow-y-auto">
+                      {col3.children.map((c) => (
+                        <Link key={c.path} href={c.path} className="block py-1.5 text-text-body hover:text-accent transition-colors text-[14px]">
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Narzędzia dropdown */}
+            <div className="relative group">
+              <button className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors flex items-center gap-1">
+                Narzędzia
+                <ChevronDown />
+              </button>
+              <div className="absolute top-full left-0 bg-white shadow-2xl rounded-lg py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-border-light min-w-[220px]">
+                {toolsItems.map((t) => (
+                  <Link key={t.path} href={t.path} className="block px-5 py-2 text-text-body hover:text-accent hover:bg-bg-light transition-colors text-[14px]">
+                    {t.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQ */}
+            <Link href="/faq" className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors">
+              FAQ
+            </Link>
+
+            {/* Blog */}
+            <Link href="/blog" className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors">
+              Blog
+            </Link>
+
+            {/* Kontakt z numerem */}
+            <Link href="/kontakt" className="px-4 py-2 text-text-dark hover:text-accent font-semibold text-[1rem] transition-colors">
               Kontakt
+            </Link>
+
+            {/* CTA button */}
+            <a href="tel:577873616" className="ml-2 btn-outline-white !text-primary !border-primary hover:!bg-primary hover:!text-white !px-5 !py-2 !text-[0.95rem]">
+              577 873 616
+            </a>
+            <Link href="#formularz" className="ml-2 btn-cta-shine !px-5 !py-2 !text-[0.95rem]">
+              Złóż zapytanie
             </Link>
           </nav>
 
@@ -161,15 +193,18 @@ export default function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-secondary max-h-[80vh] overflow-y-auto">
+          <div className="lg:hidden bg-primary max-h-[80vh] overflow-y-auto">
             <nav className="px-4 py-4 flex flex-col gap-1">
-              {/* Oferta with nested accordion */}
+              <Link href="/" className="block px-4 py-3 text-white font-semibold text-[1.1rem]" onClick={() => setMobileMenuOpen(false)}>Strona główna</Link>
+              <Link href="/o-nas" className="block px-4 py-3 text-white font-semibold text-[1.1rem]" onClick={() => setMobileMenuOpen(false)}>O nas</Link>
+
+              {/* Oferta accordion */}
               <button
                 onClick={() => setMobileOfferOpen(!mobileOfferOpen)}
                 className="w-full text-left px-4 py-3 text-white font-semibold text-[1.1rem] flex items-center justify-between"
               >
                 Oferta
-                <svg className={`w-4 h-4 transition-transform ${mobileOfferOpen ? "rotate-180" : ""}`} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                <ChevronDown className={`transition-transform ${mobileOfferOpen ? "rotate-180" : ""}`} />
               </button>
               {mobileOfferOpen && (
                 <div className="pl-2">
@@ -180,7 +215,7 @@ export default function Header() {
                         className="w-full text-left px-4 py-2.5 text-white/90 font-medium text-[1rem] flex items-center justify-between"
                       >
                         {col.parent.label}
-                        <svg className={`w-3.5 h-3.5 transition-transform ${mobileCol === col.parent.label ? "rotate-180" : ""}`} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
+                        <ChevronDown className={`transition-transform ${mobileCol === col.parent.label ? "rotate-180" : ""}`} />
                       </button>
                       {mobileCol === col.parent.label && (
                         <div className="pl-4">
@@ -201,14 +236,42 @@ export default function Header() {
                 </div>
               )}
 
-              {/* Other top-level items */}
+              {/* Narzędzia accordion */}
+              <button
+                onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
+                className="w-full text-left px-4 py-3 text-white font-semibold text-[1.1rem] flex items-center justify-between"
+              >
+                Narzędzia
+                <ChevronDown className={`transition-transform ${mobileToolsOpen ? "rotate-180" : ""}`} />
+              </button>
+              {mobileToolsOpen && (
+                <div className="pl-6">
+                  {toolsItems.map((t) => (
+                    <Link
+                      key={t.path}
+                      href={t.path}
+                      className="block px-4 py-1.5 text-white/70 hover:text-white transition-colors text-[14px]"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+
               <Link href="/faq" className="block px-4 py-3 text-white font-semibold text-[1.1rem]" onClick={() => setMobileMenuOpen(false)}>FAQ</Link>
               <Link href="/blog" className="block px-4 py-3 text-white font-semibold text-[1.1rem]" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
               <Link href="/kontakt" className="block px-4 py-3 text-white font-semibold text-[1.1rem]" onClick={() => setMobileMenuOpen(false)}>Kontakt</Link>
 
+              <a
+                href="tel:577873616"
+                className="mt-2 mx-4 border-2 border-white/60 text-white px-6 py-3 rounded-[30px] font-semibold text-center text-[1.1rem]"
+              >
+                Zadzwoń: 577 873 616
+              </a>
               <Link
-                href="/kontakt"
-                className="mt-2 mx-4 bg-white text-primary px-6 py-3 rounded-[30px] font-semibold text-center text-[1.1rem]"
+                href="#formularz"
+                className="mt-2 mx-4 btn-cta-shine text-center text-[1.1rem]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Złóż zapytanie

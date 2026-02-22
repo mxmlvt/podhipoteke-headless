@@ -11,6 +11,7 @@ import LoanProcess from "@/components/LoanProcess";
 import FAQ from "@/components/FAQ";
 import ContactForm from "@/components/ContactForm";
 import BlogGrid from "@/components/BlogGrid";
+import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
 
 export default async function Home() {
   const { data } = await client.query<any>({
@@ -20,15 +21,40 @@ export default async function Home() {
 
   return (
     <>
+      {/* Hero – NIE animujemy */}
       <HeroSlider />
-      <StatsCounter />
-      <WhyTrustUs />
-      <WhatDistinguishes />
-      <OurOffer />
-      <AdditionalBenefits />
-      <Requirements />
-      <LoanProcess />
-      <FAQ />
+
+      <AnimateOnScroll direction="up">
+        <StatsCounter />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <WhyTrustUs />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <WhatDistinguishes />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <OurOffer />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <AdditionalBenefits />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <Requirements />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <LoanProcess />
+      </AnimateOnScroll>
+
+      <AnimateOnScroll direction="up">
+        <FAQ />
+      </AnimateOnScroll>
 
       {/* RRSO Disclaimer */}
       <section className="py-4 bg-white border-y-[48px] border-primary">
@@ -40,12 +66,15 @@ export default async function Home() {
       </section>
 
       {/* Blog section */}
-      <BlogGrid
-        posts={data.posts.nodes}
-        title="Najnowsze artykuły"
-        showMoreLink={true}
-      />
+      <AnimateOnScroll direction="up">
+        <BlogGrid
+          posts={data.posts.nodes}
+          title="Najnowsze artykuły"
+          showMoreLink={true}
+        />
+      </AnimateOnScroll>
 
+      {/* ContactForm – NIE animujemy (musi być widoczny od razu po kliknięciu CTA) */}
       <ContactForm />
     </>
   );

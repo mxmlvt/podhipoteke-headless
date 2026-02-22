@@ -2,17 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 const serviceLinks = [
-  { label: "Pożyczki pod zastaw nieruchomości", path: "/pozyczki-pod-zastaw-nieruchomosci" },
-  { label: "Pożyczki pod zastaw gruntów rolnych", path: "/pozyczki-pod-zastaw-gruntow-rolnych" },
-  { label: "Kredyt hipoteczny", path: "/kredyt-hipoteczny" },
-  { label: "Kredyt pod zastaw nieruchomości", path: "/kredyt-pod-zastaw-nieruchomosci" },
-  { label: "Kredyt pod zastaw działki", path: "/kredyt-pod-zastaw-dzialki" },
-  { label: "Pożyczka pod zastaw mieszkania", path: "/pozyczka-pod-zastaw-mieszkania" },
-  { label: "Kredyt pod zastaw mieszkania", path: "/kredyt-pod-zastaw-mieszkania" },
-  { label: "Pożyczki pod zastaw działki", path: "/pozyczki-pod-zastaw-dzialki" },
-  { label: "Pożyczki pod zastaw domu", path: "/pozyczki-pod-zastaw-domu" },
-  { label: "Pożyczki hipoteczne dla firm", path: "/pozyczki-hipoteczne-dla-firm" },
-  { label: "Pożyczki oddłużeniowe", path: "/pozyczki-oddluzeniowe" },
+  { label: "Pożyczki pod zastaw nieruchomości", path: "/oferta/pozyczki-pod-zastaw-nieruchomosci" },
+  { label: "Pożyczki pod zastaw gruntów rolnych", path: "/oferta/pozyczki-pod-zastaw-gruntow-rolnych" },
+  { label: "Kredyt hipoteczny", path: "/oferta/kredyt-hipoteczny" },
+  { label: "Kredyt pod zastaw nieruchomości", path: "/oferta/kredyt-pod-zastaw-nieruchomosci" },
+  { label: "Kredyt pod zastaw działki", path: "/oferta/kredyt-pod-zastaw-dzialki" },
+  { label: "Pożyczka pod zastaw mieszkania", path: "/oferta/pozyczka-pod-zastaw-mieszkania" },
+  { label: "Kredyt pod zastaw mieszkania", path: "/oferta/kredyt-pod-zastaw-mieszkania" },
+  { label: "Pożyczki pod zastaw działki", path: "/oferta/pozyczki-pod-zastaw-dzialki" },
+  { label: "Pożyczki pod zastaw domu", path: "/oferta/pozyczki-pod-zastaw-domu" },
+  { label: "Pożyczki hipoteczne dla firm", path: "/oferta/pozyczki-hipoteczne-dla-firm" },
+  { label: "Pożyczki oddłużeniowe", path: "/oferta/pozyczki-oddluzeniowe-2" },
 ];
 
 export default function Footer() {
@@ -27,36 +27,45 @@ export default function Footer() {
               alt="PodHipoteke24.pl"
               width={176}
               height={99}
-              className="mb-4 brightness-0 invert"
+              className="mb-2 brightness-0 invert"
             />
+            <p className="text-white font-semibold text-[15px]">podhipoteke24.pl</p>
           </div>
 
-          {/* Column 1 links */}
+          {/* Column 1: Nasza oferta */}
           <div>
-            <nav className="flex flex-col gap-2 text-[17px] leading-[1.9]">
-              <Link href="/" className="text-white/80 hover:text-white transition-colors">Strona główna</Link>
-              <Link href="/oferta" className="text-white/80 hover:text-white transition-colors">Oferta</Link>
-              <Link href="/faq" className="text-white/80 hover:text-white transition-colors">FAQ</Link>
-              <Link href="/kontakt" className="text-white/80 hover:text-white transition-colors">Kontakt</Link>
+            <h4 className="text-white font-semibold text-[17px] mb-3">Nasza oferta</h4>
+            <nav className="flex flex-col gap-1.5 text-[15px] leading-[1.9]">
+              <Link href="/oferta" className="text-white/70 hover:text-white transition-colors">Cała oferta</Link>
+              <Link href="/oferta/pozyczki-pod-zastaw-nieruchomosci" className="text-white/70 hover:text-white transition-colors">Pożyczki pod zastaw</Link>
+              <Link href="/oferta/kredyt-hipoteczny" className="text-white/70 hover:text-white transition-colors">Kredyty hipoteczne</Link>
+              <Link href="/oferta/pozyczki-hipoteczne-dla-firm" className="text-white/70 hover:text-white transition-colors">Pożyczki dla firm</Link>
+              <Link href="/oferta/pozyczki-oddluzeniowe-2" className="text-white/70 hover:text-white transition-colors">Pożyczki oddłużeniowe</Link>
+              <Link href="/faq" className="text-white/70 hover:text-white transition-colors">FAQ</Link>
             </nav>
           </div>
 
-          {/* Column 2 links */}
+          {/* Column 2: Narzędzia */}
           <div>
-            <nav className="flex flex-col gap-2 text-[17px] leading-[1.9]">
-              <Link href="/o-nas" className="text-white/80 hover:text-white transition-colors">Dlaczego warto nam zaufać?</Link>
-              <Link href="/oferta" className="text-white/80 hover:text-white transition-colors">Co nas wyróżnia?</Link>
-              <Link href="/kontakt" className="text-white/80 hover:text-white transition-colors">Formularz kontaktowy</Link>
-              <Link href="/oferta" className="text-white/80 hover:text-white transition-colors">Dodatkowe korzyści</Link>
+            <h4 className="text-white font-semibold text-[17px] mb-3">Narzędzia</h4>
+            <nav className="flex flex-col gap-1.5 text-[15px] leading-[1.9]">
+              <Link href="/kalkulator-raty" className="text-white/70 hover:text-white transition-colors">Kalkulator raty</Link>
+              <Link href="/ile-moge-pozyczyc" className="text-white/70 hover:text-white transition-colors">Ile mogę pożyczyć?</Link>
+              <Link href="/porownywarka-kredytow" className="text-white/70 hover:text-white transition-colors">Porównywarka kredytów</Link>
+              <Link href="/diagnostyka-finansowa" className="text-white/70 hover:text-white transition-colors">Diagnostyka finansowa</Link>
+              <Link href="/kalkulator-konsolidacji" className="text-white/70 hover:text-white transition-colors">Kalkulator konsolidacji</Link>
             </nav>
           </div>
 
-          {/* Column 3 links */}
+          {/* Column 3: Kontakt */}
           <div>
-            <nav className="flex flex-col gap-2 text-[17px] leading-[1.9]">
-              <Link href="/faq" className="text-white/80 hover:text-white transition-colors">Co musisz spełnić aby otrzymać pożyczkę?</Link>
-              <Link href="/faq" className="text-white/80 hover:text-white transition-colors">Proces udzielenia pożyczki</Link>
-              <Link href="/polityka-prywatnosci" className="text-white/80 hover:text-white transition-colors">Polityka prywatności</Link>
+            <h4 className="text-white font-semibold text-[17px] mb-3">Kontakt</h4>
+            <nav className="flex flex-col gap-1.5 text-[15px] leading-[1.9]">
+              <a href="tel:577873616" className="text-white/70 hover:text-white transition-colors">577 873 616</a>
+              <a href="mailto:kontakt@podhipoteke24.pl" className="text-white/70 hover:text-white transition-colors">kontakt@podhipoteke24.pl</a>
+              <Link href="/kontakt" className="text-white/70 hover:text-white transition-colors">Formularz kontaktowy</Link>
+              <Link href="/o-nas" className="text-white/70 hover:text-white transition-colors">O nas</Link>
+              <Link href="/polityka-prywatnosci" className="text-white/70 hover:text-white transition-colors">Polityka prywatności</Link>
             </nav>
           </div>
         </div>

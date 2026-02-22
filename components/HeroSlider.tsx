@@ -71,8 +71,8 @@ export default function HeroSlider() {
               <p className="text-white text-lg md:text-2xl mb-8 max-w-3xl mx-auto">
                 {slide.text}
               </p>
-              <Link href="/kontakt" className="btn-primary !px-8 !py-3 !text-lg">
-                {slide.button}
+              <Link href="#formularz" className="btn-cta-shine !px-8 !py-3 !text-lg">
+                Złóż wniosek
               </Link>
             </div>
           </div>
