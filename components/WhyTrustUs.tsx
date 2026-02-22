@@ -35,7 +35,7 @@ const reasons = [
 
 export default function WhyTrustUs() {
   return (
-    <section className="py-16 md:py-24 bg-[#f7f8fa]">
+    <section className="py-16 md:py-24 section-accent-soft">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">

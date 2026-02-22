@@ -154,3 +154,22 @@ export const GET_RECENT_POSTS = gql`
 		}
 	}
 `
+
+export const GET_RELATED_POSTS = gql`
+	query GetRelatedPosts($categorySlug: String!, $excludeId: ID!, $count: Int = 3) {
+		posts(where: { categoryName: $categorySlug, notIn: [$excludeId] }, first: $count) {
+			nodes {
+				id
+				title
+				slug
+				date
+				featuredImage {
+					node {
+						sourceUrl
+						altText
+					}
+				}
+			}
+		}
+	}
+`

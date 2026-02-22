@@ -19,7 +19,8 @@
       "Bash(\"C:/Users/maksy/podhipoteke-headless/.claude/worktrees/flamboyant-dubinsky/app/narzedzia/ile-moge-pozyczyc/page.tsx\":*)",
       "Bash(\"C:/Users/maksy/podhipoteke-headless/.claude/worktrees/flamboyant-dubinsky/app/narzedzia/porownywarka/page.tsx\":*)",
       "Bash(\"C:/Users/maksy/podhipoteke-headless/.claude/worktrees/flamboyant-dubinsky/app/narzedzia/diagnostyka/page.tsx\":*)",
-      "Bash(\"C:/Users/maksy/podhipoteke-headless/.claude/worktrees/flamboyant-dubinsky/app/narzedzia/kalkulator-konsolidacji/page.tsx\":*)"
+      "Bash(\"C:/Users/maksy/podhipoteke-headless/.claude/worktrees/flamboyant-dubinsky/app/narzedzia/kalkulator-konsolidacji/page.tsx\":*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

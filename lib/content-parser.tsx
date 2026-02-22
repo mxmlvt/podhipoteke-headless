@@ -1,4 +1,6 @@
-import parse from "html-react-parser";
+import parse, { domToReact } from "html-react-parser";
+import type { DOMNode, Element } from "html-react-parser";
+import Link from "next/link";
 import CTABox from "@/components/shared/CTABox";
 
 const TOOL_CTA_MAP: Record<
@@ -44,7 +46,31 @@ export function getToolCTAForSlug(slug: string) {
   return TOOL_CTA_MAP["default"];
 }
 
-function cleanWPContent(html: string): string {
+// Parser options: transform WP links to Next.js internal links
+const parserOptions = {
+  replace: (domNode: DOMNode) => {
+    const el = domNode as Element;
+    if (el.type === "tag" && el.name === "a") {
+      const href = el.attribs?.href || "";
+      if (href.includes("podhipoteke24.pl")) {
+        try {
+          const url = new URL(href);
+          const cleanPath = url.pathname.replace(/\/$/, "") || "/";
+          return (
+            <Link href={cleanPath} className="text-[#2299AA] hover:text-[#2bb5c7] underline">
+              {domToReact(el.children as DOMNode[])}
+            </Link>
+          );
+        } catch {
+          return undefined;
+        }
+      }
+    }
+    return undefined;
+  },
+};
+
+export function cleanContent(html: string): string {
   if (!html) return "";
   return html
     .replace(/\[et_pb_[^\]]*\]/g, "")
@@ -63,7 +89,7 @@ function estimateReadTime(html: string): number {
 export function parseWPContent(html: string, slug: string) {
   if (!html) return null;
 
-  const cleaned = cleanWPContent(html);
+  const cleaned = cleanContent(html);
   const readTime = estimateReadTime(cleaned);
 
   // Split on h2/h3 boundaries to find midpoint
@@ -75,9 +101,9 @@ export function parseWPContent(html: string, slug: string) {
   const secondHalf = parts.slice(midpoint).join("");
 
   return {
-    firstHalf: parse(firstHalf),
+    firstHalf: parse(firstHalf, parserOptions),
     cta,
-    secondHalf: parse(secondHalf),
+    secondHalf: parse(secondHalf, parserOptions),
     readTime,
   };
 }

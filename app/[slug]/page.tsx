@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import client from "@/lib/apollo";
 import { GET_PAGE_BY_SLUG, GET_ALL_PAGE_SLUGS } from "@/lib/queries";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
-import Breadcrumbs from "@/components/shared/Breadcrumbs";
-import TrustBadges from "@/components/shared/TrustBadges";
+import TrustBadgesBar from "@/components/TrustBadgesBar";
 import ToolCTACard from "@/components/shared/ToolCTACard";
-import { getToolsForPage, getCityFromSlug } from "@/lib/tool-mapping";
+import ServiceContentSection from "@/components/ServiceContentSection";
+import { cleanContent } from "@/lib/content-parser";
+import { getToolsForPage } from "@/lib/tool-mapping";
+import {
+  isCityPageSlug,
+  isServicePageSlug,
+  getCityNameFromSlug,
+  getCityTemplate,
+  getServiceTemplate,
+} from "@/lib/page-templates";
 
-// Slugs that already have dedicated pages (folders in /app)
+// Slugi obsługiwane przez dedykowane strony w /app
 const EXCLUDED_SLUGS = [
   "strona-glowna",
   "o-nas",
@@ -60,46 +69,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function cleanContent(html: string): string {
-  if (!html) return "";
-  return html
-    .replace(/\[et_pb_[^\]]*\]/g, "")
-    .replace(/\[\/et_pb_[^\]]*\]/g, "")
-    .replace(/\[\/?[a-zA-Z_]+[^\]]*\]/g, "")
-    .replace(/<div[^>]*class="[^"]*et_pb[^"]*"[^>]*>\s*<\/div>/gi, "")
-    .trim();
-}
-
-function isServicePage(slug: string): boolean {
-  const servicePatterns = [
-    "pozyczki-pod-zastaw",
-    "pozyczki-hipoteczne",
-    "pozyczki-oddluzeniowe",
-    "kredyt-",
-    "pozyczka-pod-zastaw",
-    "pozyczki-pod-hipoteke",
-  ];
-  return servicePatterns.some((p) => slug.startsWith(p));
-}
-
-function isCityPage(slug: string): boolean {
-  const cityPatterns = [
-    "pozyczki-pod-hipoteke-",
-    "pozyczka-hipoteczna-",
-    "pozyczki-warszawa",
-    "pozyczki-krakow",
-    "pozyczki-wroclaw",
-    "pozyczki-poznan",
-    "pozyczki-gdansk",
-    "pozyczki-lodz",
-    "pozyczki-katowice",
-    "pozyczki-bialystok",
-    "pozyczki-olsztyn",
-    "pozyczki-czestochowa",
-  ];
-  return cityPatterns.some((p) => slug.startsWith(p) || slug === p);
-}
-
 export default async function DynamicPage({ params }: Props) {
   const { slug } = await params;
 
@@ -114,140 +83,183 @@ export default async function DynamicPage({ params }: Props) {
 
   const page = data.page;
   const cleaned = cleanContent(page.content);
-  const isService = isServicePage(slug);
-  const isCity = isCityPage(slug);
+  const hasContent = cleaned.length > 50;
+
+  const isCity = isCityPageSlug(slug);
+  const isService = isServicePageSlug(slug);
   const showContactForm = isService || isCity;
   const tools = (isService || isCity) ? getToolsForPage(slug) : [];
-  const cityName = getCityFromSlug(slug);
 
-  const heroImage = isCity
-    ? "/images/slide-1.jpg"
-    : isService
-      ? "/images/oferta-bg.jpg"
-      : "/images/faq-bg.jpg";
+  // City page
+  if (isCity) {
+    const cityName = getCityNameFromSlug(slug);
+    const template = getCityTemplate(cityName);
 
-  const heroHeading = isCity && cityName
-    ? `Pożyczki pod hipotekę – ${cityName}`
-    : page.title;
+    return (
+      <main>
+        <PageHero
+          heading={page.title || `Pożyczki pod hipotekę – ${cityName}`}
+          subtitle={template.heroSubtitle}
+          bgImage="/images/slide-1.jpg"
+        />
 
-  const heroSubtitle = isCity && cityName
-    ? `Obsługujemy klientów z ${cityName} i okolic`
-    : undefined;
-
-  return (
-    <main>
-      <PageHero
-        heading={heroHeading}
-        bgImage={heroImage}
-        subtitle={heroSubtitle}
-      />
-
-      {/* Breadcrumbs */}
-      <div className="bg-[#f7f8fa] border-b border-[#e5e7eb] py-3">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <Breadcrumbs
-            items={[
-              { label: "Strona główna", href: "/" },
-              ...(isCity ? [{ label: "Miasta", href: "/oferta" }] : isService ? [{ label: "Oferta", href: "/oferta" }] : []),
-              { label: page.title },
-            ]}
-          />
-        </div>
-      </div>
-
-      {/* TrustBadges for service/city pages */}
-      {(isService || isCity) && (
-        <div className="py-6 bg-white border-b border-[#e5e7eb]">
+        {/* Breadcrumbs */}
+        <nav className="bg-[#f0fafb] border-b border-[#e5e7eb] py-3">
           <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-            <TrustBadges />
+            <ol className="flex items-center gap-1.5 text-sm text-[#6b7280] flex-wrap">
+              <li><Link href="/" className="hover:text-[#1c435e]">Strona główna</Link></li>
+              <li><ChevronRight className="w-3.5 h-3.5 text-[#9ca3af]" /></li>
+              <li><Link href="/oferta" className="hover:text-[#1c435e]">Oferta</Link></li>
+              <li><ChevronRight className="w-3.5 h-3.5 text-[#9ca3af]" /></li>
+              <li className="text-[#374151]">{page.title}</li>
+            </ol>
           </div>
-        </div>
-      )}
+        </nav>
 
-      {/* Content */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          {cleaned ? (
-            <div
-              className="wp-content max-w-[780px] mx-auto"
-              dangerouslySetInnerHTML={{ __html: cleaned }}
-            />
-          ) : (
-            <div className="max-w-[780px] mx-auto text-center py-8">
-              <p className="text-[#6b7280] text-lg">
-                Skontaktuj się z nami, aby dowiedzieć się więcej o tej usłudze.
-              </p>
+        <TrustBadgesBar />
+
+        {hasContent ? (
+          <section className="py-12 md:py-16 bg-white">
+            <div className="max-w-[780px] mx-auto px-4 md:px-6">
+              <div className="wp-content" dangerouslySetInnerHTML={{ __html: cleaned }} />
             </div>
-          )}
-        </div>
-      </section>
+          </section>
+        ) : (
+          <ServiceContentSection template={template} />
+        )}
 
-      {/* Tools section for service/city pages */}
-      {tools.length > 0 && (
-        <section className="py-12 md:py-16 bg-[#f7f8fa]">
-          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-3 text-center">
-              Bezpłatne narzędzia
-            </h2>
-            <p className="text-[#6b7280] text-center mb-8">
-              Sprawdź sam przed kontaktem z nami
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-3xl mx-auto">
-              {tools.map((tool) => (
-                <ToolCTACard key={tool.href} {...tool} variant="featured" />
-              ))}
+        {tools.length > 0 && (
+          <section className="section-mint py-12 md:py-16">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-2 text-center">
+                Narzędzia dla mieszkańców {cityName}
+              </h2>
+              <p className="text-[#6b7280] text-center mb-8">Sprawdź warunki przed kontaktem z nami</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-3xl mx-auto">
+                {tools.map((tool) => (
+                  <ToolCTACard key={tool.href} {...tool} variant="featured" />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
-      {/* City CTA */}
-      {isCity && cityName && (
-        <section className="py-12 md:py-16 bg-[#1c435e]">
+        <section className="section-dark py-12 md:py-16">
           <div className="max-w-[1280px] mx-auto px-4 md:px-6 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Szukasz pożyczki w {cityName}?
+              {template.ctaHeading}
             </h2>
-            <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-              Obsługujemy klientów z {cityName} i całego regionu. Kontaktuj się z nami telefonicznie lub przez formularz.
-            </p>
+            <p className="text-white/75 text-lg mb-8 max-w-xl mx-auto">{template.ctaText}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/kontakt"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#2299AA] text-white font-bold hover:bg-[#2bb5c7] transition-colors"
+                className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-bold transition-colors"
               >
                 Złóż wniosek online
               </Link>
               <a
                 href="tel:577873616"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-white text-white font-bold hover:bg-white hover:text-[#1c435e] transition-colors"
+                className="inline-flex items-center justify-center px-10 py-4 rounded-full border-2 border-white text-white font-bold hover:bg-white hover:text-[#1c435e] transition-all"
               >
                 Zadzwoń: 577 873 616
               </a>
             </div>
           </div>
         </section>
-      )}
 
-      {/* Service CTA */}
-      {isService && !isCity && (
-        <section className="py-12 md:py-16 bg-[#1c435e]">
+        <ContactForm />
+      </main>
+    );
+  }
+
+  // Service page
+  if (isService) {
+    const template = getServiceTemplate(slug);
+
+    return (
+      <main>
+        <PageHero
+          heading={page.title}
+          subtitle={template.heroSubtitle}
+          bgImage="/images/oferta-bg.jpg"
+        />
+
+        <nav className="bg-[#f0fafb] border-b border-[#e5e7eb] py-3">
+          <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+            <ol className="flex items-center gap-1.5 text-sm text-[#6b7280] flex-wrap">
+              <li><Link href="/" className="hover:text-[#1c435e]">Strona główna</Link></li>
+              <li><ChevronRight className="w-3.5 h-3.5 text-[#9ca3af]" /></li>
+              <li><Link href="/oferta" className="hover:text-[#1c435e]">Oferta</Link></li>
+              <li><ChevronRight className="w-3.5 h-3.5 text-[#9ca3af]" /></li>
+              <li className="text-[#374151]">{page.title}</li>
+            </ol>
+          </div>
+        </nav>
+
+        <TrustBadgesBar />
+
+        {hasContent ? (
+          <section className="py-12 md:py-16 bg-white">
+            <div className="max-w-[780px] mx-auto px-4 md:px-6">
+              <div className="wp-content" dangerouslySetInnerHTML={{ __html: cleaned }} />
+            </div>
+          </section>
+        ) : (
+          <ServiceContentSection template={template} />
+        )}
+
+        {tools.length > 0 && (
+          <section className="section-mint py-12 md:py-16">
+            <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-2 text-center">
+                Narzędzia online
+              </h2>
+              <p className="text-[#6b7280] text-center mb-8">Sprawdź warunki przed kontaktem z nami</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-3xl mx-auto">
+                {tools.map((tool) => (
+                  <ToolCTACard key={tool.href} {...tool} variant="featured" />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="section-dark py-12 md:py-16">
           <div className="max-w-[1280px] mx-auto px-4 md:px-6 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Gotowy na złożenie wniosku?
+              {template.ctaHeading}
             </h2>
-            <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-              Decyzja w 24h. Pieniądze nawet w 2-4 dni robocze.
-            </p>
+            <p className="text-white/75 text-lg mb-8 max-w-xl mx-auto">{template.ctaText}</p>
             <Link
               href="/kontakt"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#2299AA] text-white font-bold hover:bg-[#2bb5c7] transition-colors"
+              className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-bold transition-colors"
             >
               Złóż wniosek
             </Link>
           </div>
         </section>
-      )}
+
+        <ContactForm />
+      </main>
+    );
+  }
+
+  // Generic page (polityka prywatności itp.)
+  return (
+    <main>
+      <PageHero heading={page.title} bgImage="/images/faq-bg.jpg" />
+
+      <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-[780px] mx-auto px-4 md:px-6">
+          {hasContent ? (
+            <div className="wp-content" dangerouslySetInnerHTML={{ __html: cleaned }} />
+          ) : (
+            <p className="text-[#6b7280] text-center text-lg py-8">
+              Skontaktuj się z nami, aby dowiedzieć się więcej.
+            </p>
+          )}
+        </div>
+      </section>
 
       {showContactForm && <ContactForm />}
     </main>

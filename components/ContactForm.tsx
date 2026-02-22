@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, CheckCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, CheckCircle, Send } from "lucide-react";
+
+const benefits = [
+  "Szybka pożyczka pod nieruchomość bez BIK",
+  "Nie wymagamy zaświadczeń z ZUS i US",
+  "Nie badamy zdolności kredytowej",
+  "Oferujemy elastyczne warunki spłat",
+  "Decyzja kredytowa w 24 godziny",
+  "Wypłata środków nawet w 48 godzin",
+];
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,7 +20,6 @@ export default function ContactForm() {
     nip: "",
     amount: "",
     collateral: "",
-    purpose: "",
     period: "",
     consent: false,
   });
@@ -30,35 +38,26 @@ export default function ContactForm() {
     setSubmitted(true);
   };
 
-  const benefits = [
-    "Szybka pożyczka pod nieruchomość",
-    "Nie wymagamy zaświadczeń z ZUS i US",
-    "Nie weryfikujemy w bazach BIK, BIG i KRD",
-    "Nie badamy zdolności kredytowej",
-    "Oferujemy atrakcyjne warunki spłat",
-    "Decyzja kredytowa w 24 godziny",
-    "Wypłata środków w ekspresowym tempie",
-  ];
-
   return (
-    <section id="contact-form" className="py-16 md:py-24 bg-[#f7f8fa]">
+    <section id="contact-form" className="py-16 md:py-24 bg-white">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
+          <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
+            Kontakt
+          </span>
           <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
             Złóż wniosek
           </h2>
           <p className="text-[#6b7280] text-lg max-w-2xl mx-auto">
-            Wypełnij formularz, a nasz doradca skontaktuje się z Tobą w ciągu kilku godzin.
+            Wypełnij formularz, a nasz doradca skontaktuje się z Tobą w ciągu 15 minut.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left side – Benefits */}
+          {/* Left side – Benefits + contact */}
           <div>
-            <h3 className="text-xl font-bold text-[#111827] mb-6">
-              Dlaczego warto nam zaufać?
-            </h3>
-            <ul className="space-y-3 mb-10">
+            <h3 className="text-xl font-bold text-[#111827] mb-5">Dlaczego warto nam zaufać?</h3>
+            <ul className="space-y-3 mb-8">
               {benefits.map((b, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-[#2299AA] shrink-0 mt-0.5" />
@@ -67,37 +66,47 @@ export default function ContactForm() {
               ))}
             </ul>
 
-            <div className="bg-white rounded-xl p-6 border border-[#e5e7eb]">
-              <h3 className="text-lg font-bold text-[#111827] mb-4">Kontakt bezpośredni</h3>
-              <div className="space-y-3">
-                <a
-                  href="mailto:kontakt@podhipoteke24.pl"
-                  className="flex items-center gap-3 text-[#374151] hover:text-[#1c435e] transition-colors"
-                >
-                  <div className="p-2 rounded-lg bg-[#e8f4f6]">
-                    <Mail className="w-4 h-4 text-[#2299AA]" />
-                  </div>
-                  kontakt@podhipoteke24.pl
-                </a>
-                <a
-                  href="tel:577873616"
-                  className="flex items-center gap-3 text-[#374151] hover:text-[#1c435e] transition-colors"
-                >
-                  <div className="p-2 rounded-lg bg-[#e8f4f6]">
-                    <Phone className="w-4 h-4 text-[#2299AA]" />
-                  </div>
-                  577 873 616
-                </a>
+            <div className="bg-[#e6f7f9] rounded-2xl p-6 space-y-4">
+              <h3 className="text-lg font-bold text-[#1c435e]">Dane kontaktowe</h3>
+              <a
+                href="tel:577873616"
+                className="flex items-center gap-3 text-[#374151] hover:text-[#1c435e] transition-colors"
+              >
+                <div className="p-2.5 rounded-xl bg-white shadow-sm">
+                  <Phone className="w-4 h-4 text-[#2299AA]" />
+                </div>
+                <span className="font-semibold">577 873 616</span>
+              </a>
+              <a
+                href="mailto:kontakt@podhipoteke24.pl"
+                className="flex items-center gap-3 text-[#374151] hover:text-[#1c435e] transition-colors"
+              >
+                <div className="p-2.5 rounded-xl bg-white shadow-sm">
+                  <Mail className="w-4 h-4 text-[#2299AA]" />
+                </div>
+                kontakt@podhipoteke24.pl
+              </a>
+              <div className="flex items-start gap-3 text-[#374151]">
+                <div className="p-2.5 rounded-xl bg-white shadow-sm shrink-0">
+                  <MapPin className="w-4 h-4 text-[#2299AA]" />
+                </div>
+                ul. Przykładowa 1, 00-000 Warszawa
+              </div>
+              <div className="flex items-center gap-3 text-[#374151]">
+                <div className="p-2.5 rounded-xl bg-white shadow-sm">
+                  <Clock className="w-4 h-4 text-[#2299AA]" />
+                </div>
+                Pon–Pt: 8:00 – 18:00
               </div>
             </div>
           </div>
 
           {/* Right side – Form */}
-          <div className="bg-white rounded-xl p-8 border border-[#e5e7eb] shadow-sm">
+          <div className="bg-[#f0fafb] rounded-2xl p-8 shadow-sm border border-[#e5e7eb]">
             {submitted ? (
               <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                <div className="w-16 h-16 rounded-full bg-[#e6f7f9] flex items-center justify-center mb-4">
+                  <CheckCircle className="w-8 h-8 text-[#2299AA]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#111827] mb-2">Dziękujemy!</h3>
                 <p className="text-[#6b7280]">
@@ -110,31 +119,31 @@ export default function ContactForm() {
                   <input
                     type="text"
                     name="name"
-                    placeholder="Twoje imię i nazwisko"
+                    placeholder="Imię i nazwisko"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                   />
                   <input
                     type="tel"
                     name="phone"
-                    placeholder="Twój numer telefonu"
+                    placeholder="Numer telefonu"
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <input
                     type="email"
                     name="email"
-                    placeholder="Twój email"
+                    placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                   />
                   <input
                     type="text"
@@ -142,24 +151,24 @@ export default function ContactForm() {
                     placeholder="NIP firmy (opcjonalnie)"
                     value={formData.nip}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                    className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                   />
                 </div>
                 <input
                   type="text"
                   name="amount"
-                  placeholder="Jaką kwotę chcesz pożyczyć?"
+                  placeholder="Kwota pożyczki (np. 200 000 zł)"
                   value={formData.amount}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                 />
                 <input
                   type="text"
                   name="collateral"
-                  placeholder="Rodzaj zabezpieczenia (mieszkanie, dom, działka...)"
+                  placeholder="Zabezpieczenie (mieszkanie, dom, działka...)"
                   value={formData.collateral}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                 />
                 <input
                   type="text"
@@ -167,7 +176,7 @@ export default function ContactForm() {
                   placeholder="Okres finansowania (ile miesięcy?)"
                   value={formData.period}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-lg text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:border-[#2299AA] transition-colors text-sm"
+                  className="w-full px-4 py-3 border border-[#e5e7eb] rounded-xl bg-white text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-2 focus:ring-[#2299AA]/40 focus:border-[#2299AA] transition-colors text-sm"
                 />
                 <label className="flex items-start gap-3 cursor-pointer pt-1">
                   <input
@@ -188,8 +197,9 @@ export default function ContactForm() {
                 </label>
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-lg bg-[#1c435e] text-white font-bold text-base hover:bg-[#254d6b] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-bold text-base transition-colors"
                 >
+                  <Send className="w-4 h-4" />
                   Wyślij wniosek
                 </button>
               </form>

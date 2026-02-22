@@ -10,7 +10,7 @@ interface SectionWrapperProps {
 
 const variantClasses: Record<string, string> = {
   white: "bg-white",
-  light: "bg-[#f7f8fa]",
+  light: "bg-[#f0fafb]",
   primary: "bg-[#1c435e] text-white",
   "primary-dark": "bg-[#152f45] text-white",
 };

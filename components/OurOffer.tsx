@@ -1,80 +1,89 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Building2, Landmark, Home, Trees, RefreshCcw, Briefcase } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import { IMAGES } from "@/lib/images";
 
-const services = [
+const offers = [
   {
-    icon: Landmark,
+    image: IMAGES.offers.hipoteczny,
     title: "Kredyt hipoteczny",
-    desc: "Ekspresowy kredyt hipoteczny na zakup lub refinansowanie nieruchomości. Bez zbędnych formalności.",
+    desc: "Potrzebujesz finansowania zakupu nieruchomości, ale bank odmówił? Udzielimy kredytu hipotecznego bez zbędnych formalności i weryfikacji BIK.",
     href: "/kredyt-hipoteczny",
+    alt: "Kredyt hipoteczny pod nieruchomość",
   },
   {
-    icon: Building2,
+    image: IMAGES.offers.mieszkanie,
     title: "Kredyt pod zastaw mieszkania",
-    desc: "Potrzebujesz środków, a posiadasz mieszkanie? Udzielimy kredytu pod jego zastaw w 24 godziny.",
+    desc: "Posiadasz mieszkanie? Możesz je wykorzystać jako zabezpieczenie i otrzymać środki na dowolny cel – w 24 godziny.",
     href: "/kredyt-pod-zastaw-mieszkania",
+    alt: "Kredyt pod zastaw mieszkania",
   },
   {
-    icon: Home,
-    title: "Pożyczki pod zastaw nieruchomości",
-    desc: "Nieruchomość to jedyne zabezpieczenie, którego wymagamy. Bez BIK, bez zaświadczeń z ZUS.",
-    href: "/pozyczki-pod-zastaw-nieruchomosci",
-  },
-  {
-    icon: Home,
-    title: "Pożyczki pod zastaw domu",
-    desc: "Dom jednorodzinny, kamienica lub willa – każda nieruchomość może być zabezpieczeniem pożyczki.",
-    href: "/pozyczki-pod-zastaw-domu",
-  },
-  {
-    icon: Trees,
-    title: "Pożyczki pod zastaw działki",
-    desc: "Posiadasz działkę budowlaną lub rolną? Możemy udzielić pożyczki pod jej zastaw.",
-    href: "/pozyczki-pod-zastaw-dzialki",
-  },
-  {
-    icon: RefreshCcw,
+    image: IMAGES.offers.nieruchomosc,
     title: "Pożyczki oddłużeniowe",
-    desc: "Spłacimy Twoje zobowiązania komornicze, hipoteki i długi. Wyjdź z pętli zadłużenia.",
+    desc: "Spłacimy Twoje zajęcia komornicze, hipoteki i prywatne zobowiązania. Wyjdź z pętli zadłużenia z naszą pomocą.",
     href: "/pozyczki-oddluzeniowe",
+    alt: "Pożyczki oddłużeniowe",
   },
 ];
 
 export default function OurOffer() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="section-mint py-16 md:py-24">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+        {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+          <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
             Nasza oferta
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+            Weź pożyczkę pod hipotekę kiedy:
           </h2>
           <p className="text-[#6b7280] text-lg max-w-2xl mx-auto">
-            Ekspresowe pożyczki pod hipotekę od 50 000 do 2 000 000 zł. Bez BIK. Bez zaświadczeń.
+            Nie możesz uzyskać kredytu w banku, masz zajęcia komornicze lub potrzebujesz gotówki ekspresowo.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <Link key={service.href} href={service.href} className="group">
-              <Card className="h-full border border-[#e5e7eb] hover:border-[#2299AA] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-                <CardContent className="p-6 flex flex-col gap-4">
-                  <div className="p-3 rounded-xl bg-[#f7f8fa] group-hover:bg-[#e8f4f6] w-fit transition-colors">
-                    <service.icon className="w-7 h-7 text-[#2299AA]" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-[#111827] mb-2 group-hover:text-[#1c435e] transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-[#6b7280] text-sm leading-relaxed">{service.desc}</p>
-                  </div>
-                  <div className="mt-auto flex items-center gap-1 text-[#2299AA] text-sm font-semibold group-hover:gap-2 transition-all">
-                    Dowiedz się więcej →
-                  </div>
-                </CardContent>
-              </Card>
+        {/* 3 cards with photos */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {offers.map((offer) => (
+            <Link
+              key={offer.href}
+              href={offer.href}
+              className="group bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
+            >
+              {/* Photo */}
+              <div className="relative aspect-video overflow-hidden">
+                <Image
+                  src={offer.image}
+                  alt={offer.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              {/* Content */}
+              <div className="p-6 flex flex-col flex-1">
+                <h3 className="text-lg font-bold text-[#111827] mb-2 group-hover:text-[#1c435e] transition-colors">
+                  {offer.title}
+                </h3>
+                <p className="text-[#6b7280] text-sm leading-relaxed flex-1">{offer.desc}</p>
+                <div className="mt-4 flex items-center gap-1.5 text-[#2299AA] font-semibold text-sm group-hover:gap-3 transition-all">
+                  Dowiedz się więcej <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
             </Link>
           ))}
+        </div>
+
+        {/* Bottom link */}
+        <div className="text-center mt-8">
+          <Link
+            href="/oferta"
+            className="inline-flex items-center gap-2 text-[#1c435e] font-semibold hover:text-[#2299AA] transition-colors"
+          >
+            Zobacz pełną ofertę <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>

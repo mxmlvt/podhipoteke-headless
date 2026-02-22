@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Phone, ChevronDown, Menu, X } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 
 const ofertaItems = [
   { label: "Kredyt hipoteczny", path: "/kredyt-hipoteczny" },
@@ -72,7 +71,7 @@ export default function Header() {
               item.dropdown ? (
                 <div key={item.path} className="relative group">
                   <button
-                    className="flex items-center gap-1 px-3 py-2 text-[#374151] hover:text-[#1c435e] font-medium text-[0.9rem] transition-colors rounded-md hover:bg-[#f7f8fa]"
+                    className="flex items-center gap-1 px-3 py-2 text-[#374151] hover:text-[#1c435e] font-medium text-[0.9rem] transition-colors rounded-full hover:bg-[#e6f7f9]"
                     aria-haspopup="true"
                   >
                     {item.label}
@@ -80,12 +79,12 @@ export default function Header() {
                   </button>
 
                   {/* Dropdown */}
-                  <div className="absolute top-full left-0 mt-1 bg-white shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-[#e5e7eb] min-w-[240px]">
+                  <div className="absolute top-full left-0 mt-1 bg-white shadow-xl rounded-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-[#e5e7eb] min-w-[260px]">
                     {item.dropdown.map((sub) => (
                       <Link
                         key={sub.path}
                         href={sub.path}
-                        className="flex items-center px-4 py-2.5 text-[#374151] hover:text-[#1c435e] hover:bg-[#f7f8fa] text-sm transition-colors"
+                        className="flex items-center px-4 py-2.5 text-[#374151] hover:text-[#1c435e] hover:bg-[#e6f7f9] text-sm transition-colors"
                       >
                         {sub.label}
                       </Link>
@@ -96,7 +95,7 @@ export default function Header() {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className="px-3 py-2 text-[#374151] hover:text-[#1c435e] font-medium text-[0.9rem] transition-colors rounded-md hover:bg-[#f7f8fa]"
+                  className="px-3 py-2 text-[#374151] hover:text-[#1c435e] font-medium text-[0.9rem] transition-colors rounded-full hover:bg-[#e6f7f9]"
                 >
                   {item.label}
                 </Link>
@@ -113,12 +112,12 @@ export default function Header() {
               <Phone className="w-4 h-4" />
               577 873 616
             </a>
-            <Button
-              asChild
-              className="bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-semibold px-5 rounded-lg h-9 text-sm"
+            <Link
+              href="/kontakt"
+              className="inline-flex items-center justify-center px-6 py-2 rounded-full bg-[#2299AA] hover:bg-[#2bb5c7] text-white font-semibold text-sm transition-colors shadow-sm"
             >
-              <Link href="/kontakt">Złóż wniosek</Link>
-            </Button>
+              Złóż wniosek
+            </Link>
           </div>
 
           {/* Mobile: phone + hamburger */}
@@ -133,7 +132,7 @@ export default function Header() {
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <button
-                  className="p-2 text-[#374151] rounded-md hover:bg-[#f7f8fa]"
+                  className="p-2 text-[#374151] rounded-lg hover:bg-[#e6f7f9]"
                   aria-label="Otwórz menu"
                 >
                   {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -156,7 +155,7 @@ export default function Header() {
                         {item.dropdown ? (
                           <div>
                             <button
-                              className="w-full flex items-center justify-between px-5 py-3 text-[#374151] font-semibold text-base hover:bg-[#f7f8fa]"
+                              className="w-full flex items-center justify-between px-5 py-3 text-[#374151] font-semibold text-base hover:bg-[#e6f7f9]"
                               onClick={() =>
                                 setOpenDropdown(
                                   openDropdown === item.label ? null : item.label
@@ -171,7 +170,7 @@ export default function Header() {
                               />
                             </button>
                             {openDropdown === item.label && (
-                              <div className="bg-[#f7f8fa]">
+                              <div className="bg-[#e6f7f9]">
                                 {item.dropdown.map((sub) => (
                                   <Link
                                     key={sub.path}
@@ -188,7 +187,7 @@ export default function Header() {
                         ) : (
                           <Link
                             href={item.path}
-                            className="block px-5 py-3 text-[#374151] font-semibold text-base hover:bg-[#f7f8fa]"
+                            className="block px-5 py-3 text-[#374151] font-semibold text-base hover:bg-[#e6f7f9]"
                             onClick={() => setMobileOpen(false)}
                           >
                             {item.label}
@@ -200,7 +199,7 @@ export default function Header() {
                   <div className="p-4 border-t border-[#e5e7eb] space-y-3">
                     <a
                       href="tel:577873616"
-                      className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border-2 border-[#1c435e] text-[#1c435e] font-semibold text-sm"
+                      className="flex items-center justify-center gap-2 w-full py-3 rounded-full border-2 border-[#1c435e] text-[#1c435e] font-semibold text-sm"
                       onClick={() => setMobileOpen(false)}
                     >
                       <Phone className="w-4 h-4" />
@@ -208,7 +207,7 @@ export default function Header() {
                     </a>
                     <Link
                       href="/kontakt"
-                      className="flex items-center justify-center w-full py-3 rounded-lg bg-[#2299AA] text-white font-semibold text-sm hover:bg-[#2bb5c7] transition-colors"
+                      className="flex items-center justify-center w-full py-3 rounded-full bg-[#2299AA] text-white font-semibold text-sm hover:bg-[#2bb5c7] transition-colors"
                       onClick={() => setMobileOpen(false)}
                     >
                       Złóż wniosek

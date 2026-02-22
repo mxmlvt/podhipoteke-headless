@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { ChevronRight, Phone } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
-import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Phone } from "lucide-react";
+import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "FAQ – Najczęściej zadawane pytania | PODHIPOTEKE24.PL",
@@ -79,50 +80,79 @@ export default function FaqPage() {
         bgImage="/images/faq-bg.jpg"
       />
 
-      <div className="bg-[#f7f8fa] border-b border-[#e5e7eb] py-3">
+      <nav className="bg-[#f0fafb] border-b border-[#e5e7eb] py-3">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <Breadcrumbs
-            items={[{ label: "Strona główna", href: "/" }, { label: "FAQ" }]}
-          />
-        </div>
-      </div>
-
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-[800px] mx-auto px-4 md:px-6">
-          <Accordion type="single" collapsible defaultValue="item-0">
-            {faqItems.map((item, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border-[#e5e7eb]">
-                <AccordionTrigger className="text-left text-[#111827] font-semibold hover:text-[#1c435e] hover:no-underline py-5">
-                  {item.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-[#6b7280] leading-relaxed pb-5">
-                  {item.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-
-          <div className="mt-12 pt-8 border-t border-[#e5e7eb] text-center">
-            <h2 className="text-xl font-bold text-[#111827] mb-3">
-              Nie znalazłeś odpowiedzi?
-            </h2>
-            <p className="text-[#6b7280] mb-6">
-              Skontaktuj się z nami bezpośrednio lub skorzystaj z diagnostyki finansowej.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/narzedzia/diagnostyka"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#1c435e] text-white font-semibold hover:bg-[#254d6b] transition-colors"
-              >
-                Diagnostyka finansowa
+          <ol className="flex items-center gap-1.5 text-sm text-[#6b7280] flex-wrap">
+            <li>
+              <Link href="/" className="hover:text-[#1c435e]">
+                Strona główna
               </Link>
-              <a
-                href="tel:577873616"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-[#1c435e] text-[#1c435e] font-semibold hover:bg-[#1c435e] hover:text-white transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                577 873 616
-              </a>
+            </li>
+            <li>
+              <ChevronRight className="w-3.5 h-3.5 text-[#9ca3af]" />
+            </li>
+            <li className="text-[#374151]">FAQ</li>
+          </ol>
+        </div>
+      </nav>
+
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+            {/* Left: heading + image + CTA */}
+            <div>
+              <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
+                FAQ
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">
+                Masz pytania? Mamy odpowiedzi
+              </h2>
+              <p className="text-[#6b7280] text-lg leading-relaxed mb-7">
+                Zebraliśmy najczęstsze pytania naszych klientów. Jeśli nie znajdziesz odpowiedzi – zadzwoń lub napisz do nas bezpośrednio.
+              </p>
+
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] mb-7 shadow-md">
+                <Image
+                  src={IMAGES.sections.contact}
+                  alt="Konsultacja finansowa"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/kontakt"
+                  className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-[#1c435e] hover:bg-[#254d6b] text-white font-semibold transition-colors"
+                >
+                  Masz więcej pytań? Napisz do nas
+                </Link>
+                <a
+                  href="tel:577873616"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-[#1c435e] text-[#1c435e] font-semibold hover:bg-[#1c435e] hover:text-white transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  577 873 616
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Accordion */}
+            <div>
+              <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
+                {faqItems.map((item, i) => (
+                  <AccordionItem key={i} value={`item-${i}`} className="border-[#e5e7eb]">
+                    <AccordionTrigger className="text-left text-[#111827] font-semibold hover:text-[#1c435e] hover:no-underline py-5 text-base">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-[#6b7280] leading-relaxed pb-5">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
         </div>

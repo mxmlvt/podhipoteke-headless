@@ -27,7 +27,7 @@ export default function ToolCTACard({
       )}
     >
       <div className="flex items-center gap-3 mb-3">
-        <div className="p-2.5 rounded-lg bg-[#f7f8fa] group-hover:bg-[#e8f4f6] transition-colors">
+        <div className="p-2.5 rounded-lg bg-[#f0fafb] group-hover:bg-[#e6f7f9] transition-colors">
           <Icon className="w-6 h-6 text-[#2299AA]" />
         </div>
         <h3 className="font-semibold text-[#111827] text-base">{title}</h3>

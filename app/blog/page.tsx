@@ -45,13 +45,22 @@ export default async function BlogPage() {
         bgImage="/images/faq-bg.jpg"
       />
 
-      <section className="py-12 md:py-16 bg-[#f7f8fa]">
+      <section className="py-12 md:py-16 section-mint">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <div className="mb-8 flex items-center justify-between">
-            <p className="text-[#6b7280] text-sm">
-              Łącznie <span className="font-semibold text-[#111827]">{posts.length}</span> artykułów
+          <div className="text-center mb-10">
+            <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
+              Blog
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-2">
+              Artykuły i porady ekspertów
+            </h2>
+            <p className="text-[#6b7280]">
+              Łącznie{" "}
+              <span className="font-semibold text-[#111827]">{posts.length}</span>{" "}
+              artykułów
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => (
               <BlogCard

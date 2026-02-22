@@ -8,10 +8,12 @@
   /* Brand colors */
   --color-primary: #1c435e;
   --color-primary-light: #254d6b;
-  --color-primary-dark: #152f45;
+  --color-primary-dark: #0f2a3d;
   --color-accent: #2299AA;
   --color-accent-light: #2bb5c7;
-  --color-bg-light: #f7f8fa;
+  --color-accent-soft: #e6f7f9;
+  --color-mint: #f0fafb;
+  --color-bg-light: #f0fafb;
   --color-bg-white: #ffffff;
   --color-text-body: #374151;
   --color-text-heading: #111827;
@@ -72,9 +74,9 @@
   --popover-foreground: #374151;
   --primary: #1c435e;
   --primary-foreground: #ffffff;
-  --secondary: #f7f8fa;
+  --secondary: #f0fafb;
   --secondary-foreground: #1c435e;
-  --muted: #f7f8fa;
+  --muted: #f0fafb;
   --muted-foreground: #6b7280;
   --accent: #2299AA;
   --accent-foreground: #ffffff;
@@ -88,7 +90,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: #f7f8fa;
+  --sidebar: #f0fafb;
   --sidebar-foreground: #374151;
   --sidebar-primary: #1c435e;
   --sidebar-primary-foreground: #ffffff;
@@ -126,6 +128,39 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ── Section utility classes ──────────────────────────────── */
+.section-dark {
+  background-color: #1c435e;
+  color: #ffffff;
+}
+.section-dark h2,
+.section-dark h3 {
+  color: #ffffff;
+}
+.section-dark p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.section-primary-dark {
+  background-color: #0f2a3d;
+  color: #ffffff;
+}
+.section-primary-dark h2,
+.section-primary-dark h3 {
+  color: #ffffff;
+}
+.section-primary-dark p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.section-accent-soft {
+  background-color: #e6f7f9;
+}
+
+.section-mint {
+  background-color: #f0fafb;
 }
 
 /* ── Base typography ─────────────────────────────────────── */
@@ -190,15 +225,15 @@ a {
 .wp-content img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 16px;
 }
 
 .wp-content blockquote {
   border-left: 4px solid #2299AA;
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
-  background: #f7f8fa;
-  border-radius: 0 8px 8px 0;
+  background: #e6f7f9;
+  border-radius: 0 16px 16px 0;
 }
 
 .wp-content table {
@@ -215,7 +250,7 @@ a {
 }
 
 .wp-content th {
-  background: #f7f8fa;
+  background: #f0fafb;
   font-weight: 600;
   color: #111827;
 }

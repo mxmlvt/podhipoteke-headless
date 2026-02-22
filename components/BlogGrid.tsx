@@ -30,10 +30,13 @@ interface BlogGridProps {
 
 export default function BlogGrid({ posts, title, showMoreLink = false }: BlogGridProps) {
   return (
-    <section className="py-16 md:py-24 bg-[#f7f8fa]">
+    <section className="section-mint py-16 md:py-24">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         {title && (
           <div className="text-center mb-12">
+            <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
+              Blog
+            </span>
             <h2 className="text-3xl md:text-4xl font-bold text-[#111827] mb-4">{title}</h2>
             <p className="text-[#6b7280] text-lg">
               Wiedza i porady z zakresu pożyczek, kredytów i finansów osobistych.
@@ -57,7 +60,7 @@ export default function BlogGrid({ posts, title, showMoreLink = false }: BlogGri
           <div className="text-center mt-10">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl border-2 border-[#1c435e] text-[#1c435e] font-bold text-base hover:bg-[#1c435e] hover:text-white transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border-2 border-[#1c435e] text-[#1c435e] font-bold text-base hover:bg-[#1c435e] hover:text-white transition-all duration-300"
             >
               Zobacz wszystkie artykuły
               <ArrowRight className="w-4 h-4" />

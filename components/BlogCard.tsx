@@ -49,8 +49,8 @@ export default function BlogCard({
               />
             </div>
           ) : (
-            <div className="w-full aspect-[16/10] bg-[#f7f8fa] flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#e8f4f6] flex items-center justify-center">
+            <div className="w-full aspect-[16/10] bg-[#f0fafb] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#e6f7f9] flex items-center justify-center">
                 <svg className="w-6 h-6 text-[#2299AA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                 </svg>

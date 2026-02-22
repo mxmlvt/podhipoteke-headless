@@ -32,13 +32,13 @@ export default function KalkulatorKonsolidacjiPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/kontakt"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-[#1c435e] text-white font-bold text-base hover:bg-[#254d6b] transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#1c435e] text-white font-bold text-base hover:bg-[#254d6b] transition-all duration-300"
             >
               W międzyczasie skontaktuj się z nami
             </Link>
             <Link
               href="/narzedzia"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-[#e5e7eb] text-[#374151] font-bold text-base hover:border-[#1c435e] hover:text-[#1c435e] transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-4 rounded-full border-2 border-[#e5e7eb] text-[#374151] font-bold text-base hover:border-[#1c435e] hover:text-[#1c435e] transition-all duration-300"
             >
               Inne narzędzia
             </Link>
