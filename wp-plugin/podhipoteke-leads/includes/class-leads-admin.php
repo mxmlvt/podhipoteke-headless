@@ -232,9 +232,9 @@ class PH24_Leads_Admin {
                     <tr>
                         <th scope="row"><label for="ph24_email">Email do powiadomień</label></th>
                         <td>
-                            <input id="ph24_email" type="email" name="ph24_leads_email"
-                                   value="<?= esc_attr( $email ) ?>" class="regular-text">
-                            <p class="description">Na ten adres trafią powiadomienia o nowych leadach.</p>
+                            <input id="ph24_email" type="text" name="ph24_leads_email"
+                                   value="<?= esc_attr( $email ) ?>" class="large-text">
+                            <p class="description">Na te adresy trafią powiadomienia o nowych leadach. Wiele adresów oddziel przecinkiem, np.: <code>jan@firma.pl, piotr@firma.pl</code></p>
                         </td>
                     </tr>
                     <tr>
@@ -273,7 +273,9 @@ class PH24_Leads_Admin {
         check_admin_referer( 'ph24_save_settings' );
         if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Brak uprawnień' );
 
-        update_option( 'ph24_leads_email',         sanitize_email( $_POST['ph24_leads_email'] ?? '' ) );
+        $raw_emails    = explode( ',', $_POST['ph24_leads_email'] ?? '' );
+        $clean_emails  = array_filter( array_map( 'sanitize_email', array_map( 'trim', $raw_emails ) ) );
+        update_option( 'ph24_leads_email', implode( ', ', $clean_emails ) );
         update_option( 'ph24_leads_notifications', isset( $_POST['ph24_leads_notifications'] ) ? '1' : '0' );
 
         wp_redirect( admin_url( 'admin.php?page=ph24-leads-settings&saved=1' ) );
