@@ -24,6 +24,8 @@ export default function ContactForm() {
     consent: false,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -33,9 +35,40 @@ export default function ContactForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "kontakt",
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          tool_data: {
+            ...(formData.nip      && { "NIP firmy":            formData.nip }),
+            ...(formData.amount   && { "Kwota pożyczki":       formData.amount }),
+            ...(formData.collateral && { "Zabezpieczenie":     formData.collateral }),
+            ...(formData.period   && { "Okres finansowania":   formData.period }),
+          },
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({})) as { error?: string };
+        setError(data.error ?? "Błąd wysyłania. Spróbuj ponownie lub zadzwoń: 577 873 616");
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Błąd połączenia. Spróbuj ponownie lub zadzwoń: 577 873 616");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -201,12 +234,16 @@ export default function ContactForm() {
                       w celu obsługi mojego zapytania.
                     </span>
                   </label>
+                  {error && (
+                    <p className="text-red-300 text-sm text-center">{error}</p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full btn-cta-shine !py-3.5"
+                    disabled={loading}
+                    className="w-full btn-cta-shine !py-3.5 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Send className="w-4 h-4" />
-                    Wyślij wniosek
+                    {loading ? "Wysyłanie..." : "Wyślij wniosek"}
                   </button>
                 </form>
               </>
