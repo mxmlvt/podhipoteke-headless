@@ -14,7 +14,7 @@ const ADLER_POINTS = [
   },
   {
     title: "Specjalizacja w pożyczkach pod zastaw nieruchomości",
-    text: "Nie działam „od wszystkiego". Specjalizuję się w finansowaniu zabezpieczonym hipoteką: pod zastaw domu, mieszkania, działki lub lokalu. Wiem, jakie rozwiązania są realne i bezpieczne.",
+    text: 'Nie działam \u201eod wszystkiego\u201d. Specjalizuję się w finansowaniu zabezpieczonym hipoteką: pod zastaw domu, mieszkania, działki lub lokalu. Wiem, jakie rozwiązania są realne i bezpieczne.',
   },
   {
     title: "Indywidualna analiza każdej sprawy",
@@ -30,7 +30,7 @@ const ADLER_POINTS = [
   },
   {
     title: "Realne rozwiązania, nie obietnice",
-    text: "Jeśli rozwiązanie jest możliwe – powiem wprost. Jeśli nie – również. Moim celem nie jest sprzedaż „za wszelką cenę", lecz długofalowa reputacja i skuteczność.",
+    text: 'Jeśli rozwiązanie jest możliwe \u2013 powiem wprost. Jeśli nie \u2013 również. Moim celem nie jest sprzedaż \u201eza wszelką cenę\u201d, lecz długofalowa reputacja i skuteczność.',
   },
   {
     title: "Bezpośredni kontakt",
