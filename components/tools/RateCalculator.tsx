@@ -9,7 +9,9 @@ import type { ScheduleEntry } from "./RepaymentChart";
 // Recharts jest renderowany tylko po stronie klienta
 const RepaymentChart = dynamic(() => import("./RepaymentChart"), { ssr: false });
 
-type LoanType = "equal" | "declining";
+type LoanType = "equal" | "declining" | "balloon";
+
+const RRSO = 25; // Stałe oprocentowanie roczne
 
 interface CalcResult {
   monthlyPayment: number;
@@ -86,6 +88,36 @@ function calcDeclining(principal: number, months: number, annualRate: number): C
   };
 }
 
+function calcBalloon(principal: number, months: number, annualRate: number): CalcResult {
+  const r = annualRate / 100 / 12;
+  const monthlyInterest = round2(principal * r);
+
+  let totalInterest = 0;
+  const schedule: ScheduleEntry[] = [];
+
+  for (let i = 1; i <= months; i++) {
+    const isLast = i === months;
+    const capital = isLast ? principal : 0;
+    const total = capital + monthlyInterest;
+    totalInterest += monthlyInterest;
+    const balance = isLast ? 0 : principal;
+    schedule.push({
+      month: i,
+      capital: round2(capital),
+      interest: monthlyInterest,
+      balance: round2(balance),
+      total: round2(total),
+    });
+  }
+
+  return {
+    monthlyPayment: monthlyInterest,
+    totalInterest: round2(totalInterest),
+    totalPayment: round2(principal + totalInterest),
+    schedule,
+  };
+}
+
 function round2(n: number) {
   return Math.round(n * 100) / 100;
 }
@@ -156,18 +188,15 @@ function SliderInput({ label, value, min, max, step, onChange, displayValue, min
 export default function RateCalculator() {
   const [kwota, setKwota] = useState(200_000);
   const [okres, setOkres] = useState(60);
-  const [oprocentowanie, setOprocentowanie] = useState(12);
   const [typRat, setTypRat] = useState<LoanType>("equal");
   const [modalOpen, setModalOpen] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
 
-  const results = useMemo(
-    () =>
-      typRat === "equal"
-        ? calcAnnuity(kwota, okres, oprocentowanie)
-        : calcDeclining(kwota, okres, oprocentowanie),
-    [kwota, okres, oprocentowanie, typRat]
-  );
+  const results = useMemo(() => {
+    if (typRat === "equal") return calcAnnuity(kwota, okres, RRSO);
+    if (typRat === "declining") return calcDeclining(kwota, okres, RRSO);
+    return calcBalloon(kwota, okres, RRSO);
+  }, [kwota, okres, typRat]);
 
   const handleModalSuccess = useCallback(async () => {
     setPdfLoading(true);
@@ -178,7 +207,7 @@ export default function RateCalculator() {
         body: JSON.stringify({
           kwota,
           okres,
-          oprocentowanie,
+          oprocentowanie: RRSO,
           typ_rat: typRat,
         }),
       });
@@ -199,7 +228,14 @@ export default function RateCalculator() {
       setPdfLoading(false);
       setModalOpen(false);
     }
-  }, [kwota, okres, oprocentowanie, typRat]);
+  }, [kwota, okres, typRat]);
+
+  const rateLabel =
+    typRat === "equal"
+      ? "Rata miesięczna"
+      : typRat === "declining"
+      ? "Pierwsza rata (najwyższa)"
+      : "Rata miesięczna (odsetki)";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -221,31 +257,25 @@ export default function RateCalculator() {
           label="Okres spłaty"
           value={okres}
           min={6}
-          max={180}
+          max={120}
           step={6}
           onChange={setOkres}
           displayValue={fmtYears(okres)}
           minLabel="6 mies."
-          maxLabel="15 lat"
+          maxLabel="10 lat"
         />
 
-        <SliderInput
-          label="Oprocentowanie roczne"
-          value={oprocentowanie}
-          min={5}
-          max={25}
-          step={0.5}
-          onChange={setOprocentowanie}
-          displayValue={`${oprocentowanie.toFixed(1)}%`}
-          minLabel="5%"
-          maxLabel="25%"
-        />
+        {/* Stałe RRSO */}
+        <div className="flex justify-between items-center py-3 px-4 bg-[#f0fafb] rounded-xl border border-[#e6f7f9]">
+          <span className="text-sm font-semibold text-[#374151]">Oprocentowanie roczne (RRSO)</span>
+          <span className="text-[#2299AA] font-bold text-xl">{RRSO}%</span>
+        </div>
 
         {/* Typ rat */}
         <div className="space-y-2">
           <p className="text-sm font-semibold text-[#374151]">Typ rat</p>
-          <div className="grid grid-cols-2 gap-3">
-            {(["equal", "declining"] as LoanType[]).map((t) => (
+          <div className="grid grid-cols-3 gap-3">
+            {(["equal", "declining", "balloon"] as LoanType[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTypRat(t)}
@@ -255,14 +285,16 @@ export default function RateCalculator() {
                     : "border-[#e5e7eb] text-[#6b7280] hover:border-[#2299AA]/50"
                 }`}
               >
-                {t === "equal" ? "Równe" : "Malejące"}
+                {t === "equal" ? "Równe" : t === "declining" ? "Malejące" : "Balonowe"}
               </button>
             ))}
           </div>
           <p className="text-xs text-[#9ca3af]">
             {typRat === "equal"
               ? "Annuitetowe – stała rata przez cały okres."
-              : "Malejące – pierwsza rata najwyższa, sumaryczny koszt niższy."}
+              : typRat === "declining"
+              ? "Malejące – pierwsza rata najwyższa, sumaryczny koszt niższy."
+              : "Balonowe – co miesiąc tylko odsetki, cały kapitał spłacany na końcu."}
           </p>
         </div>
       </div>
@@ -272,7 +304,7 @@ export default function RateCalculator() {
         {/* Główny wynik */}
         <div className="bg-[#1c435e] rounded-2xl p-6 md:p-8 text-white">
           <p className="text-white/60 text-xs font-semibold uppercase tracking-wider mb-1">
-            {typRat === "equal" ? "Rata miesięczna" : "Pierwsza rata (najwyższa)"}
+            {rateLabel}
           </p>
           <p className="text-4xl md:text-5xl font-bold text-[#5bd0e0] mb-6 tabular-nums">
             {fmtPln(results.monthlyPayment)}
@@ -280,10 +312,10 @@ export default function RateCalculator() {
 
           <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-5 border-t border-white/10">
             {[
-              { label: "Suma odsetek",       value: fmtPln(results.totalInterest) },
-              { label: "Całkowita spłata",   value: fmtPln(results.totalPayment) },
-              { label: "RRSO (szacunkowe)", value: `${oprocentowanie.toFixed(1)}%` },
-              { label: "Okres spłaty",       value: fmtYears(okres) },
+              { label: "Suma odsetek",     value: fmtPln(results.totalInterest) },
+              { label: "Całkowita spłata", value: fmtPln(results.totalPayment) },
+              { label: "RRSO",             value: `${RRSO}%` },
+              { label: "Okres spłaty",     value: fmtYears(okres) },
             ].map(({ label, value }) => (
               <div key={label}>
                 <p className="text-white/50 text-xs mb-0.5">{label}</p>
@@ -292,7 +324,7 @@ export default function RateCalculator() {
             ))}
           </div>
           <p className="text-white/30 text-xs mt-4">
-            * RRSO może się różnić w zależności od prowizji i innych kosztów. Obliczenia mają charakter szacunkowy.
+            * Obliczenia mają charakter szacunkowy i nie stanowią oferty kredytowej.
           </p>
         </div>
 
@@ -335,7 +367,7 @@ export default function RateCalculator() {
           tool_data: {
             kwota,
             okres_miesiecy: okres,
-            oprocentowanie,
+            oprocentowanie: RRSO,
             typ_rat: typRat,
             rata_miesieczna: results.monthlyPayment,
             koszt_calkowity: results.totalInterest,

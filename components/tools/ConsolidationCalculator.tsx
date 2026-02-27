@@ -157,9 +157,9 @@ function LiabilityRow({
 
 /* ─── Main component ─── */
 const DEFAULT_LIABILITIES: Liability[] = [
-  { id: 1, name: "Kredyt gotówkowy", monthly: 800, balance: 25_000, rate: 12 },
-  { id: 2, name: "Karta kredytowa", monthly: 500, balance: 15_000, rate: 22 },
-  { id: 3, name: "Chwilówka", monthly: 400, balance: 8_000, rate: 30 },
+  { id: 1, name: "Kredyt gotówkowy", monthly: 800, balance: 25_000, rate: 18 },
+  { id: 2, name: "Karta kredytowa", monthly: 500, balance: 15_000, rate: 30 },
+  { id: 3, name: "Chwilówka", monthly: 400, balance: 8_000, rate: 45 },
 ];
 
 export default function ConsolidationCalculator() {

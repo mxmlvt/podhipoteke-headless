@@ -1,11 +1,42 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Phone } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import StatsCounter from "@/components/StatsCounter";
 import ContactForm from "@/components/ContactForm";
 import WhyTrustUs from "@/components/WhyTrustUs";
+
+const ADLER_POINTS = [
+  {
+    title: "Ponad 17 lat doświadczenia w finansowaniu pod hipotekę",
+    text: "Działam w branży finansowej nieprzerwanie od 2007 roku. Przez lata przeanalizowałem setki przypadków związanych z pożyczkami pod zastaw nieruchomości, finansowaniem hipotecznym oraz konsolidacją zobowiązań.",
+  },
+  {
+    title: "Specjalizacja w pożyczkach pod zastaw nieruchomości",
+    text: "Nie działam „od wszystkiego". Specjalizuję się w finansowaniu zabezpieczonym hipoteką: pod zastaw domu, mieszkania, działki lub lokalu. Wiem, jakie rozwiązania są realne i bezpieczne.",
+  },
+  {
+    title: "Indywidualna analiza każdej sprawy",
+    text: "Każdy klient ma inną sytuację finansową. Nie stosuję gotowych schematów – analizuję wartość nieruchomości, strukturę zobowiązań i realny cel finansowania. Dopiero wtedy przedstawiam konkretną propozycję.",
+  },
+  {
+    title: "Transparentność i jasne warunki",
+    text: "W finansach najważniejsze jest zaufanie. Jasno omawiam warunki finansowania, koszty i zabezpieczenie hipoteczne. Bez ukrytych zapisów i niedomówień.",
+  },
+  {
+    title: "Dyskrecja i bezpieczeństwo",
+    text: "Sprawy finansowe często są wrażliwe. Zapewniam pełną poufność oraz profesjonalne podejście na każdym etapie współpracy.",
+  },
+  {
+    title: "Realne rozwiązania, nie obietnice",
+    text: "Jeśli rozwiązanie jest możliwe – powiem wprost. Jeśli nie – również. Moim celem nie jest sprzedaż „za wszelką cenę", lecz długofalowa reputacja i skuteczność.",
+  },
+  {
+    title: "Bezpośredni kontakt",
+    text: "Kontaktujesz się bezpośrednio ze mną – nie z call center. Masz jasną komunikację i konkretną odpowiedź.",
+  },
+];
 
 export const metadata: Metadata = {
   title: "O nas – 20 lat doświadczenia na rynku pożyczek | PODHIPOTEKE24.PL",
@@ -39,6 +70,66 @@ export default function ONasPage() {
       </nav>
 
       <StatsCounter />
+
+      {/* Piotr Adler – personalizacja */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+          <div className="text-center mb-12">
+            <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
+              Poznaj eksperta
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#111827]">
+              Dlaczego warto mi zaufać?
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+            {/* Zdjęcie + dane */}
+            <div className="flex flex-col items-center text-center">
+              <div className="relative w-52 h-52 rounded-full overflow-hidden shadow-lg mb-5 border-4 border-[#e6f7f9]">
+                <Image
+                  src="/images/piotr-adler.jpg"
+                  alt="Piotr Adler – Ekspert ds. finansowania pod zastaw nieruchomości"
+                  fill
+                  className="object-cover"
+                  sizes="208px"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-[#111827]">Piotr Adler</h3>
+              <p className="text-[#2299AA] font-medium text-sm mt-1">
+                Ekspert ds. finansowania pod zastaw nieruchomości
+              </p>
+              <a
+                href="tel:577873616"
+                className="mt-5 inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#2299AA] text-white font-semibold text-sm hover:bg-[#2bb5c7] transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                Zadzwoń do mnie
+              </a>
+            </div>
+
+            {/* 7 punktów */}
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {ADLER_POINTS.map((point, i) => (
+                <div
+                  key={i}
+                  className="flex gap-4 p-5 rounded-2xl bg-[#f9fafb] border border-[#f3f4f6] hover:border-[#2299AA]/30 transition-colors"
+                >
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#2299AA] text-white flex items-center justify-center font-bold text-sm">
+                    {i + 1}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#111827] mb-1 text-sm leading-snug">
+                      {point.title}
+                    </h4>
+                    <p className="text-xs text-[#6b7280] leading-relaxed">{point.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6 space-y-20">

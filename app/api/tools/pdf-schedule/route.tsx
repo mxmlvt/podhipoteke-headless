@@ -105,7 +105,7 @@ function calcSchedule(
   principal: number,
   months: number,
   annualRate: number,
-  type: "equal" | "declining"
+  type: "equal" | "declining" | "balloon"
 ): { schedule: ScheduleRow[]; totalInterest: number; totalPayment: number; monthly: number } {
   const r = annualRate / 100 / 12;
 
@@ -122,7 +122,7 @@ function calcSchedule(
       schedule.push({ month: i, capital: round2(capital), interest: round2(interest), balance: round2(balance), total: round2(monthly) });
     }
     return { schedule, totalInterest: round2(totalInterest), totalPayment: round2(monthly * months), monthly: round2(monthly) };
-  } else {
+  } else if (type === "declining") {
     const cap = principal / months;
     let balance = principal;
     let totalInterest = 0;
@@ -137,6 +137,20 @@ function calcSchedule(
       schedule.push({ month: i, capital: round2(cap), interest: round2(interest), balance: round2(balance), total: round2(total) });
     }
     return { schedule, totalInterest: round2(totalInterest), totalPayment: round2(principal + totalInterest), monthly: round2(firstTotal) };
+  } else {
+    // balloon: only interest each month, full capital on last payment
+    const monthlyInterest = round2(principal * r);
+    let totalInterest = 0;
+    const schedule: ScheduleRow[] = [];
+    for (let i = 1; i <= months; i++) {
+      const isLast = i === months;
+      const capital = isLast ? principal : 0;
+      const total = capital + monthlyInterest;
+      totalInterest += monthlyInterest;
+      const balance = isLast ? 0 : principal;
+      schedule.push({ month: i, capital: round2(capital), interest: monthlyInterest, balance: round2(balance), total: round2(total) });
+    }
+    return { schedule, totalInterest: round2(totalInterest), totalPayment: round2(principal + totalInterest), monthly: monthlyInterest };
   }
 }
 
@@ -149,7 +163,7 @@ interface DocProps {
   kwota: number;
   okres: number;
   oprocentowanie: number;
-  typ_rat: "equal" | "declining";
+  typ_rat: "equal" | "declining" | "balloon";
   schedule: ScheduleRow[];
   totalInterest: number;
   totalPayment: number;
@@ -158,7 +172,7 @@ interface DocProps {
 }
 
 function ScheduleDocument({ kwota, okres, oprocentowanie, typ_rat, schedule, totalInterest, totalPayment, monthly, date }: DocProps) {
-  const typLabel = typ_rat === "equal" ? "Równe (annuitetowe)" : "Malejące";
+  const typLabel = typ_rat === "equal" ? "Równe (annuitetowe)" : typ_rat === "declining" ? "Malejące" : "Balonowe";
 
   return (
     <Document title="Harmonogram spłat – PodHipoteke24.pl" author="PodHipoteke24.pl">
@@ -193,7 +207,7 @@ function ScheduleDocument({ kwota, okres, oprocentowanie, typ_rat, schedule, tot
         {/* Podsumowanie */}
         <View style={styles.summaryRow}>
           <View style={styles.summaryCard}>
-            <Text style={styles.summaryLabel}>{typ_rat === "equal" ? "Rata miesięczna" : "Pierwsza rata"}</Text>
+            <Text style={styles.summaryLabel}>{typ_rat === "balloon" ? "Rata odsetkowa" : typ_rat === "equal" ? "Rata miesięczna" : "Pierwsza rata"}</Text>
             <Text style={styles.summaryValue}>{fmtPln(monthly)}</Text>
           </View>
           <View style={styles.summaryCard}>
@@ -256,7 +270,7 @@ export async function POST(request: NextRequest) {
     const kwota         = Number(body.kwota)         || 200_000;
     const okres         = Number(body.okres)         || 60;
     const oprocentowanie = Number(body.oprocentowanie) || 12;
-    const typ_rat       = (body.typ_rat === "declining" ? "declining" : "equal") as "equal" | "declining";
+    const typ_rat       = (["equal", "declining", "balloon"].includes(body.typ_rat) ? body.typ_rat : "equal") as "equal" | "declining" | "balloon";
 
     const { schedule, totalInterest, totalPayment, monthly } = calcSchedule(kwota, okres, oprocentowanie, typ_rat);
 

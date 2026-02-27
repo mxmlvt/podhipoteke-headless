@@ -20,6 +20,21 @@ export interface DiagnosticResult {
   required_documents: string[];
 }
 
+function getPropertyTypeDocs(propertyType: QuizAnswers["property_type"]): string[] {
+  if (!propertyType) return [];
+  if (propertyType === "mieszkanie" || propertyType === "dom" || propertyType === "lokal") {
+    return ["Zdjęcia nieruchomości"];
+  }
+  if (propertyType === "dzialka") {
+    return [
+      "Wypis z rejestru gruntów",
+      "Zaświadczenie o przeznaczeniu działki w MPZP lub warunki zabudowy",
+    ];
+  }
+  // grunt_rolny – Wypis z rejestru gruntów jest już w docs bazowych
+  return [];
+}
+
 function round1k(n: number) {
   return Math.round(n / 1000) * 1000;
 }
@@ -87,6 +102,7 @@ export function evaluateDiagnostic(answers: QuizAnswers): DiagnosticResult {
     const requiredDocs = [
       "Numer księgi wieczystej nieruchomości",
       "Dowód osobisty",
+      ...getPropertyTypeDocs(answers.property_type),
       ...(answers.is_business
         ? ["Dokumenty rejestrowe firmy (KRS lub CEIDG)", "NIP, REGON"]
         : []),
@@ -115,6 +131,7 @@ export function evaluateDiagnostic(answers: QuizAnswers): DiagnosticResult {
     "Numer księgi wieczystej nieruchomości (KW)",
     "Wypis z rejestru gruntów",
     "Dowód osobisty / paszport",
+    ...getPropertyTypeDocs(answers.property_type),
     ...(answers.is_business
       ? ["Dokumenty rejestrowe firmy (KRS lub CEIDG)", "NIP, REGON"]
       : []),

@@ -12,6 +12,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://podhipoteke24.pl"),
   title: "PODHIPOTEKE24.PL - Ekspresowe pożyczki pod hipotekę",
   description:
     "Ekspresowe pożyczki pod hipotekę nieruchomości. Kwoty od 50 000 do 2 000 000 zł. Szybka decyzja kredytowa. 20 lat doświadczenia.",
