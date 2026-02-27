@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import client from "@/lib/apollo";
-import { GET_PAGE_BY_SLUG, GET_ALL_PAGE_SLUGS } from "@/lib/queries";
+import { GET_PAGE_BY_SLUG } from "@/lib/queries";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 import TrustBadgesBar from "@/components/TrustBadgesBar";
@@ -14,15 +14,11 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Pages are rendered on-demand (ISR) to avoid WP connection issues during build
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
-  try {
-    const { data } = await client.query<any>({ query: GET_ALL_PAGE_SLUGS });
-    return data.pages.nodes
-      .filter((page: { slug: string }) => isServicePageSlug(page.slug))
-      .map((page: { slug: string }) => ({ slug: page.slug }));
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

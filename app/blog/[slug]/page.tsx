@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, Calendar, ChevronRight, List } from "lucide-react";
 import client from "@/lib/apollo";
-import { GET_POST_BY_SLUG, GET_ALL_SLUGS, GET_RELATED_POSTS } from "@/lib/queries";
+import { GET_POST_BY_SLUG, GET_RELATED_POSTS } from "@/lib/queries";
 import { parseWPContent, getTableOfContents } from "@/lib/content-parser";
 import CTABox from "@/components/shared/CTABox";
 import { Badge } from "@/components/ui/badge";
@@ -15,15 +15,11 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Pages are rendered on-demand (ISR) to avoid WP connection issues during build
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
-  try {
-    const { data } = await client.query<any>({ query: GET_ALL_SLUGS });
-    return data.posts.nodes.map((post: { slug: string }) => ({
-      slug: post.slug,
-    }));
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
