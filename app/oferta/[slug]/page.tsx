@@ -15,10 +15,14 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const { data } = await client.query<any>({ query: GET_ALL_PAGE_SLUGS });
-  return data.pages.nodes
-    .filter((page: { slug: string }) => isServicePageSlug(page.slug))
-    .map((page: { slug: string }) => ({ slug: page.slug }));
+  try {
+    const { data } = await client.query<any>({ query: GET_ALL_PAGE_SLUGS });
+    return data.pages.nodes
+      .filter((page: { slug: string }) => isServicePageSlug(page.slug))
+      .map((page: { slug: string }) => ({ slug: page.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

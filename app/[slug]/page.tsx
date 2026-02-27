@@ -46,24 +46,28 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const { data } = await client.query<any>({ query: GET_ALL_PAGE_SLUGS });
+  try {
+    const { data } = await client.query<any>({ query: GET_ALL_PAGE_SLUGS });
 
-  // WP pages filtered: exclude dedicated pages AND service/offer pages (handled by /oferta/[slug])
-  const wpSlugs = data.pages.nodes
-    .filter((page: { slug: string }) =>
-      !EXCLUDED_SLUGS.includes(page.slug) && !isServicePageSlug(page.slug)
-    )
-    .map((page: { slug: string }) => ({ slug: page.slug }));
+    // WP pages filtered: exclude dedicated pages AND service/offer pages (handled by /oferta/[slug])
+    const wpSlugs = data.pages.nodes
+      .filter((page: { slug: string }) =>
+        !EXCLUDED_SLUGS.includes(page.slug) && !isServicePageSlug(page.slug)
+      )
+      .map((page: { slug: string }) => ({ slug: page.slug }));
 
-  // Merge city slugs as fallback (cities may not exist in WP)
-  const allSlugs = [...wpSlugs];
-  for (const citySlug of CITY_SLUGS) {
-    if (!allSlugs.find((s) => s.slug === citySlug)) {
-      allSlugs.push({ slug: citySlug });
+    // Merge city slugs as fallback (cities may not exist in WP)
+    const allSlugs = [...wpSlugs];
+    for (const citySlug of CITY_SLUGS) {
+      if (!allSlugs.find((s) => s.slug === citySlug)) {
+        allSlugs.push({ slug: citySlug });
+      }
     }
-  }
 
-  return allSlugs;
+    return allSlugs;
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

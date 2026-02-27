@@ -16,10 +16,14 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const { data } = await client.query<any>({ query: GET_ALL_SLUGS });
-  return data.posts.nodes.map((post: { slug: string }) => ({
-    slug: post.slug,
-  }));
+  try {
+    const { data } = await client.query<any>({ query: GET_ALL_SLUGS });
+    return data.posts.nodes.map((post: { slug: string }) => ({
+      slug: post.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
