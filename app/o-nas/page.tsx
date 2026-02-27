@@ -88,7 +88,7 @@ export default function ONasPage() {
             <div className="flex flex-col items-center text-center">
               <div className="relative w-52 h-52 rounded-full overflow-hidden shadow-lg mb-5 border-4 border-[#e6f7f9]">
                 <Image
-                  src="/images/piotr-adler.jpg"
+                  src="/images/piotr-adler.png"
                   alt="Piotr Adler – Ekspert ds. finansowania pod zastaw nieruchomości"
                   fill
                   className="object-cover"
