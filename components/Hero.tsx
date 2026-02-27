@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Star, Check, Phone, Send } from "lucide-react";
 import { IMAGES } from "@/lib/images";
+import { submitLead } from "@/lib/leads";
 
 const trustItems = [
   { text: "20 lat doświadczenia" },
@@ -24,12 +25,26 @@ export default function Hero() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", kwota: "", rodo: false });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setSent(true);
+    setError(null);
+
+    const result = await submitLead({
+      source: "hero",
+      name: form.name,
+      phone: form.phone,
+      email: form.email,
+      tool_data: form.kwota ? { "Kwota pożyczki": form.kwota } : undefined,
+    });
+
+    if (result.success) {
+      setSent(true);
+    } else {
+      setError(result.error ?? "Błąd wysyłania. Zadzwoń: 577 873 616");
+    }
     setLoading(false);
   };
 
@@ -162,6 +177,9 @@ export default function Hero() {
                       Wyrażam zgodę na przetwarzanie danych osobowych w celu kontaktu w sprawie oferty pożyczki.
                     </label>
                   </div>
+                  {error && (
+                    <p className="text-red-500 text-xs text-center">{error}</p>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}
