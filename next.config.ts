@@ -24,6 +24,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/pozyczki-oddluzeniowe",
+        destination: "/pozyczki-oddluzeniowe-2",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

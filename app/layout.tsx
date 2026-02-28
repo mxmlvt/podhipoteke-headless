@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -25,6 +26,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pl">
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TJ8L6ER6EV"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TJ8L6ER6EV');
+          `}
+        </Script>
+      </head>
       <body className={`${jost.variable} antialiased`}>
         <Header />
         {children}
