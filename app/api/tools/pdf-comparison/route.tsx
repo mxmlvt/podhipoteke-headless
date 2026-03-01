@@ -1,3 +1,4 @@
+import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import {
   Document,
@@ -13,6 +14,8 @@ import { LOAN_PRODUCTS, calcMonthlyPayment, calcTotalCost } from "@/lib/comparis
 export const dynamic = "force-dynamic";
 
 // ─── No Font.register() – using built-in Helvetica (no network dependency) ───
+// ─── Local path instead of remote URL – avoids HTTP fetch in serverless ───
+const ADLER_PHOTO = path.join(process.cwd(), "public", "images", "piotr-adler.png");
 
 const C = {
   primary: "#1c435e",
@@ -252,7 +255,7 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
         <View style={styles.adlerBody}>
           <View style={styles.adlerProfile}>
             <Image
-              src="https://podhipoteke24.pl/images/piotr-adler.png"
+              src={ADLER_PHOTO}
               style={styles.adlerPhoto}
             />
             <View style={{ flex: 1 }}>
