@@ -156,3 +156,21 @@
   margin-top: 16px;
   flex-wrap: wrap;
 }
+
+/* Przycisk usuwania leada */
+.ph24-actions { text-align: center; width: 70px; }
+
+.ph24-delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  opacity: .75;
+  transition: opacity .15s, background .15s;
+  white-space: nowrap;
+}
+.ph24-delete-btn:hover { opacity: 1; background: #fef2f2; }
+.ph24-delete-btn:disabled { opacity: .4; cursor: not-allowed; }

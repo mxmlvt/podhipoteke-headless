@@ -30,6 +30,7 @@ class PH24_Leads_Admin {
         add_action( 'admin_menu',            [ $this, 'add_menu' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
         add_action( 'wp_ajax_ph24_update_status', [ $this, 'ajax_update_status' ] );
+        add_action( 'wp_ajax_ph24_delete_lead',  [ $this, 'ajax_delete_lead' ] );
         add_action( 'admin_post_ph24_save_settings', [ $this, 'save_settings' ] );
     }
 
@@ -125,6 +126,7 @@ class PH24_Leads_Admin {
                         <th>E-mail</th>
                         <th>Status</th>
                         <th>Dane narzędzia</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,6 +178,14 @@ class PH24_Leads_Admin {
                                 </details>
                             <?php else : ?>—<?php endif; ?>
                         </td>
+
+                        <td class="ph24-actions">
+                            <button
+                                class="ph24-delete-btn button-link-delete"
+                                data-id="<?= intval( $lead['id'] ) ?>"
+                                title="Usuń lead"
+                            >🗑 Usuń</button>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -193,17 +203,52 @@ class PH24_Leads_Admin {
         </div>
 
         <script>
-        document.querySelectorAll('.ph24-status-select').forEach(function(sel) {
-            sel.addEventListener('change', async function() {
-                const res = await fetch('<?= esc_url( admin_url( 'admin-ajax.php' ) ) ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'action=ph24_update_status&id=' + this.dataset.id + '&status=' + this.value + '&nonce=<?= wp_create_nonce( 'ph24_update_status' ) ?>'
+        (function() {
+            const ajaxUrl  = '<?= esc_url( admin_url( 'admin-ajax.php' ) ) ?>';
+            const nonceStatus = '<?= wp_create_nonce( 'ph24_update_status' ) ?>';
+            const nonceDelete = '<?= wp_create_nonce( 'ph24_delete_lead' ) ?>';
+
+            // ── Zmiana statusu ────────────────────────────────────────
+            document.querySelectorAll('.ph24-status-select').forEach(function(sel) {
+                sel.addEventListener('change', async function() {
+                    const res  = await fetch(ajaxUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'action=ph24_update_status&id=' + this.dataset.id + '&status=' + this.value + '&nonce=' + nonceStatus,
+                    });
+                    const json = await res.json();
+                    if (!json.success) alert('Błąd aktualizacji statusu. Odśwież stronę.');
                 });
-                const json = await res.json();
-                if (!json.success) alert('Błąd aktualizacji statusu. Odśwież stronę.');
             });
-        });
+
+            // ── Usuwanie leada ────────────────────────────────────────
+            document.querySelectorAll('.ph24-delete-btn').forEach(function(btn) {
+                btn.addEventListener('click', async function() {
+                    if (!confirm('Czy na pewno chcesz usunąć ten lead? Operacja jest nieodwracalna.')) return;
+
+                    btn.disabled = true;
+                    btn.textContent = '⏳';
+
+                    const res  = await fetch(ajaxUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'action=ph24_delete_lead&id=' + btn.dataset.id + '&nonce=' + nonceDelete,
+                    });
+                    const json = await res.json();
+
+                    if (json.success) {
+                        const row = btn.closest('tr');
+                        row.style.transition = 'opacity .3s';
+                        row.style.opacity    = '0';
+                        setTimeout(() => row.remove(), 320);
+                    } else {
+                        btn.disabled    = false;
+                        btn.textContent = '🗑 Usuń';
+                        alert('Błąd usuwania leada. Odśwież stronę i spróbuj ponownie.');
+                    }
+                });
+            });
+        })();
         </script>
         <?php
     }
@@ -267,6 +312,18 @@ class PH24_Leads_Admin {
         PH24_Leads_DB::update_status( $id, $status )
             ? wp_send_json_success()
             : wp_send_json_error( 'Błąd aktualizacji' );
+    }
+
+    public function ajax_delete_lead(): void {
+        check_ajax_referer( 'ph24_delete_lead', 'nonce' );
+        if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error( 'Brak uprawnień', 403 );
+
+        $id = intval( $_POST['id'] ?? 0 );
+        if ( $id <= 0 ) wp_send_json_error( 'Nieprawidłowe ID' );
+
+        PH24_Leads_DB::delete_lead( $id )
+            ? wp_send_json_success()
+            : wp_send_json_error( 'Błąd usuwania' );
     }
 
     public function save_settings(): void {
