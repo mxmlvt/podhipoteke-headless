@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import {
   Document,
@@ -13,8 +14,12 @@ import {
 export const dynamic = "force-dynamic";
 
 // ─── No Font.register() – using built-in Helvetica (no network dependency) ───
-// ─── Local path instead of remote URL – avoids HTTP fetch in serverless ───
-const ADLER_PHOTO = path.join(process.cwd(), "public", "images", "piotr-adler.png");
+// ─── Local path – checked at runtime, optional (PDF renders without photo if missing) ───
+const ADLER_PHOTO_PATH = path.join(process.cwd(), "public", "images", "piotr-adler.png");
+const ADLER_PHOTO_EXISTS = fs.existsSync(ADLER_PHOTO_PATH);
+console.log("[pdf-consolidation] cwd:", process.cwd());
+console.log("[pdf-consolidation] adler photo path:", ADLER_PHOTO_PATH);
+console.log("[pdf-consolidation] adler photo exists:", ADLER_PHOTO_EXISTS);
 
 const C = {
   primary: "#1c435e",
@@ -213,10 +218,12 @@ function ConsolidationPDF({
 
         <View style={styles.adlerBody}>
           <View style={styles.adlerProfile}>
-            <Image
-              src={ADLER_PHOTO}
-              style={styles.adlerPhoto}
-            />
+            {ADLER_PHOTO_EXISTS && (
+              <Image
+                src={ADLER_PHOTO_PATH}
+                style={styles.adlerPhoto}
+              />
+            )}
             <View style={{ flex: 1 }}>
               <Text style={styles.adlerName}>Piotr Adler</Text>
               <Text style={styles.adlerRole}>Ekspert ds. finansowania pod zastaw nieruchomości</Text>
@@ -272,7 +279,10 @@ export async function GET(request: NextRequest) {
     liabilities = [];
   }
 
+  console.log("[pdf-consolidation] request params:", { term, rate, totalBalance, currentMonthly, newMonthly, monthlySaving, totalSaving, emailTo, liabilitiesCount: liabilities.length });
+
   try {
+    console.log("[pdf-consolidation] starting renderToBuffer...");
     const buffer = await renderToBuffer(
       <ConsolidationPDF
         liabilities={liabilities}
@@ -281,10 +291,14 @@ export async function GET(request: NextRequest) {
         monthlySaving={monthlySaving} totalSaving={totalSaving}
       />
     );
+    console.log("[pdf-consolidation] renderToBuffer OK, size:", buffer.byteLength);
 
     // Fire-and-forget: send PDF by email if address provided
+    console.log("[pdf-consolidation] emailTo:", emailTo, "WORDPRESS_API_URL set:", !!process.env.WORDPRESS_API_URL);
     if (emailTo && process.env.WORDPRESS_API_URL) {
-      fetch(`${process.env.WORDPRESS_API_URL}/wp-json/ph24/v1/send-pdf`, {
+      const sendPdfUrl = `${process.env.WORDPRESS_API_URL}/wp-json/ph24/v1/send-pdf`;
+      console.log("[pdf-consolidation] sending PDF email to:", emailTo, "via:", sendPdfUrl);
+      fetch(sendPdfUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -294,7 +308,15 @@ export async function GET(request: NextRequest) {
           subject: "Twój plan konsolidacji – PodHipoteke24",
         }),
         signal: AbortSignal.timeout(10_000),
-      }).catch(() => { /* email failure is non-critical */ });
+      }).then(async (r) => {
+        console.log("[pdf-consolidation] send-pdf response status:", r.status);
+        if (!r.ok) {
+          const body = await r.text().catch(() => "");
+          console.error("[pdf-consolidation] send-pdf error body:", body);
+        }
+      }).catch((e) => {
+        console.error("[pdf-consolidation] send-pdf fetch error:", e);
+      });
     }
 
     return new NextResponse(new Uint8Array(buffer), {
@@ -305,7 +327,10 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
-    console.error("[pdf-consolidation] error:", err);
-    return NextResponse.json({ error: "PDF generation failed" }, { status: 500 });
+    console.error("[pdf-consolidation] renderToBuffer FAILED:", err);
+    console.error("[pdf-consolidation] error name:", (err as Error)?.name);
+    console.error("[pdf-consolidation] error message:", (err as Error)?.message);
+    console.error("[pdf-consolidation] error stack:", (err as Error)?.stack);
+    return NextResponse.json({ error: "PDF generation failed", detail: String(err) }, { status: 500 });
   }
 }

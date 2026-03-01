@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import {
   Document,
@@ -14,8 +15,12 @@ import { LOAN_PRODUCTS, calcMonthlyPayment, calcTotalCost } from "@/lib/comparis
 export const dynamic = "force-dynamic";
 
 // ─── No Font.register() – using built-in Helvetica (no network dependency) ───
-// ─── Local path instead of remote URL – avoids HTTP fetch in serverless ───
-const ADLER_PHOTO = path.join(process.cwd(), "public", "images", "piotr-adler.png");
+// ─── Local path – checked at runtime, optional (PDF renders without photo if missing) ───
+const ADLER_PHOTO_PATH = path.join(process.cwd(), "public", "images", "piotr-adler.png");
+const ADLER_PHOTO_EXISTS = fs.existsSync(ADLER_PHOTO_PATH);
+console.log("[pdf-comparison] cwd:", process.cwd());
+console.log("[pdf-comparison] adler photo path:", ADLER_PHOTO_PATH);
+console.log("[pdf-comparison] adler photo exists:", ADLER_PHOTO_EXISTS);
 
 const C = {
   primary: "#1c435e",
@@ -254,10 +259,12 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
 
         <View style={styles.adlerBody}>
           <View style={styles.adlerProfile}>
-            <Image
-              src={ADLER_PHOTO}
-              style={styles.adlerPhoto}
-            />
+            {ADLER_PHOTO_EXISTS && (
+              <Image
+                src={ADLER_PHOTO_PATH}
+                style={styles.adlerPhoto}
+              />
+            )}
             <View style={{ flex: 1 }}>
               <Text style={styles.adlerName}>Piotr Adler</Text>
               <Text style={styles.adlerRole}>Ekspert ds. finansowania pod zastaw nieruchomości</Text>
@@ -301,10 +308,14 @@ export async function GET(request: NextRequest) {
   const term = Number(p.get("term") ?? 120);
   const emailTo = p.get("email") ?? "";
 
+  console.log("[pdf-comparison] request params:", { loanAmount, term, emailTo });
+
   try {
+    console.log("[pdf-comparison] starting renderToBuffer...");
     const buffer = await renderToBuffer(
       <ComparisonPDF loanAmount={loanAmount} term={term} />
     );
+    console.log("[pdf-comparison] renderToBuffer OK, size:", buffer.byteLength);
 
     // Fire-and-forget: send PDF by email if address provided
     if (emailTo && process.env.WORDPRESS_API_URL) {
@@ -329,7 +340,10 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
-    console.error("[pdf-comparison] error:", err);
-    return NextResponse.json({ error: "PDF generation failed" }, { status: 500 });
+    console.error("[pdf-comparison] renderToBuffer FAILED:", err);
+    console.error("[pdf-comparison] error name:", (err as Error)?.name);
+    console.error("[pdf-comparison] error message:", (err as Error)?.message);
+    console.error("[pdf-comparison] error stack:", (err as Error)?.stack);
+    return NextResponse.json({ error: "PDF generation failed", detail: String(err) }, { status: 500 });
   }
 }
