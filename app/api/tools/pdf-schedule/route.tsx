@@ -15,8 +15,8 @@ import {
 
 // ─── Inter font – local WOFF files, no network dependency, full Polish character support ───
 const FONTS_DIR = path.join(process.cwd(), "public", "fonts");
-Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.woff") });
-Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.woff") });
+Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.ttf") });
+Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.ttf") });
 
 // ── Stylesheetowanie PDF ────────────────────────────────────────
 const styles = StyleSheet.create({

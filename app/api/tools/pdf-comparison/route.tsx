@@ -17,8 +17,8 @@ export const dynamic = "force-dynamic";
 
 // ─── Inter font – local WOFF files, no network dependency, full Polish character support ───
 const FONTS_DIR = path.join(process.cwd(), "public", "fonts");
-Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.woff") });
-Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.woff") });
+Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.ttf") });
+Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.ttf") });
 
 // ─── Local path – checked at runtime, optional (PDF renders without photo if missing) ───
 const ADLER_PHOTO_PATH = path.join(process.cwd(), "public", "images", "piotr-adler.png");
@@ -259,7 +259,7 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
       <Page size="A4" style={styles.page}>
         <View style={styles.adlerHeader}>
           <Text style={styles.adlerHeaderTitle}>Dlaczego warto mi zaufać?</Text>
-          <Text style={styles.adlerHeaderSub}>Poznaj eksperta – Piotr Adler, PodHipoteke24.pl</Text>
+          <Text style={styles.adlerHeaderSub}>Piotr Adler • PodHipoteke24.pl • tel. 577 873 616</Text>
         </View>
 
         <View style={styles.adlerBody}>
@@ -290,10 +290,10 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
           ))}
 
           <View style={styles.adlerCtaBox}>
-            <Text style={styles.adlerCtaText}>Skontaktuj się bezpośrednio z Piotrem</Text>
+            <Text style={styles.adlerCtaText}>Zapraszam do kontaktu</Text>
             <Text style={styles.adlerCtaSub}>
-              Tel: 577 873 616 • kontakt@podhipoteke24.pl{"\n"}
-              ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów • Dostępni 24h / 7 dni
+              Zadzwoń: 577 873 616 lub napisz: kontakt@podhipoteke24.pl{"\n"}
+              ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów • Dostępny 24h / 7 dni
             </Text>
           </View>
         </View>
