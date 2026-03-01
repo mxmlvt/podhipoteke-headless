@@ -167,7 +167,9 @@ export default function ConsolidationCalculator() {
   const [term, setTerm] = useState(120); // months
   const [rate, setRate] = useState(9.5); // annual %
   const [modalOpen, setModalOpen] = useState(false);
+  const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
 
   /* totals */
   const totalBalance = liabilities.reduce((s, l) => s + (l.balance || 0), 0);
@@ -223,7 +225,7 @@ export default function ConsolidationCalculator() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      // silently ignore
+      setPdfError("Błąd generowania PDF. Spróbuj ponownie.");
     } finally {
       setPdfLoading(false);
     }
@@ -371,7 +373,7 @@ export default function ConsolidationCalculator() {
           </button>
           <button
             type="button"
-            onClick={downloadPdf}
+            onClick={() => { setPdfError(null); setPdfModalOpen(true); }}
             disabled={pdfLoading || totalBalance === 0}
             className="w-full py-3 rounded-full border-2 border-[#1c435e] text-[#1c435e] font-semibold text-sm hover:bg-[#1c435e] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
@@ -387,8 +389,31 @@ export default function ConsolidationCalculator() {
               </>
             )}
           </button>
+          {pdfError && <p className="text-red-500 text-xs text-center">{pdfError}</p>}
         </div>
       </div>
+
+      {/* PDF lead modal */}
+      <LeadCaptureModal
+        open={pdfModalOpen}
+        onClose={() => setPdfModalOpen(false)}
+        heading="Pobierz plan konsolidacji (PDF)"
+        description="Podaj dane kontaktowe, a doradca skontaktuje się z Tobą w celu omówienia oferty. PDF zostanie pobrany automatycznie."
+        fields={["name", "phone", "email"]}
+        leadData={{
+          source: "kalkulator-konsolidacji",
+          tool_data: {
+            total_balance: totalBalance,
+            current_monthly: Math.round(currentMonthly),
+            new_monthly: Math.round(newMonthly),
+            monthly_saving: Math.round(monthlySaving),
+            term_months: term,
+            rate_pct: rate,
+          },
+        }}
+        onSuccess={downloadPdf}
+        submitLabel="Pobierz PDF"
+      />
 
       {/* Lead modal */}
       <LeadCaptureModal

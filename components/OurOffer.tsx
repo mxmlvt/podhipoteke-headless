@@ -19,7 +19,7 @@ const offers = [
     alt: "Kredyt pod zastaw mieszkania",
   },
   {
-    image: IMAGES.offers.nieruchomosc,
+    image: IMAGES.offers.oddluzeniowe,
     title: "Pożyczki oddłużeniowe",
     desc: "Spłacimy Twoje zajęcia komornicze, hipoteki i prywatne zobowiązania. Wyjdź z pętli zadłużenia z naszą pomocą.",
     href: "/pozyczki-oddluzeniowe",

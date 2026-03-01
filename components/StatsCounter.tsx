@@ -13,7 +13,7 @@ interface Stat {
 const stats: Stat[] = [
   { display: "1,8%", label: "oprocentowanie od", sublabel: "rocznie" },
   { display: "6 mln", label: "najwyższa udzielona", sublabel: "pożyczka" },
-  { animateTo: 48, suffix: "h", display: "48h", label: "czas decyzji", sublabel: "kredytowej" },
+  { animateTo: 24, suffix: "h", display: "24h", label: "czas decyzji", sublabel: "kredytowej" },
   { animateTo: 1000, suffix: "+", display: "1000+", label: "zadowolonych", sublabel: "klientów" },
 ];
 

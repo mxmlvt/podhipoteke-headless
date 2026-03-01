@@ -155,7 +155,9 @@ export default function LoanComparison() {
   const [term, setTerm] = useState(120);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [pdfModalOpen, setPdfModalOpen] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
 
   function toggleExpand(id: string) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -178,7 +180,7 @@ export default function LoanComparison() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      // silently ignore
+      setPdfError("Błąd generowania PDF. Spróbuj ponownie.");
     } finally {
       setPdfLoading(false);
     }
@@ -355,7 +357,7 @@ export default function LoanComparison() {
         </button>
         <button
           type="button"
-          onClick={downloadPdf}
+          onClick={() => { setPdfError(null); setPdfModalOpen(true); }}
           disabled={pdfLoading}
           className="flex-1 py-3.5 rounded-full border-2 border-[#1c435e] text-[#1c435e] font-semibold text-sm hover:bg-[#1c435e] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
         >
@@ -372,6 +374,22 @@ export default function LoanComparison() {
           )}
         </button>
       </div>
+      {pdfError && <p className="text-red-500 text-xs text-center mt-2">{pdfError}</p>}
+
+      {/* PDF lead modal */}
+      <LeadCaptureModal
+        open={pdfModalOpen}
+        onClose={() => setPdfModalOpen(false)}
+        heading="Pobierz porównanie ofert (PDF)"
+        description="Podaj dane kontaktowe – PDF zostanie pobrany automatycznie, a doradca skontaktuje się z Tobą."
+        fields={["name", "phone", "email"]}
+        leadData={{
+          source: "porownywarka",
+          tool_data: { loan_amount: loanAmount, term_months: term },
+        }}
+        onSuccess={downloadPdf}
+        submitLabel="Pobierz PDF"
+      />
 
       <LeadCaptureModal
         open={modalOpen}

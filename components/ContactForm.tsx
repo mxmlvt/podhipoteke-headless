@@ -126,13 +126,13 @@ export default function ContactForm() {
                 <div className="p-2.5 rounded-xl bg-white/15 shrink-0">
                   <MapPin className="w-4 h-4 text-[#00d2a0]" />
                 </div>
-                ul. Przykładowa 1, 00-000 Warszawa
+                ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów
               </div>
               <div className="flex items-center gap-3 text-white/80">
                 <div className="p-2.5 rounded-xl bg-white/15">
                   <Clock className="w-4 h-4 text-[#00d2a0]" />
                 </div>
-                Pon–Pt: 8:00 – 18:00
+                24h / 7 dni w tygodniu
               </div>
             </div>
           </div>
