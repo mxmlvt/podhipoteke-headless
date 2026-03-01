@@ -4,21 +4,15 @@ import {
   Page,
   Text,
   View,
+  Image,
   StyleSheet,
   renderToBuffer,
-  Font,
 } from "@react-pdf/renderer";
 import { LOAN_PRODUCTS, calcMonthlyPayment, calcTotalCost } from "@/lib/comparison-data";
 
 export const dynamic = "force-dynamic";
 
-Font.register({
-  family: "Inter",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiA.woff2", fontWeight: 700 },
-  ],
-});
+// ─── No Font.register() – using built-in Helvetica (no network dependency) ───
 
 const C = {
   primary: "#1c435e",
@@ -35,26 +29,26 @@ const C = {
 };
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Inter", backgroundColor: C.white, paddingBottom: 50 },
+  page: { fontFamily: "Helvetica", backgroundColor: C.white, paddingBottom: 50 },
   header: { backgroundColor: C.primary, padding: "28 36 24 36" },
-  headerTitle: { color: C.white, fontSize: 20, fontWeight: 700, marginBottom: 4 },
+  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Helvetica-Bold", marginBottom: 4 },
   headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
   paramBox: { backgroundColor: C.accentSoft, marginTop: 12, borderRadius: 8, padding: "8 14", flexDirection: "row", gap: 20 },
   paramItem: { flexDirection: "row", gap: 6, alignItems: "center" },
   paramLabel: { fontSize: 8, color: C.accent },
-  paramValue: { fontSize: 9, fontWeight: 700, color: C.primary },
+  paramValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.primary },
   body: { padding: "24 36" },
-  sectionTitle: { fontSize: 9, fontWeight: 700, color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
+  sectionTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
 
   tableHeader: { flexDirection: "row", backgroundColor: C.dark, borderRadius: "6 6 0 0", padding: "7 8" },
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "8 8" },
   tableRowHighlight: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.accentSoft, padding: "8 8", backgroundColor: "#f0fafb" },
   tableFooter: { borderRadius: "0 0 6 6", backgroundColor: C.grayLight, padding: "6 8" },
 
-  thCell: { fontSize: 7, fontWeight: 700, color: C.white, textTransform: "uppercase" },
+  thCell: { fontSize: 7, fontFamily: "Helvetica-Bold", color: C.white, textTransform: "uppercase" },
   tdCell: { fontSize: 8, color: C.text },
-  tdBold: { fontSize: 8, fontWeight: 700, color: C.dark },
-  tdAccent: { fontSize: 9, fontWeight: 700, color: C.accent },
+  tdBold: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.dark },
+  tdAccent: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent },
 
   /* widths */
   colProduct: { flex: 2.2 },
@@ -66,12 +60,12 @@ const styles = StyleSheet.create({
   colComm: { flex: 0.7, textAlign: "right" },
 
   bestBox: { backgroundColor: C.primary, borderRadius: 12, padding: "14 18", marginTop: 16, flexDirection: "row", gap: 12, alignItems: "flex-start" },
-  bestLabel: { fontSize: 8, color: "rgba(255,255,255,0.6)", fontWeight: 700, textTransform: "uppercase", marginBottom: 3 },
-  bestValue: { fontSize: 12, fontWeight: 700, color: C.white },
+  bestLabel: { fontSize: 8, color: "rgba(255,255,255,0.6)", fontFamily: "Helvetica-Bold", textTransform: "uppercase", marginBottom: 3 },
+  bestValue: { fontSize: 12, fontFamily: "Helvetica-Bold", color: C.white },
   bestSub: { fontSize: 8, color: "rgba(255,255,255,0.7)", marginTop: 2 },
 
   ctaBox: { backgroundColor: C.accent, borderRadius: 12, padding: "14 18", marginTop: 12 },
-  ctaText: { color: C.white, fontSize: 11, fontWeight: 700, marginBottom: 4 },
+  ctaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
   ctaSub: { color: "rgba(255,255,255,0.85)", fontSize: 9, lineHeight: 1.5 },
 
   footer: {
@@ -82,7 +76,37 @@ const styles = StyleSheet.create({
   },
   footerText: { fontSize: 8, color: C.gray },
   disclaimer: { fontSize: 7, color: C.gray, marginTop: 10, textAlign: "center", lineHeight: 1.6 },
+
+  // ── Piotr Adler page ──
+  adlerHeader: { backgroundColor: C.primary, padding: "24 36 20 36" },
+  adlerHeaderTitle: { color: C.white, fontSize: 18, fontFamily: "Helvetica-Bold", marginBottom: 3 },
+  adlerHeaderSub: { color: "rgba(255,255,255,0.65)", fontSize: 9 },
+  adlerBody: { padding: "20 36" },
+  adlerProfile: { flexDirection: "row", gap: 16, marginBottom: 18, alignItems: "flex-start" },
+  adlerPhoto: { width: 80, height: 80, borderRadius: 40, objectFit: "cover" },
+  adlerName: { fontSize: 16, fontFamily: "Helvetica-Bold", color: C.primary, marginBottom: 3 },
+  adlerRole: { fontSize: 9, color: C.gray, marginBottom: 5 },
+  adlerPhone: { fontSize: 10, fontFamily: "Helvetica-Bold", color: C.accent },
+  pointRow: { flexDirection: "row", gap: 10, marginBottom: 10, alignItems: "flex-start" },
+  pointBadge: { width: 20, height: 20, borderRadius: 10, backgroundColor: C.accent, alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  pointNum: { color: C.white, fontSize: 8, fontFamily: "Helvetica-Bold" },
+  pointContent: { flex: 1 },
+  pointTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.dark, marginBottom: 2 },
+  pointText: { fontSize: 8, color: C.gray, lineHeight: 1.5 },
+  adlerCtaBox: { backgroundColor: C.primary, borderRadius: 12, padding: "16 20", marginTop: 16 },
+  adlerCtaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  adlerCtaSub: { color: "rgba(255,255,255,0.75)", fontSize: 9, lineHeight: 1.5 },
 });
+
+const ADLER_POINTS = [
+  { title: "Ponad 17 lat doświadczenia w finansowaniu pod hipotekę", text: "Działam w branży finansowej nieprzerwanie od 2007 roku. Przez lata przeanalizowałem setki przypadków związanych z pożyczkami pod zastaw nieruchomości." },
+  { title: "Specjalizacja w pożyczkach pod zastaw nieruchomości", text: "Nie działam od wszystkiego. Specjalizuję się w finansowaniu zabezpieczonym hipoteką: pod zastaw domu, mieszkania, działki lub lokalu." },
+  { title: "Indywidualna analiza każdej sprawy", text: "Każdy klient ma inną sytuację finansową. Nie stosuję gotowych schematów – analizuję wartość nieruchomości, strukturę zobowiązań i realny cel finansowania." },
+  { title: "Transparentność i jasne warunki", text: "W finansach najważniejsze jest zaufanie. Jasno omawiam warunki finansowania, koszty i zabezpieczenie. Bez ukrytych zapisów i niedomówień." },
+  { title: "Dyskrecja i bezpieczeństwo", text: "Sprawy finansowe często są wrażliwe. Zapewniam pełną poufność oraz profesjonalne podejście na każdym etapie współpracy." },
+  { title: "Realne rozwiązania, nie obietnice", text: "Jeśli rozwiązanie jest możliwe – powiem wprost. Jeśli nie – również. Moim celem nie jest sprzedaż za wszelką cenę, lecz długofalowa reputacja." },
+  { title: "Bezpośredni kontakt", text: "Kontaktujesz się bezpośrednio ze mną – nie z call center. Masz jasną komunikację i konkretną odpowiedź." },
+];
 
 function fmtPLN(n: number) {
   return new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 }).format(n);
@@ -107,6 +131,7 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
 
   return (
     <Document title="Porównanie pożyczek – PodHipoteke24">
+      {/* ── Strona 1: Porównanie ── */}
       <Page size="A4" orientation="landscape" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
@@ -201,7 +226,7 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
           <View style={styles.ctaBox}>
             <Text style={styles.ctaText}>Umów bezpłatną konsultację z doradcą</Text>
             <Text style={styles.ctaSub}>
-              Zadzwoń: 577 873 616 lub napisz na kontakt@podhipoteke24.pl • Pracujemy pon–pt 8:00–18:00
+              Zadzwoń: 577 873 616 lub napisz na kontakt@podhipoteke24.pl • Dostępni 24h / 7 dni w tygodniu
             </Text>
           </View>
 
@@ -216,6 +241,53 @@ function ComparisonPDF({ loanAmount, term }: { loanAmount: number; term: number 
           <Text style={styles.footerText}>podhipoteke24.pl • 577 873 616</Text>
         </View>
       </Page>
+
+      {/* ── Strona 2: Piotr Adler ── */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.adlerHeader}>
+          <Text style={styles.adlerHeaderTitle}>Dlaczego warto mi zaufać?</Text>
+          <Text style={styles.adlerHeaderSub}>Poznaj eksperta – Piotr Adler, PodHipoteke24.pl</Text>
+        </View>
+
+        <View style={styles.adlerBody}>
+          <View style={styles.adlerProfile}>
+            <Image
+              src="https://podhipoteke24.pl/images/piotr-adler.png"
+              style={styles.adlerPhoto}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.adlerName}>Piotr Adler</Text>
+              <Text style={styles.adlerRole}>Ekspert ds. finansowania pod zastaw nieruchomości</Text>
+              <Text style={styles.adlerPhone}>Tel: 577 873 616</Text>
+            </View>
+          </View>
+
+          {ADLER_POINTS.map((pt, i) => (
+            <View key={i} style={styles.pointRow}>
+              <View style={styles.pointBadge}>
+                <Text style={styles.pointNum}>{i + 1}</Text>
+              </View>
+              <View style={styles.pointContent}>
+                <Text style={styles.pointTitle}>{pt.title}</Text>
+                <Text style={styles.pointText}>{pt.text}</Text>
+              </View>
+            </View>
+          ))}
+
+          <View style={styles.adlerCtaBox}>
+            <Text style={styles.adlerCtaText}>Skontaktuj się bezpośrednio z Piotrem</Text>
+            <Text style={styles.adlerCtaSub}>
+              Tel: 577 873 616 • kontakt@podhipoteke24.pl{"\n"}
+              ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów • Dostępni 24h / 7 dni
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.footer} fixed>
+          <Text style={styles.footerText}>PODHIPOTEKE24.PL</Text>
+          <Text style={styles.footerText}>podhipoteke24.pl • 577 873 616</Text>
+        </View>
+      </Page>
     </Document>
   );
 }
@@ -224,11 +296,27 @@ export async function GET(request: NextRequest) {
   const p = request.nextUrl.searchParams;
   const loanAmount = Number(p.get("loan_amount") ?? 300_000);
   const term = Number(p.get("term") ?? 120);
+  const emailTo = p.get("email") ?? "";
 
   try {
     const buffer = await renderToBuffer(
       <ComparisonPDF loanAmount={loanAmount} term={term} />
     );
+
+    // Fire-and-forget: send PDF by email if address provided
+    if (emailTo && process.env.WORDPRESS_API_URL) {
+      fetch(`${process.env.WORDPRESS_API_URL}/wp-json/ph24/v1/send-pdf`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailTo,
+          filename: "porownanie-pozyczek-podhipoteke24.pdf",
+          pdf_base64: Buffer.from(buffer).toString("base64"),
+          subject: "Twoje porównanie pożyczek hipotecznych – PodHipoteke24",
+        }),
+        signal: AbortSignal.timeout(10_000),
+      }).catch(() => { /* email failure is non-critical */ });
+    }
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

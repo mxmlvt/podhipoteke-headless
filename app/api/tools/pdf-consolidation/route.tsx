@@ -4,20 +4,14 @@ import {
   Page,
   Text,
   View,
+  Image,
   StyleSheet,
   renderToBuffer,
-  Font,
 } from "@react-pdf/renderer";
 
 export const dynamic = "force-dynamic";
 
-Font.register({
-  family: "Inter",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fAZ9hiA.woff2", fontWeight: 700 },
-  ],
-});
+// ─── No Font.register() – using built-in Helvetica (no network dependency) ───
 
 const C = {
   primary: "#1c435e",
@@ -33,39 +27,35 @@ const C = {
 };
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Inter", backgroundColor: C.white, paddingBottom: 50 },
+  page: { fontFamily: "Helvetica", backgroundColor: C.white, paddingBottom: 50 },
   header: { backgroundColor: C.primary, padding: "28 36 24 36" },
-  headerTitle: { color: C.white, fontSize: 20, fontWeight: 700, marginBottom: 4 },
+  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Helvetica-Bold", marginBottom: 4 },
   headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
   body: { padding: "24 36" },
-  sectionTitle: { fontSize: 9, fontWeight: 700, color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 },
+  sectionTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 },
   divider: { height: 1, backgroundColor: C.grayLight, marginVertical: 14 },
 
-  /* Summary grid */
   summaryGrid: { flexDirection: "row", gap: 10, marginBottom: 16 },
   summaryBox: { flex: 1, borderRadius: 10, padding: "12 14" },
-  summaryLabel: { fontSize: 7, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 },
-  summaryValue: { fontSize: 16, fontWeight: 700 },
+  summaryLabel: { fontSize: 7, fontFamily: "Helvetica-Bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 5 },
+  summaryValue: { fontSize: 16, fontFamily: "Helvetica-Bold" },
   summarySub: { fontSize: 8, marginTop: 2 },
 
-  /* Saving highlight */
   savingBox: { backgroundColor: C.mint, borderRadius: 12, padding: "14 20", marginBottom: 16, alignItems: "center" },
-  savingLabel: { fontSize: 9, color: C.accent, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
-  savingValue: { fontSize: 26, fontWeight: 700, color: C.primary },
+  savingLabel: { fontSize: 9, color: C.accent, fontFamily: "Helvetica-Bold", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
+  savingValue: { fontSize: 26, fontFamily: "Helvetica-Bold", color: C.primary },
   savingSub: { fontSize: 9, color: C.gray, marginTop: 3 },
 
-  /* Table */
   tableHeader: { flexDirection: "row", backgroundColor: C.grayLight, borderRadius: "6 6 0 0", padding: "6 10" },
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "7 10" },
   tableCell: { fontSize: 9, color: C.text, flex: 1 },
-  tableCellBold: { fontSize: 9, fontWeight: 700, color: C.dark, flex: 1 },
-  tableHeaderCell: { fontSize: 8, fontWeight: 700, color: C.gray, textTransform: "uppercase", flex: 1 },
+  tableCellBold: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.dark, flex: 1 },
+  tableHeaderCell: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.gray, textTransform: "uppercase", flex: 1 },
   tableFooter: { flexDirection: "row", backgroundColor: C.primary, borderRadius: "0 0 6 6", padding: "8 10" },
-  tableFooterCell: { fontSize: 9, fontWeight: 700, color: C.white, flex: 1 },
+  tableFooterCell: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.white, flex: 1 },
 
-  /* CTA */
   ctaBox: { backgroundColor: C.primary, borderRadius: 12, padding: "16 20", marginTop: 12 },
-  ctaText: { color: C.white, fontSize: 11, fontWeight: 700, marginBottom: 4 },
+  ctaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
   ctaSub: { color: "rgba(255,255,255,0.75)", fontSize: 9, lineHeight: 1.5 },
 
   footer: {
@@ -75,7 +65,34 @@ const styles = StyleSheet.create({
     padding: "10 36", backgroundColor: C.white,
   },
   footerText: { fontSize: 8, color: C.gray },
+
+  // ── Piotr Adler page ──
+  adlerHeader: { backgroundColor: C.primary, padding: "24 36 20 36" },
+  adlerHeaderTitle: { color: C.white, fontSize: 18, fontFamily: "Helvetica-Bold", marginBottom: 3 },
+  adlerHeaderSub: { color: "rgba(255,255,255,0.65)", fontSize: 9 },
+  adlerBody: { padding: "20 36" },
+  adlerProfile: { flexDirection: "row", gap: 16, marginBottom: 18, alignItems: "flex-start" },
+  adlerPhoto: { width: 80, height: 80, borderRadius: 40, objectFit: "cover" },
+  adlerName: { fontSize: 16, fontFamily: "Helvetica-Bold", color: C.primary, marginBottom: 3 },
+  adlerRole: { fontSize: 9, color: C.gray, marginBottom: 5 },
+  adlerPhone: { fontSize: 10, fontFamily: "Helvetica-Bold", color: C.accent },
+  pointRow: { flexDirection: "row", gap: 10, marginBottom: 10, alignItems: "flex-start" },
+  pointBadge: { width: 20, height: 20, borderRadius: 10, backgroundColor: C.accent, alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  pointNum: { color: C.white, fontSize: 8, fontFamily: "Helvetica-Bold" },
+  pointContent: { flex: 1 },
+  pointTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.dark, marginBottom: 2 },
+  pointText: { fontSize: 8, color: C.gray, lineHeight: 1.5 },
 });
+
+const ADLER_POINTS = [
+  { title: "Ponad 17 lat doświadczenia w finansowaniu pod hipotekę", text: "Działam w branży finansowej nieprzerwanie od 2007 roku. Przez lata przeanalizowałem setki przypadków związanych z pożyczkami pod zastaw nieruchomości." },
+  { title: "Specjalizacja w pożyczkach pod zastaw nieruchomości", text: "Nie działam od wszystkiego. Specjalizuję się w finansowaniu zabezpieczonym hipoteką: pod zastaw domu, mieszkania, działki lub lokalu." },
+  { title: "Indywidualna analiza każdej sprawy", text: "Każdy klient ma inną sytuację finansową. Nie stosuję gotowych schematów – analizuję wartość nieruchomości, strukturę zobowiązań i realny cel finansowania." },
+  { title: "Transparentność i jasne warunki", text: "W finansach najważniejsze jest zaufanie. Jasno omawiam warunki finansowania, koszty i zabezpieczenie. Bez ukrytych zapisów i niedomówień." },
+  { title: "Dyskrecja i bezpieczeństwo", text: "Sprawy finansowe często są wrażliwe. Zapewniam pełną poufność oraz profesjonalne podejście na każdym etapie współpracy." },
+  { title: "Realne rozwiązania, nie obietnice", text: "Jeśli rozwiązanie jest możliwe – powiem wprost. Jeśli nie – również. Moim celem nie jest sprzedaż za wszelką cenę, lecz długofalowa reputacja." },
+  { title: "Bezpośredni kontakt", text: "Kontaktujesz się bezpośrednio ze mną – nie z call center. Masz jasną komunikację i konkretną odpowiedź." },
+];
 
 interface LiabilityItem {
   name: string;
@@ -93,23 +110,11 @@ function fmtPct(n: number) {
 }
 
 function ConsolidationPDF({
-  liabilities,
-  term,
-  rate,
-  totalBalance,
-  currentMonthly,
-  newMonthly,
-  monthlySaving,
-  totalSaving,
+  liabilities, term, rate, totalBalance, currentMonthly, newMonthly, monthlySaving, totalSaving,
 }: {
   liabilities: LiabilityItem[];
-  term: number;
-  rate: number;
-  totalBalance: number;
-  currentMonthly: number;
-  newMonthly: number;
-  monthlySaving: number;
-  totalSaving: number;
+  term: number; rate: number; totalBalance: number; currentMonthly: number;
+  newMonthly: number; monthlySaving: number; totalSaving: number;
 }) {
   const today = new Date().toLocaleDateString("pl-PL", { day: "2-digit", month: "long", year: "numeric" });
   const years = Math.round(term / 12);
@@ -117,15 +122,14 @@ function ConsolidationPDF({
 
   return (
     <Document title="Plan konsolidacji – PodHipoteke24">
+      {/* ── Strona 1: Plan konsolidacji ── */}
       <Page size="A4" style={styles.page}>
-        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Plan konsolidacji zobowiązań</Text>
           <Text style={styles.headerSub}>PODHIPOTEKE24.PL • podhipoteke24.pl • tel. 577 873 616</Text>
         </View>
 
         <View style={styles.body}>
-          {/* Saving highlight */}
           {saving && (
             <View style={styles.savingBox}>
               <Text style={styles.savingLabel}>Miesięczna oszczędność</Text>
@@ -136,7 +140,6 @@ function ConsolidationPDF({
             </View>
           )}
 
-          {/* Summary grid */}
           <Text style={styles.sectionTitle}>Podsumowanie konsolidacji</Text>
           <View style={styles.summaryGrid}>
             <View style={[styles.summaryBox, { backgroundColor: C.grayLight }]}>
@@ -156,7 +159,6 @@ function ConsolidationPDF({
 
           <View style={styles.divider} />
 
-          {/* Liabilities table */}
           <Text style={styles.sectionTitle}>Lista konsolidowanych zobowiązań</Text>
           <View style={styles.tableHeader}>
             <Text style={[styles.tableHeaderCell, { flex: 2 }]}>Zobowiązanie</Text>
@@ -179,12 +181,11 @@ function ConsolidationPDF({
             <Text style={styles.tableFooterCell}>–</Text>
           </View>
 
-          {/* Disclaimer + CTA */}
           <View style={styles.ctaBox}>
             <Text style={styles.ctaText}>Umów bezpłatną konsultację z doradcą</Text>
             <Text style={styles.ctaSub}>
               Zadzwoń: 577 873 616 lub napisz na kontakt@podhipoteke24.pl{"\n"}
-              Pracujemy pon–pt 8:00–18:00, sob 9:00–14:00
+              Dostępni 24h / 7 dni w tygodniu
             </Text>
           </View>
 
@@ -192,6 +193,53 @@ function ConsolidationPDF({
             Raport wygenerowany: {today} • Wyniki mają charakter szacunkowy i nie stanowią oferty kredytowej.{"\n"}
             Ostateczna oferta zależy od indywidualnej analizy i wyceny nieruchomości.
           </Text>
+        </View>
+
+        <View style={styles.footer} fixed>
+          <Text style={styles.footerText}>PODHIPOTEKE24.PL</Text>
+          <Text style={styles.footerText}>podhipoteke24.pl • 577 873 616</Text>
+        </View>
+      </Page>
+
+      {/* ── Strona 2: Piotr Adler ── */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.adlerHeader}>
+          <Text style={styles.adlerHeaderTitle}>Dlaczego warto mi zaufać?</Text>
+          <Text style={styles.adlerHeaderSub}>Poznaj eksperta – Piotr Adler, PodHipoteke24.pl</Text>
+        </View>
+
+        <View style={styles.adlerBody}>
+          <View style={styles.adlerProfile}>
+            <Image
+              src="https://podhipoteke24.pl/images/piotr-adler.png"
+              style={styles.adlerPhoto}
+            />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.adlerName}>Piotr Adler</Text>
+              <Text style={styles.adlerRole}>Ekspert ds. finansowania pod zastaw nieruchomości</Text>
+              <Text style={styles.adlerPhone}>Tel: 577 873 616</Text>
+            </View>
+          </View>
+
+          {ADLER_POINTS.map((pt, i) => (
+            <View key={i} style={styles.pointRow}>
+              <View style={styles.pointBadge}>
+                <Text style={styles.pointNum}>{i + 1}</Text>
+              </View>
+              <View style={styles.pointContent}>
+                <Text style={styles.pointTitle}>{pt.title}</Text>
+                <Text style={styles.pointText}>{pt.text}</Text>
+              </View>
+            </View>
+          ))}
+
+          <View style={[styles.ctaBox, { marginTop: 16 }]}>
+            <Text style={styles.ctaText}>Skontaktuj się bezpośrednio z Piotrem</Text>
+            <Text style={styles.ctaSub}>
+              Tel: 577 873 616 • kontakt@podhipoteke24.pl{"\n"}
+              ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów • Dostępni 24h / 7 dni
+            </Text>
+          </View>
         </View>
 
         <View style={styles.footer} fixed>
@@ -213,6 +261,7 @@ export async function GET(request: NextRequest) {
   const newMonthly = Number(p.get("new_monthly") ?? 0);
   const monthlySaving = Number(p.get("monthly_saving") ?? 0);
   const totalSaving = Number(p.get("total_saving") ?? 0);
+  const emailTo = p.get("email") ?? "";
   let liabilities: LiabilityItem[] = [];
   try {
     liabilities = JSON.parse(p.get("liabilities") ?? "[]");
@@ -224,15 +273,26 @@ export async function GET(request: NextRequest) {
     const buffer = await renderToBuffer(
       <ConsolidationPDF
         liabilities={liabilities}
-        term={term}
-        rate={rate}
-        totalBalance={totalBalance}
-        currentMonthly={currentMonthly}
-        newMonthly={newMonthly}
-        monthlySaving={monthlySaving}
-        totalSaving={totalSaving}
+        term={term} rate={rate} totalBalance={totalBalance}
+        currentMonthly={currentMonthly} newMonthly={newMonthly}
+        monthlySaving={monthlySaving} totalSaving={totalSaving}
       />
     );
+
+    // Fire-and-forget: send PDF by email if address provided
+    if (emailTo && process.env.WORDPRESS_API_URL) {
+      fetch(`${process.env.WORDPRESS_API_URL}/wp-json/ph24/v1/send-pdf`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: emailTo,
+          filename: "konsolidacja-podhipoteke24.pdf",
+          pdf_base64: Buffer.from(buffer).toString("base64"),
+          subject: "Twój plan konsolidacji – PodHipoteke24",
+        }),
+        signal: AbortSignal.timeout(10_000),
+      }).catch(() => { /* email failure is non-critical */ });
+    }
 
     return new NextResponse(new Uint8Array(buffer), {
       headers: {

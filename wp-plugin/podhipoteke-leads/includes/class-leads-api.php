@@ -46,6 +46,13 @@ class PH24_Leads_API {
             'callback'            => [ $this, 'export_csv' ],
             'permission_callback' => [ $this, 'check_admin' ],
         ] );
+
+        // POST /send-pdf  (server-to-server, no auth – called from Next.js)
+        register_rest_route( self::NAMESPACE, '/send-pdf', [
+            'methods'             => WP_REST_Server::CREATABLE,
+            'callback'            => [ $this, 'send_pdf' ],
+            'permission_callback' => '__return_true',
+        ] );
     }
 
     public function create_lead( WP_REST_Request $request ): WP_REST_Response|WP_Error {
@@ -127,6 +134,45 @@ class PH24_Leads_API {
         header( 'Pragma: no-cache' );
         echo $csv; // phpcs:ignore WordPress.Security.EscapeOutput
         exit;
+    }
+
+    public function send_pdf( WP_REST_Request $request ): WP_REST_Response|WP_Error {
+        $params     = $request->get_json_params();
+        $email      = sanitize_email( $params['email'] ?? '' );
+        $filename   = sanitize_file_name( $params['filename'] ?? 'dokument.pdf' );
+        $pdf_base64 = $params['pdf_base64'] ?? '';
+        $subject    = sanitize_text_field( $params['subject'] ?? 'Twój dokument – PodHipoteke24' );
+
+        if ( ! is_email( $email ) || empty( $pdf_base64 ) ) {
+            return new WP_Error( 'invalid_params', 'Nieprawidłowe parametry.', [ 'status' => 400 ] );
+        }
+
+        $pdf_data = base64_decode( $pdf_base64, true );
+        if ( $pdf_data === false ) {
+            return new WP_Error( 'decode_error', 'Błąd dekodowania PDF.', [ 'status' => 400 ] );
+        }
+
+        // Save to temp file
+        $tmp_path = wp_tempnam( $filename );
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+        if ( file_put_contents( $tmp_path, $pdf_data ) === false ) {
+            return new WP_Error( 'tmp_error', 'Błąd zapisu pliku tymczasowego.', [ 'status' => 500 ] );
+        }
+
+        $message = "Witaj,\n\nW załączniku znajdziesz swój dokument z PodHipoteke24.pl.\n\nJeśli masz pytania, zadzwoń: 577 873 616 lub napisz na kontakt@podhipoteke24.pl\n\nPozdrawienia,\nPiotr Adler\nPodHipoteke24.pl";
+
+        $headers = [ 'Content-Type: text/plain; charset=UTF-8' ];
+
+        $sent = wp_mail( $email, $subject, $message, $headers, [ $tmp_path ] );
+
+        // Clean up temp file
+        @unlink( $tmp_path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+
+        if ( ! $sent ) {
+            return new WP_Error( 'mail_error', 'Błąd wysyłania e-maila.', [ 'status' => 500 ] );
+        }
+
+        return new WP_REST_Response( [ 'success' => true ], 200 );
     }
 
     public function check_admin(): bool {

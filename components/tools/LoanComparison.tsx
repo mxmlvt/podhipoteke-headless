@@ -163,12 +163,13 @@ export default function LoanComparison() {
     setExpandedId((prev) => (prev === id ? null : id));
   }
 
-  async function downloadPdf() {
+  async function downloadPdf(email: string) {
     setPdfLoading(true);
     try {
       const params = new URLSearchParams({
         loan_amount: String(loanAmount),
         term: String(term),
+        ...(email && { email }),
       });
       const res = await fetch(`/api/tools/pdf-comparison?${params.toString()}`);
       if (!res.ok) throw new Error("PDF error");

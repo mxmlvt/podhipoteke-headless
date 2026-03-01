@@ -195,7 +195,7 @@ export default function ConsolidationCalculator() {
     setLiabilities((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
   }, []);
 
-  async function downloadPdf() {
+  async function downloadPdf(email: string) {
     setPdfLoading(true);
     try {
       const params = new URLSearchParams({
@@ -214,6 +214,7 @@ export default function ConsolidationCalculator() {
             rate: l.rate,
           }))
         ),
+        ...(email && { email }),
       });
       const res = await fetch(`/api/tools/pdf-consolidation?${params.toString()}`);
       if (!res.ok) throw new Error("PDF error");

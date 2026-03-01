@@ -15,8 +15,8 @@ interface LeadCaptureModalProps {
   fields?: FieldName[];
   /** Dane niezwiązane z formularzem (source, tool_data) */
   leadData: Omit<LeadData, "name" | "phone" | "email" | "city" | "message">;
-  /** Wywołane po udanym submitcie leada */
-  onSuccess?: () => void;
+  /** Wywołane po udanym submitcie leada, przekazuje email użytkownika */
+  onSuccess?: (email: string) => void;
   /** Tekst na przycisku submit */
   submitLabel?: string;
 }
@@ -62,7 +62,7 @@ export default function LeadCaptureModal({
 
     if (result.success) {
       setSent(true);
-      onSuccess?.();
+      onSuccess?.(form.email);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag?.("event", "conversion", { send_to: "AW-11125929915/zO7JCP6YjYEcELvvoLkp" });
     } else {
