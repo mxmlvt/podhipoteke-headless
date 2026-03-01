@@ -1,9 +1,11 @@
 export const dynamic = "force-dynamic";
 
+import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import React from "react";
 import {
   Document,
+  Font,
   Page,
   View,
   Text,
@@ -11,10 +13,15 @@ import {
   renderToBuffer,
 } from "@react-pdf/renderer";
 
+// ─── Inter font – local WOFF files, no network dependency, full Polish character support ───
+const FONTS_DIR = path.join(process.cwd(), "public", "fonts");
+Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.woff") });
+Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.woff") });
+
 // ── Stylesheetowanie PDF ────────────────────────────────────────
 const styles = StyleSheet.create({
   page: {
-    fontFamily: "Helvetica",
+    fontFamily: "Inter",
     fontSize: 9,
     color: "#111827",
     padding: "30 40 40 40",
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#1c435e",
   },
   headerLeft: { flexDirection: "column" },
-  headerTitle: { fontSize: 18, fontFamily: "Helvetica-Bold", color: "#1c435e" },
+  headerTitle: { fontSize: 18, fontFamily: "Inter-Bold", color: "#1c435e" },
   headerSubtitle: { fontSize: 9, color: "#6b7280", marginTop: 2 },
   headerRight: { fontSize: 8, color: "#6b7280", textAlign: "right" },
   // Params
@@ -42,15 +49,15 @@ const styles = StyleSheet.create({
     padding: "8 10",
   },
   paramLabel: { fontSize: 7, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 3 },
-  paramValue: { fontSize: 11, fontFamily: "Helvetica-Bold", color: "#1c435e" },
+  paramValue: { fontSize: 11, fontFamily: "Inter-Bold", color: "#1c435e" },
   // Summary
   summaryRow: { flexDirection: "row", gap: 8, marginBottom: 14 },
   summaryCard: { flex: 1, backgroundColor: "#1c435e", borderRadius: 6, padding: "8 10" },
   summaryLabel: { fontSize: 7, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 0.4, marginBottom: 3 },
-  summaryValue: { fontSize: 13, fontFamily: "Helvetica-Bold", color: "#5bd0e0" },
+  summaryValue: { fontSize: 13, fontFamily: "Inter-Bold", color: "#5bd0e0" },
   // Table
   tableSection: { marginBottom: 16 },
-  tableSectionTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", color: "#1c435e", marginBottom: 6 },
+  tableSectionTitle: { fontSize: 10, fontFamily: "Inter-Bold", color: "#1c435e", marginBottom: 6 },
   tableHeader: {
     flexDirection: "row",
     backgroundColor: "#1c435e",
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e5e7eb",
   },
   tableRowEven: { backgroundColor: "#f9fafb" },
-  thText: { fontSize: 7.5, fontFamily: "Helvetica-Bold", color: "#ffffff" },
+  thText: { fontSize: 7.5, fontFamily: "Inter-Bold", color: "#ffffff" },
   tdText: { fontSize: 8, color: "#374151" },
   col0: { width: "8%"  },
   col1: { width: "20%" },

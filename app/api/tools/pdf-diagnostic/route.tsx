@@ -1,6 +1,8 @@
+import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import {
   Document,
+  Font,
   Page,
   Text,
   View,
@@ -10,7 +12,10 @@ import {
 
 export const dynamic = "force-dynamic";
 
-// ─── No Font.register() – using built-in Helvetica (no network dependency) ───
+// ─── Inter font – local WOFF files, no network dependency, full Polish character support ───
+const FONTS_DIR = path.join(process.cwd(), "public", "fonts");
+Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.woff") });
+Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.woff") });
 
 /* ─── styles ─── */
 const C = {
@@ -41,33 +46,33 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Helvetica", backgroundColor: C.white, paddingBottom: 50 },
+  page: { fontFamily: "Inter", backgroundColor: C.white, paddingBottom: 50 },
   header: { backgroundColor: C.primary, padding: "28 36 24 36" },
-  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Inter-Bold", marginBottom: 4 },
   headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
   statusBadge: { marginTop: 12, paddingVertical: 5, paddingHorizontal: 12, borderRadius: 20, alignSelf: "flex-start" },
-  statusText: { fontSize: 10, fontFamily: "Helvetica-Bold", color: C.white, letterSpacing: 1 },
+  statusText: { fontSize: 10, fontFamily: "Inter-Bold", color: C.white, letterSpacing: 1 },
   body: { padding: "24 36" },
-  sectionTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 },
-  titleText: { fontSize: 16, fontFamily: "Helvetica-Bold", color: C.dark, marginBottom: 8, lineHeight: 1.4 },
+  sectionTitle: { fontSize: 9, fontFamily: "Inter-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 10 },
+  titleText: { fontSize: 16, fontFamily: "Inter-Bold", color: C.dark, marginBottom: 8, lineHeight: 1.4 },
   desc: { fontSize: 10, color: C.text, lineHeight: 1.6, marginBottom: 18 },
   amountBox: { backgroundColor: C.mint, borderRadius: 12, padding: "16 20", marginBottom: 18 },
-  amountLabel: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
-  amountValue: { fontSize: 22, fontFamily: "Helvetica-Bold", color: C.primary },
+  amountLabel: { fontSize: 8, fontFamily: "Inter-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
+  amountValue: { fontSize: 22, fontFamily: "Inter-Bold", color: C.primary },
   amountProduct: { fontSize: 9, color: C.gray, marginTop: 4 },
   divider: { height: 1, backgroundColor: C.grayLight, marginVertical: 16 },
   row: { flexDirection: "row", gap: 16, marginBottom: 16 },
   halfBox: { flex: 1, backgroundColor: C.grayLight, borderRadius: 10, padding: "12 14" },
-  halfLabel: { fontSize: 7, fontFamily: "Helvetica-Bold", color: C.gray, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
+  halfLabel: { fontSize: 7, fontFamily: "Inter-Bold", color: C.gray, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 },
   stepRow: { flexDirection: "row", gap: 10, marginBottom: 8, alignItems: "flex-start" },
   stepNum: { width: 18, height: 18, borderRadius: 9, backgroundColor: C.accent, alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  stepNumText: { color: C.white, fontSize: 8, fontFamily: "Helvetica-Bold" },
+  stepNumText: { color: C.white, fontSize: 8, fontFamily: "Inter-Bold" },
   stepText: { fontSize: 10, color: C.text, flex: 1, lineHeight: 1.5, paddingTop: 2 },
   docRow: { flexDirection: "row", gap: 8, marginBottom: 6, alignItems: "center" },
   docDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: C.accent },
   docText: { fontSize: 10, color: C.text, flex: 1 },
   ctaBox: { backgroundColor: C.primary, borderRadius: 12, padding: "16 20", marginTop: 8 },
-  ctaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  ctaText: { color: C.white, fontSize: 11, fontFamily: "Inter-Bold", marginBottom: 4 },
   ctaSub: { color: "rgba(255,255,255,0.75)", fontSize: 9, lineHeight: 1.5 },
   footer: {
     position: "absolute", bottom: 0, left: 0, right: 0,
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
   answerGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 16 },
   answerChip: { backgroundColor: C.mint, borderRadius: 8, paddingVertical: 5, paddingHorizontal: 10 },
   answerLabel: { fontSize: 8, color: C.gray, marginBottom: 1 },
-  answerValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.primary },
+  answerValue: { fontSize: 9, fontFamily: "Inter-Bold", color: C.primary },
 });
 
 /* ─── PDF Document ─── */
@@ -157,7 +162,7 @@ function DiagnosticPDF({
         <View style={styles.body}>
           {/* Greeting */}
           {name ? (
-            <Text style={[styles.desc, { fontSize: 11, marginBottom: 4, fontFamily: "Helvetica-Bold", color: C.dark }]}>
+            <Text style={[styles.desc, { fontSize: 11, marginBottom: 4, fontFamily: "Inter-Bold", color: C.dark }]}>
               Drogi/a {name},
             </Text>
           ) : null}

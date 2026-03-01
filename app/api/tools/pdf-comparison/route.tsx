@@ -3,6 +3,7 @@ import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import {
   Document,
+  Font,
   Page,
   Text,
   View,
@@ -14,7 +15,11 @@ import { LOAN_PRODUCTS, calcMonthlyPayment, calcTotalCost } from "@/lib/comparis
 
 export const dynamic = "force-dynamic";
 
-// ─── No Font.register() – using built-in Helvetica (no network dependency) ───
+// ─── Inter font – local WOFF files, no network dependency, full Polish character support ───
+const FONTS_DIR = path.join(process.cwd(), "public", "fonts");
+Font.register({ family: "Inter",     src: path.join(FONTS_DIR, "Inter-Regular.woff") });
+Font.register({ family: "Inter-Bold", src: path.join(FONTS_DIR, "Inter-Bold.woff") });
+
 // ─── Local path – checked at runtime, optional (PDF renders without photo if missing) ───
 const ADLER_PHOTO_PATH = path.join(process.cwd(), "public", "images", "piotr-adler.png");
 const ADLER_PHOTO_EXISTS = fs.existsSync(ADLER_PHOTO_PATH);
@@ -37,26 +42,26 @@ const C = {
 };
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Helvetica", backgroundColor: C.white, paddingBottom: 50 },
+  page: { fontFamily: "Inter", backgroundColor: C.white, paddingBottom: 50 },
   header: { backgroundColor: C.primary, padding: "28 36 24 36" },
-  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  headerTitle: { color: C.white, fontSize: 20, fontFamily: "Inter-Bold", marginBottom: 4 },
   headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
   paramBox: { backgroundColor: C.accentSoft, marginTop: 12, borderRadius: 8, padding: "8 14", flexDirection: "row", gap: 20 },
   paramItem: { flexDirection: "row", gap: 6, alignItems: "center" },
   paramLabel: { fontSize: 8, color: C.accent },
-  paramValue: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.primary },
+  paramValue: { fontSize: 9, fontFamily: "Inter-Bold", color: C.primary },
   body: { padding: "24 36" },
-  sectionTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
+  sectionTitle: { fontSize: 9, fontFamily: "Inter-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
 
   tableHeader: { flexDirection: "row", backgroundColor: C.dark, borderTopLeftRadius: 6, borderTopRightRadius: 6, padding: "7 8" },
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "8 8" },
   tableRowHighlight: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.accentSoft, padding: "8 8", backgroundColor: "#f0fafb" },
   tableFooter: { borderBottomLeftRadius: 6, borderBottomRightRadius: 6, backgroundColor: C.grayLight, padding: "6 8" },
 
-  thCell: { fontSize: 7, fontFamily: "Helvetica-Bold", color: C.white, textTransform: "uppercase" },
+  thCell: { fontSize: 7, fontFamily: "Inter-Bold", color: C.white, textTransform: "uppercase" },
   tdCell: { fontSize: 8, color: C.text },
-  tdBold: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.dark },
-  tdAccent: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent },
+  tdBold: { fontSize: 8, fontFamily: "Inter-Bold", color: C.dark },
+  tdAccent: { fontSize: 9, fontFamily: "Inter-Bold", color: C.accent },
 
   /* widths */
   colProduct: { flex: 2.2 },
@@ -68,12 +73,12 @@ const styles = StyleSheet.create({
   colComm: { flex: 0.7, textAlign: "right" },
 
   bestBox: { backgroundColor: C.primary, borderRadius: 12, padding: "14 18", marginTop: 16, flexDirection: "row", gap: 12, alignItems: "flex-start" },
-  bestLabel: { fontSize: 8, color: "rgba(255,255,255,0.6)", fontFamily: "Helvetica-Bold", textTransform: "uppercase", marginBottom: 3 },
-  bestValue: { fontSize: 12, fontFamily: "Helvetica-Bold", color: C.white },
+  bestLabel: { fontSize: 8, color: "rgba(255,255,255,0.6)", fontFamily: "Inter-Bold", textTransform: "uppercase", marginBottom: 3 },
+  bestValue: { fontSize: 12, fontFamily: "Inter-Bold", color: C.white },
   bestSub: { fontSize: 8, color: "rgba(255,255,255,0.7)", marginTop: 2 },
 
   ctaBox: { backgroundColor: C.accent, borderRadius: 12, padding: "14 18", marginTop: 12 },
-  ctaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  ctaText: { color: C.white, fontSize: 11, fontFamily: "Inter-Bold", marginBottom: 4 },
   ctaSub: { color: "rgba(255,255,255,0.85)", fontSize: 9, lineHeight: 1.5 },
 
   footer: {
@@ -87,22 +92,22 @@ const styles = StyleSheet.create({
 
   // ── Piotr Adler page ──
   adlerHeader: { backgroundColor: C.primary, padding: "24 36 20 36" },
-  adlerHeaderTitle: { color: C.white, fontSize: 18, fontFamily: "Helvetica-Bold", marginBottom: 3 },
+  adlerHeaderTitle: { color: C.white, fontSize: 18, fontFamily: "Inter-Bold", marginBottom: 3 },
   adlerHeaderSub: { color: "rgba(255,255,255,0.65)", fontSize: 9 },
   adlerBody: { padding: "20 36" },
   adlerProfile: { flexDirection: "row", gap: 16, marginBottom: 18, alignItems: "flex-start" },
   adlerPhoto: { width: 80, height: 80, borderRadius: 40, objectFit: "cover" },
-  adlerName: { fontSize: 16, fontFamily: "Helvetica-Bold", color: C.primary, marginBottom: 3 },
+  adlerName: { fontSize: 16, fontFamily: "Inter-Bold", color: C.primary, marginBottom: 3 },
   adlerRole: { fontSize: 9, color: C.gray, marginBottom: 5 },
-  adlerPhone: { fontSize: 10, fontFamily: "Helvetica-Bold", color: C.accent },
+  adlerPhone: { fontSize: 10, fontFamily: "Inter-Bold", color: C.accent },
   pointRow: { flexDirection: "row", gap: 10, marginBottom: 10, alignItems: "flex-start" },
   pointBadge: { width: 20, height: 20, borderRadius: 10, backgroundColor: C.accent, alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  pointNum: { color: C.white, fontSize: 8, fontFamily: "Helvetica-Bold" },
+  pointNum: { color: C.white, fontSize: 8, fontFamily: "Inter-Bold" },
   pointContent: { flex: 1 },
-  pointTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.dark, marginBottom: 2 },
+  pointTitle: { fontSize: 9, fontFamily: "Inter-Bold", color: C.dark, marginBottom: 2 },
   pointText: { fontSize: 8, color: C.gray, lineHeight: 1.5 },
   adlerCtaBox: { backgroundColor: C.primary, borderRadius: 12, padding: "16 20", marginTop: 16 },
-  adlerCtaText: { color: C.white, fontSize: 11, fontFamily: "Helvetica-Bold", marginBottom: 4 },
+  adlerCtaText: { color: C.white, fontSize: 11, fontFamily: "Inter-Bold", marginBottom: 4 },
   adlerCtaSub: { color: "rgba(255,255,255,0.75)", fontSize: 9, lineHeight: 1.5 },
 });
 
