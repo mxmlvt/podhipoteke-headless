@@ -63,6 +63,8 @@ export default function LeadCaptureModal({
     if (result.success) {
       setSent(true);
       onSuccess?.();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "conversion", { send_to: "AW-11125929915/zO7JCP6YjYEcELvvoLkp" });
     } else {
       setError(result.error ?? "Błąd wysyłania. Spróbuj ponownie.");
     }

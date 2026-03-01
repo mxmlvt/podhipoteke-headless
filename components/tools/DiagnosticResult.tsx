@@ -98,6 +98,8 @@ export default function DiagnosticResultScreen({ result, answers, onRestart }: P
     setSending(false);
     if (res.success) {
       setSent(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "conversion", { send_to: "AW-11125929915/zO7JCP6YjYEcELvvoLkp" });
       // trigger PDF download after successful lead submission
       handlePdfDownload();
     } else {

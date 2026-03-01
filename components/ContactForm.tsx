@@ -63,6 +63,8 @@ export default function ContactForm() {
         setError(data.error ?? "Błąd wysyłania. Spróbuj ponownie lub zadzwoń: 577 873 616");
       } else {
         setSubmitted(true);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).gtag?.("event", "conversion", { send_to: "AW-11125929915/zO7JCP6YjYEcELvvoLkp" });
       }
     } catch {
       setError("Błąd połączenia. Spróbuj ponownie lub zadzwoń: 577 873 616");

@@ -42,6 +42,8 @@ export default function Hero() {
 
     if (result.success) {
       setSent(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "conversion", { send_to: "AW-11125929915/zO7JCP6YjYEcELvvoLkp" });
     } else {
       setError(result.error ?? "Błąd wysyłania. Zadzwoń: 577 873 616");
     }
