@@ -54,12 +54,12 @@ const styles = StyleSheet.create({
   savingValue: { fontSize: 26, fontFamily: "Helvetica-Bold", color: C.primary },
   savingSub: { fontSize: 9, color: C.gray, marginTop: 3 },
 
-  tableHeader: { flexDirection: "row", backgroundColor: C.grayLight, borderRadius: "6 6 0 0", padding: "6 10" },
+  tableHeader: { flexDirection: "row", backgroundColor: C.grayLight, borderTopLeftRadius: 6, borderTopRightRadius: 6, padding: "6 10" },
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "7 10" },
   tableCell: { fontSize: 9, color: C.text, flex: 1 },
   tableCellBold: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.dark, flex: 1 },
   tableHeaderCell: { fontSize: 8, fontFamily: "Helvetica-Bold", color: C.gray, textTransform: "uppercase", flex: 1 },
-  tableFooter: { flexDirection: "row", backgroundColor: C.primary, borderRadius: "0 0 6 6", padding: "8 10" },
+  tableFooter: { flexDirection: "row", backgroundColor: C.primary, borderBottomLeftRadius: 6, borderBottomRightRadius: 6, padding: "8 10" },
   tableFooterCell: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.white, flex: 1 },
 
   ctaBox: { backgroundColor: C.primary, borderRadius: 12, padding: "16 20", marginTop: 12 },

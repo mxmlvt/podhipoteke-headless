@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
   body: { padding: "24 36" },
   sectionTitle: { fontSize: 9, fontFamily: "Helvetica-Bold", color: C.accent, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: 12 },
 
-  tableHeader: { flexDirection: "row", backgroundColor: C.dark, borderRadius: "6 6 0 0", padding: "7 8" },
+  tableHeader: { flexDirection: "row", backgroundColor: C.dark, borderTopLeftRadius: 6, borderTopRightRadius: 6, padding: "7 8" },
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.grayLight, padding: "8 8" },
   tableRowHighlight: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: C.accentSoft, padding: "8 8", backgroundColor: "#f0fafb" },
-  tableFooter: { borderRadius: "0 0 6 6", backgroundColor: C.grayLight, padding: "6 8" },
+  tableFooter: { borderBottomLeftRadius: 6, borderBottomRightRadius: 6, backgroundColor: C.grayLight, padding: "6 8" },
 
   thCell: { fontSize: 7, fontFamily: "Helvetica-Bold", color: C.white, textTransform: "uppercase" },
   tdCell: { fontSize: 8, color: C.text },
