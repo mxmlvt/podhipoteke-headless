@@ -21,22 +21,11 @@ export default function KontaktPage() {
     name: "", phone: "", email: "", nip: "",
     amount: "", collateral: "", period: "", consent: false,
   });
-  const [formSimple, setFormSimple] = useState({
-    name: "", email: "", phone: "", message: "", consent: false,
-  });
   const [submittedMain, setSubmittedMain] = useState(false);
-  const [submittedSimple, setSubmittedSimple] = useState(false);
 
   const handleMain = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormMain((p) => ({
-      ...p,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-    }));
-  };
-  const handleSimple = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    setFormSimple((p) => ({
       ...p,
       [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
@@ -54,7 +43,7 @@ export default function KontaktPage() {
         ]}
       />
 
-      {/* ── SEKCJA 1: Złóż wniosek ── */}
+      {/* ── Wypełnij formularz ── */}
       <section id="formularz" className="py-16 md:py-24 bg-white">
         <div className="max-w-[1280px] mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
@@ -83,6 +72,7 @@ export default function KontaktPage() {
                   </li>
                 ))}
               </ul>
+
               {/* Dane kontaktowe – navy */}
               <div className="bg-[#1c435e] rounded-2xl p-6 space-y-4">
                 <h3 className="text-lg font-bold text-white">Dane kontaktowe</h3>
@@ -108,13 +98,13 @@ export default function KontaktPage() {
                   <div className="p-2.5 rounded-xl bg-white/15 shrink-0">
                     <MapPin className="w-4 h-4 text-[#00d2a0]" />
                   </div>
-                  ul. Przykładowa 1, 00-000 Warszawa
+                  ul. Teodora Kalidego 43 lok. 3, 41-500 Chorzów
                 </div>
                 <div className="flex items-center gap-3 text-white/80">
                   <div className="p-2.5 rounded-xl bg-white/15">
                     <Clock className="w-4 h-4 text-[#00d2a0]" />
                   </div>
-                  Pon–Pt: 8:00 – 18:00
+                  24h / 7 dni w tygodniu
                 </div>
               </div>
             </div>
@@ -174,118 +164,6 @@ export default function KontaktPage() {
                     </button>
                   </form>
                 </>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEKCJA 2: Dane + prosty formularz ── */}
-      <section className="py-16 md:py-20 bg-[#f0fafb]">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* LEWA: Dane kontaktowe + mapa */}
-            <div>
-              <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
-                Dane kontaktowe
-              </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#111827] mb-8">
-                Skontaktuj się z nami
-              </h2>
-              <div className="space-y-6 mb-8">
-                <a href="tel:577873616" className="flex items-start gap-4 group">
-                  <div className="p-3 rounded-xl bg-[#e6f7f9] shrink-0 group-hover:bg-[#d0ecf0] transition-colors">
-                    <Phone className="w-5 h-5 text-[#2299AA]" />
-                  </div>
-                  <div>
-                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Telefon</p>
-                    <p className="text-[#111827] text-lg font-semibold group-hover:text-[#1c435e] transition-colors">
-                      577 873 616
-                    </p>
-                  </div>
-                </a>
-                <a href="mailto:kontakt@podhipoteke24.pl" className="flex items-start gap-4 group">
-                  <div className="p-3 rounded-xl bg-[#e6f7f9] shrink-0 group-hover:bg-[#d0ecf0] transition-colors">
-                    <Mail className="w-5 h-5 text-[#2299AA]" />
-                  </div>
-                  <div>
-                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">E-mail</p>
-                    <p className="text-[#111827] text-lg font-semibold group-hover:text-[#1c435e] transition-colors">
-                      kontakt@podhipoteke24.pl
-                    </p>
-                  </div>
-                </a>
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-[#e6f7f9] shrink-0">
-                    <MapPin className="w-5 h-5 text-[#2299AA]" />
-                  </div>
-                  <div>
-                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Adres</p>
-                    <p className="text-[#111827] font-semibold">ul. Przykładowa 1, 00-000 Warszawa</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-[#e6f7f9] shrink-0">
-                    <Clock className="w-5 h-5 text-[#2299AA]" />
-                  </div>
-                  <div>
-                    <p className="text-[#6b7280] text-sm font-medium mb-0.5">Godziny pracy</p>
-                    <p className="text-[#111827] font-semibold">Pon–Pt: 8:00 – 18:00</p>
-                  </div>
-                </div>
-              </div>
-              {/* Mapa placeholder */}
-              <div className="rounded-2xl overflow-hidden border border-[#e5e7eb] h-48 bg-[#e6f7f9] flex items-center justify-center">
-                <p className="text-[#6b7280] text-sm">Mapa Google</p>
-              </div>
-            </div>
-
-            {/* PRAWA: Formularz prosty – bg-white */}
-            <div className="bg-white rounded-2xl p-8 shadow-md">
-              <span className="inline-block mb-3 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#2299AA]/10 text-[#2299AA]">
-                Formularz kontaktowy
-              </span>
-              <h2 className="text-2xl font-bold text-[#111827] mb-2">Napisz do nas</h2>
-              <p className="text-[#6b7280] text-sm mb-6">
-                Odpiszemy w ciągu kilku godzin.
-              </p>
-              {submittedSimple ? (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <CheckCircle className="w-12 h-12 text-[#00d2a0] mb-3" />
-                  <h3 className="text-lg font-bold text-[#111827] mb-1">Wiadomość wysłana!</h3>
-                  <p className="text-[#6b7280] text-sm">Odezwiemy się wkrótce.</p>
-                </div>
-              ) : (
-                <form
-                  onSubmit={(e) => { e.preventDefault(); setSubmittedSimple(true); }}
-                  className="space-y-4"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="text" name="name" placeholder="Imię i nazwisko"
-                      value={formSimple.name} onChange={handleSimple} required className={inputCls} />
-                    <input type="tel" name="phone" placeholder="Numer telefonu"
-                      value={formSimple.phone} onChange={handleSimple} required className={inputCls} />
-                  </div>
-                  <input type="email" name="email" placeholder="Email"
-                    value={formSimple.email} onChange={handleSimple} required className={inputCls} />
-                  <textarea name="message" placeholder="Treść wiadomości"
-                    value={formSimple.message} onChange={handleSimple} rows={4}
-                    className={inputCls + " resize-none"} />
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input type="checkbox" name="consent" checked={formSimple.consent}
-                      onChange={handleSimple} required className="mt-0.5 w-4 h-4 accent-[#00d2a0] shrink-0" />
-                    <span className="text-xs text-[#6b7280] leading-relaxed">
-                      Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z{" "}
-                      <a href="/polityka-prywatnosci" className="text-[#00cc9b] underline">
-                        polityką prywatności
-                      </a>.
-                    </span>
-                  </label>
-                  <button type="submit" className="w-full btn-cta-shine !py-3.5">
-                    <Send className="w-4 h-4" />
-                    Wyślij wiadomość
-                  </button>
-                </form>
               )}
             </div>
           </div>
