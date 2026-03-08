@@ -123,13 +123,58 @@ function estimateReadTime(html: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+/** Find H2 containing "FAQ" or "najczęści" and extract H3+P pairs from that section. */
+export function extractFaqItems(html: string): FaqItem[] {
+  const faqH2 = html.match(/<h2[^>]*>[^<]*(faq|najczęści|często\s+zadawane)[^<]*<\/h2>/i);
+  if (!faqH2) return [];
+
+  const faqStart = html.indexOf(faqH2[0]) + faqH2[0].length;
+  const faqSection = html.slice(faqStart);
+
+  // Stop at next H2 (end of FAQ section)
+  const nextH2 = faqSection.search(/<h2[^>]*>/i);
+  const faqBody = nextH2 === -1 ? faqSection : faqSection.slice(0, nextH2);
+
+  const items: FaqItem[] = [];
+  const pairRegex = /<h3[^>]*>([\s\S]*?)<\/h3>\s*<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let match;
+  while ((match = pairRegex.exec(faqBody)) !== null) {
+    const question = match[1].replace(/<[^>]*>/g, "").trim();
+    const answer = match[2].replace(/<[^>]*>/g, "").trim();
+    if (question && answer) items.push({ question, answer });
+  }
+  return items;
+}
+
+/** Remove the FAQ section (from its H2 to next H2 or end) from HTML. */
+export function stripFaqSection(html: string): string {
+  const faqH2 = html.match(/<h2[^>]*>[^<]*(faq|najczęści|często\s+zadawane)[^<]*<\/h2>/i);
+  if (!faqH2) return html;
+
+  const faqStart = html.indexOf(faqH2[0]);
+  const after = html.slice(faqStart + faqH2[0].length);
+  const nextH2Offset = after.search(/<h2[^>]*>/i);
+
+  if (nextH2Offset === -1) {
+    return html.slice(0, faqStart);
+  }
+  return html.slice(0, faqStart) + after.slice(nextH2Offset);
+}
+
 export function parseWPContent(html: string, slug: string) {
   if (!html) return null;
 
   const cleaned = cleanContent(html);
   const readTime = estimateReadTime(cleaned);
+  const faqItems = extractFaqItems(cleaned);
+  const withoutFaq = faqItems.length > 0 ? stripFaqSection(cleaned) : cleaned;
 
-  const parts = cleaned.split(/(?=<h[23][^>]*>)/);
+  const parts = withoutFaq.split(/(?=<h[23][^>]*>)/);
   const midpoint = Math.max(1, Math.floor(parts.length / 2));
   const cta = getToolCTAForSlug(slug);
 
@@ -140,6 +185,7 @@ export function parseWPContent(html: string, slug: string) {
     firstHalf: parse(firstHalf, parserOptions),
     cta,
     secondHalf: parse(secondHalf, parserOptions),
+    faqItems,
     readTime,
   };
 }

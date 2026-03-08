@@ -10,6 +10,7 @@ import CTABox from "@/components/shared/CTABox";
 import { Badge } from "@/components/ui/badge";
 import ContactForm from "@/components/ContactForm";
 import { IMAGES } from "@/lib/images";
+import FaqAccordion from "@/components/FaqAccordion";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -98,12 +99,32 @@ export default async function SinglePost({ params }: Props) {
     ],
   };
 
+  // JSON-LD FAQPage schema (only if FAQ items exist)
+  const faqItems = parsedContent?.faqItems ?? [];
+  const faqJsonLd = faqItems.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
+      }
+    : null;
+
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       {/* Breadcrumbs – jedna linia, py-3, BEZ truncate */}
       <nav className="bg-[#f0fafb] border-b border-[#e5e7eb] py-3">
@@ -213,6 +234,10 @@ export default async function SinglePost({ params }: Props) {
                 <div className="wp-content text-[#374151] leading-relaxed">
                   {parsedContent.secondHalf}
                 </div>
+
+                {parsedContent.faqItems.length > 0 && (
+                  <FaqAccordion items={parsedContent.faqItems} />
+                )}
               </>
             ) : (
               <div
