@@ -7,10 +7,10 @@ import StatsCounter from "@/components/StatsCounter";
 import OurOffer from "@/components/OurOffer";
 import LoanProcess from "@/components/LoanProcess";
 import ToolsSection from "@/components/ToolsSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import GoogleReviews from "@/components/GoogleReviews";
 import FAQ from "@/components/FAQ";
 import BlogGrid from "@/components/BlogGrid";
+import CityLinksSection from "@/components/CityLinksSection";
 import ContactForm from "@/components/ContactForm";
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
 
@@ -58,11 +58,6 @@ export default async function Home() {
         <GoogleReviews />
       </AnimateOnScroll>
 
-      {/* Sekcja 8b: Dodatkowe opinie statyczne (accent-soft #e6f7f9) */}
-      <AnimateOnScroll>
-        <TestimonialsSection />
-      </AnimateOnScroll>
-
       {/* Sekcja 9: FAQ – 2 kolumny (białe) */}
       <AnimateOnScroll>
         <FAQ />
@@ -108,7 +103,12 @@ export default async function Home() {
         </section>
       </AnimateOnScroll>
 
-      {/* Sekcja 12: Formularz kontaktowy (białe, 2 kolumny) */}
+      {/* Sekcja 12: Obsługiwane miasta – linki do podstron miejskich */}
+      <AnimateOnScroll>
+        <CityLinksSection />
+      </AnimateOnScroll>
+
+      {/* Sekcja 13: Formularz kontaktowy (białe, 2 kolumny) */}
       <ContactForm />
     </main>
   );
