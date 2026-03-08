@@ -2,6 +2,7 @@ import type { CityData } from "@/lib/city-data";
 import { fmt, maxLoan } from "@/lib/city-data";
 import FaqAccordion from "@/components/FaqAccordion";
 import ContactForm from "@/components/ContactForm";
+import GoogleReviews from "@/components/GoogleReviews";
 
 interface Props {
   city: CityData;
@@ -211,6 +212,42 @@ export default function CityPageTemplate({ city }: Props) {
               różnić. Pożyczka podlega indywidualnej ocenie.
             </p>
           </div>
+
+          {/* Two natural content paragraphs */}
+          <div className="mt-10 grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-6 border border-[#e5e7eb]">
+              <h3 className="font-bold text-[#1c435e] text-base mb-3">
+                Co wysokie ceny nieruchomości w {locative} oznaczają dla Ciebie?
+              </h3>
+              <p className="text-[#555] text-sm leading-relaxed">
+                Rynek nieruchomości w {locative} należy do
+                {priceSecondary >= 12000
+                  ? " najdroższych w Polsce"
+                  : priceSecondary >= 9000
+                  ? " stabilnych rynków regionalnych"
+                  : " dynamicznie rozwijających się ośrodków"}
+                . Wysoka wartość transakcyjna nieruchomości działa na Twoją korzyść — im
+                więcej warta jest nieruchomość, tym wyższą kwotę możesz uzyskać pod jej
+                zastaw. Przy LTV na poziomie 55% nawet standardowe mieszkanie w {locative}{" "}
+                pozwala pozyskać kilkaset tysięcy złotych bez konieczności sprzedaży
+                nieruchomości czy rezygnacji z zamieszkania w niej.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 border border-[#e5e7eb]">
+              <h3 className="font-bold text-[#1c435e] text-base mb-3">
+                Kto najczęściej korzysta z naszej oferty w {locative}?
+              </h3>
+              <p className="text-[#555] text-sm leading-relaxed">
+                Do naszych klientów z {genitive} należą przede wszystkim: właściciele
+                firm potrzebujący szybkiego zastrzyku płynności, osoby z zajęciami
+                komorniczymi lub negatywną historią BIK, które nie mogą liczyć na pomoc
+                banku, oraz właściciele nieruchomości chcący sfinansować remont,
+                inwestycję lub spłatę odziedziczonych zobowiązań. Łączy ich jedno —
+                posiadają nieruchomość w {locative} i potrzebują gotówki szybciej, niż
+                jest w stanie ją zapewnić tradycyjny kredyt bankowy.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -296,7 +333,10 @@ export default function CityPageTemplate({ city }: Props) {
         </div>
       </section>
 
-      {/* ── 5. Narzędzia ─────────────────────────────────────────── */}
+      {/* ── 5. Opinie klientów ───────────────────────────────────── */}
+      <GoogleReviews />
+
+      {/* ── 6. Narzędzia ─────────────────────────────────────────── */}
       <section className="py-14 md:py-20 bg-[#f0fafb]">
         <div className="max-w-[1080px] mx-auto px-4 md:px-6">
           <div className="text-center mb-8">
@@ -347,7 +387,7 @@ export default function CityPageTemplate({ city }: Props) {
         </div>
       </section>
 
-      {/* ── 6. FAQ ───────────────────────────────────────────────── */}
+      {/* ── 7. FAQ ───────────────────────────────────────────────── */}
       <section className="py-14 md:py-20 bg-white">
         <div className="max-w-[780px] mx-auto px-4 md:px-6">
           <div className="text-center mb-8">
@@ -362,7 +402,7 @@ export default function CityPageTemplate({ city }: Props) {
         </div>
       </section>
 
-      {/* ── 7. CTA ───────────────────────────────────────────────── */}
+      {/* ── 8. CTA ───────────────────────────────────────────────── */}
       <section className="py-14 md:py-20 bg-[#0f2a3d]">
         <div className="max-w-[780px] mx-auto px-4 md:px-6 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
@@ -385,7 +425,7 @@ export default function CityPageTemplate({ city }: Props) {
         </div>
       </section>
 
-      {/* ── 8. Formularz kontaktowy ──────────────────────────────── */}
+      {/* ── 9. Formularz kontaktowy ──────────────────────────────── */}
       <ContactForm />
     </>
   );
