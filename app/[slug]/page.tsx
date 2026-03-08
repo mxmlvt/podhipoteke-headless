@@ -16,6 +16,8 @@ import {
   getCityTemplate,
   getServiceTemplate,
 } from "@/lib/page-templates";
+import { getCityBySlug } from "@/lib/city-data";
+import CityPageTemplate from "@/components/CityPageTemplate";
 
 // Slugi obsługiwane przez dedykowane strony w /app
 const EXCLUDED_SLUGS = [
@@ -54,6 +56,18 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+
+  // Nowe strony miejskie: metadata bez WP
+  if (slug.startsWith("pozyczki-pod-zastaw-")) {
+    const city = getCityBySlug(slug);
+    if (city) {
+      return {
+        title: `Pożyczka pod zastaw nieruchomości ${city.locative} – bez BIK | PODHIPOTEKE24.PL`,
+        description: `Pozabankowa pożyczka pod zastaw nieruchomości w ${city.locative}. Bez BIK, bez zdolności kredytowej. Decyzja w 24h, wypłata nawet tego samego dnia. Obsługujemy wszystkie dzielnice ${city.genitive}.`,
+      };
+    }
+  }
+
   const { data } = await client.query<any>({
     query: GET_PAGE_BY_SLUG,
     variables: { slug },
@@ -85,6 +99,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DynamicPage({ params }: Props) {
   const { slug } = await params;
+
+  // ── Nowe strony miejskie: pozyczki-pod-zastaw-[miasto] ──────────────────────
+  if (slug.startsWith("pozyczki-pod-zastaw-")) {
+    const city = getCityBySlug(slug);
+    if (!city) notFound();
+
+    return (
+      <main>
+        <PageHero
+          heading={`Pożyczka pod zastaw nieruchomości ${city.locative} – bez BIK`}
+          subtitle={`Pozabankowe pożyczki pod zastaw nieruchomości w ${city.locative}. Decyzja w 24h, bez sprawdzania BIK.`}
+          bgImage="/images/slide-1.jpg"
+          breadcrumbs={[
+            { label: "Strona główna", href: "/" },
+            { label: "Oferta", href: "/oferta" },
+            { label: `Pożyczki pod zastaw – ${city.name}` },
+          ]}
+        />
+        <TrustBadgesBar />
+        <CityPageTemplate city={city} />
+      </main>
+    );
+  }
 
   const isCity = isCityPageSlug(slug);
   const isService = isServicePageSlug(slug);

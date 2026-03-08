@@ -8,6 +8,7 @@ import OurOffer from "@/components/OurOffer";
 import LoanProcess from "@/components/LoanProcess";
 import ToolsSection from "@/components/ToolsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import GoogleReviews from "@/components/GoogleReviews";
 import FAQ from "@/components/FAQ";
 import BlogGrid from "@/components/BlogGrid";
 import ContactForm from "@/components/ContactForm";
@@ -52,7 +53,12 @@ export default async function Home() {
         <ToolsSection />
       </AnimateOnScroll>
 
-      {/* Sekcja 8: Opinie klientów (accent-soft #e6f7f9) */}
+      {/* Sekcja 8: Opinie klientów – Google Reviews carousel */}
+      <AnimateOnScroll>
+        <GoogleReviews />
+      </AnimateOnScroll>
+
+      {/* Sekcja 8b: Dodatkowe opinie statyczne (accent-soft #e6f7f9) */}
       <AnimateOnScroll>
         <TestimonialsSection />
       </AnimateOnScroll>

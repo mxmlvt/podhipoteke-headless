@@ -182,16 +182,23 @@ export function getServiceTemplate(slug: string): PageTemplate {
   return SERVICE_TEMPLATES['default-service'];
 }
 
-// Poprawna detekcja strony lokalnej
+// Poprawna detekcja strony lokalnej (stare i nowe URL-e)
 export function isCityPageSlug(slug: string): boolean {
+  // Strony ofertowe – NIE są stronami miejskimi
   if (
-    slug.startsWith('pozyczki-pod-') ||
+    slug.startsWith('pozyczki-pod-zastaw-nieruchomosci') ||
+    slug.startsWith('pozyczki-pod-zastaw-mieszkania') ||
     slug.startsWith('pozyczki-hipoteczne') ||
-    slug.startsWith('pozyczki-oddluzeniowe')
+    slug.startsWith('pozyczki-oddluzeniowe') ||
+    slug.startsWith('pozyczki-pod-hipoteke')
   ) {
     return false;
   }
-  return slug.startsWith('pozyczki-');
+  // Nowy format: pozyczki-pod-zastaw-[miasto]
+  if (slug.startsWith('pozyczki-pod-zastaw-')) return true;
+  // Stary format: pozyczki-[miasto]
+  if (slug.startsWith('pozyczki-')) return true;
+  return false;
 }
 
 // Detekcja strony ofertowej
