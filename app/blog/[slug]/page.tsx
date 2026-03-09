@@ -88,6 +88,36 @@ export default async function SinglePost({ params }: Props) {
   const parsedContent = parseWPContent(post.content, slug);
   const toc = post.content ? getTableOfContents(post.content) : [];
 
+  // JSON-LD BlogPosting schema
+  const blogPostingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt?.replace(/<[^>]*>/g, "").slice(0, 160) || "",
+    datePublished: post.date,
+    dateModified: post.modified || post.date,
+    author: {
+      "@type": "Person",
+      name: post.author?.node?.name || "Piotr Adler",
+      url: "https://podhipoteke24.pl/o-nas",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "PODHIPOTEKE24.PL",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://podhipoteke24.pl/images/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://podhipoteke24.pl/blog/${slug}`,
+    },
+    ...(post.featuredImage?.node?.sourceUrl
+      ? { image: post.featuredImage.node.sourceUrl }
+      : {}),
+  };
+
   // JSON-LD BreadcrumbList
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -115,6 +145,10 @@ export default async function SinglePost({ params }: Props) {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}

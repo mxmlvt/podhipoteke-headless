@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import client from "@/lib/apollo";
 import { GET_ALL_SLUGS, GET_ALL_PAGE_SLUGS } from "@/lib/queries";
 import { isServicePageSlug, isCityPageSlug } from "@/lib/page-templates";
+import { CITIES } from "@/lib/city-data";
 
 const BASE_URL = "https://podhipoteke24.pl";
 
@@ -114,10 +115,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  // New city landing pages (/pozyczki-pod-zastaw-[miasto])
+  const newCityPages: MetadataRoute.Sitemap = CITIES.map((c) => ({
+    url: `${BASE_URL}/${c.newSlug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+
   return [
     ...staticPages,
     ...servicePages,
     ...cityPages,
+    ...newCityPages,
     ...blogPages,
     ...otherPages,
   ];

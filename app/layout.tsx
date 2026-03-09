@@ -17,6 +17,17 @@ export const metadata: Metadata = {
   title: "PODHIPOTEKE24.PL - Ekspresowe pożyczki pod hipotekę",
   description:
     "Ekspresowe pożyczki pod hipotekę nieruchomości. Kwoty od 50 000 do 2 000 000 zł. Szybka decyzja kredytowa. 20 lat doświadczenia.",
+  openGraph: {
+    siteName: "PODHIPOTEKE24.PL",
+    images: [
+      {
+        url: "/images/slide-1.jpg",
+        width: 1200,
+        height: 630,
+        alt: "PODHIPOTEKE24.PL – Pożyczki pod zastaw nieruchomości",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +38,27 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FinancialService",
+              name: "PODHIPOTEKE24.PL",
+              url: "https://podhipoteke24.pl",
+              logo: "https://podhipoteke24.pl/images/logo.png",
+              image: "https://podhipoteke24.pl/images/slide-1.jpg",
+              telephone: "+48577873616",
+              email: "kontakt@podhipoteke24.pl",
+              description:
+                "Ekspresowe pożyczki pozabankowe pod zastaw nieruchomości. Kwoty od 50 000 do 2 000 000 zł. Bez BIK, bez zbędnych formalności.",
+              foundingDate: "2003",
+              areaServed: { "@type": "Country", name: "Poland" },
+              taxID: "5261073354",
+              sameAs: ["https://maps.app.goo.gl/bDgoSg3GVUSGHUDTA"],
+            }),
+          }}
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TJ8L6ER6EV"
           strategy="afterInteractive"

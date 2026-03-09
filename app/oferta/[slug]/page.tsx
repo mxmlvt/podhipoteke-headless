@@ -6,9 +6,11 @@ import ContactForm from "@/components/ContactForm";
 import TrustBadgesBar from "@/components/TrustBadgesBar";
 import ToolCTACard from "@/components/shared/ToolCTACard";
 import ServiceContentSection from "@/components/ServiceContentSection";
+import ServicePageTemplate from "@/components/ServicePageTemplate";
 import { cleanContent, parseContent } from "@/lib/content-parser";
 import { getToolsForPage } from "@/lib/tool-mapping";
 import { isServicePageSlug, getServiceTemplate } from "@/lib/page-templates";
+import { getServicePageData } from "@/lib/service-page-data";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -23,6 +25,20 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+
+  // Rich metadata from local data (bypasses WP)
+  const serviceData = getServicePageData(slug);
+  if (serviceData) {
+    return {
+      title: serviceData.metaTitle,
+      description: serviceData.metaDesc,
+      openGraph: {
+        title: serviceData.metaTitle,
+        description: serviceData.metaDesc,
+      },
+    };
+  }
+
   const { data } = await client.query<any>({
     query: GET_PAGE_BY_SLUG,
     variables: { slug },
@@ -52,6 +68,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function OfertaSlugPage({ params }: Props) {
   const { slug } = await params;
+
+  // ── Rich service page template (bypasses WP Divi content) ──────────────
+  const serviceData = getServicePageData(slug);
+  if (serviceData) {
+    return (
+      <main>
+        <PageHero
+          heading={serviceData.h1}
+          subtitle={serviceData.heroSubtitle}
+          bgImage="/images/oferta-bg.jpg"
+          breadcrumbs={[
+            { label: "Strona główna", href: "/" },
+            { label: "Oferta", href: "/oferta" },
+            { label: serviceData.h1 },
+          ]}
+        />
+        <TrustBadgesBar />
+        <ServicePageTemplate data={serviceData} />
+      </main>
+    );
+  }
 
   const { data } = await client.query<any>({
     query: GET_PAGE_BY_SLUG,

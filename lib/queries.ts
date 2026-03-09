@@ -36,6 +36,11 @@ export const GET_POST_BY_SLUG = gql`
 			date
 			modified
 			excerpt
+			author {
+				node {
+					name
+				}
+			}
 			featuredImage {
 				node {
 					sourceUrl

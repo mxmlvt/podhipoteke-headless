@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Phone, ChevronDown, Menu, X } from "lucide-react";
+import { Phone, ChevronDown, Menu, X, Search } from "lucide-react";
+import SearchBar from "@/components/SearchBar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 // ──── Dane menu ────────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
   const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -177,8 +179,29 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Desktop right: phone + CTA */}
+          {/* Desktop right: search + phone + CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Search toggle */}
+            {searchOpen ? (
+              <div className="flex items-center gap-2">
+                <SearchBar onClose={() => setSearchOpen(false)} />
+                <button
+                  onClick={() => setSearchOpen(false)}
+                  className="p-1.5 text-[#9ca3af] hover:text-[#374151] transition-colors"
+                  aria-label="Zamknij wyszukiwarkę"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="p-2 text-[#6b7280] hover:text-[#1c435e] hover:bg-[#e6f7f9] rounded-full transition-colors"
+                aria-label="Szukaj"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            )}
             <a
               href="tel:577873616"
               className="flex items-center gap-1.5 text-[#1c435e] font-semibold text-sm hover:text-[#2299AA] transition-colors"
@@ -191,8 +214,15 @@ export default function Header() {
             </a>
           </div>
 
-          {/* ── Mobile: phone + hamburger ──────────────────────── */}
+          {/* ── Mobile: search + phone + hamburger ─────────────── */}
           <div className="flex lg:hidden items-center gap-3">
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="text-[#6b7280] hover:text-[#1c435e] transition-colors"
+              aria-label="Szukaj"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <a href="tel:577873616" className="text-[#1c435e]" aria-label="Zadzwoń do nas">
               <Phone className="w-5 h-5" />
             </a>
@@ -332,6 +362,13 @@ export default function Header() {
 
         </div>
       </div>
+
+      {/* Mobile search bar – expands below header */}
+      {searchOpen && (
+        <div className="lg:hidden border-t border-[#e5e7eb] bg-white px-4 py-3 shadow-md">
+          <SearchBar onClose={() => setSearchOpen(false)} />
+        </div>
+      )}
     </header>
   );
 }
