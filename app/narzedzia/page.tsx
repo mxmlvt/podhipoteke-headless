@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight, Calculator, Home, ArrowLeftRight, ClipboardCheck, PiggyBank } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import ToolCTACard from "@/components/shared/ToolCTACard";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Narzędzia finansowe – kalkulatory i diagnostyka | PODHIPOTEKE24.PL",
@@ -98,6 +99,8 @@ export default function NarzedziaPage() {
           </div>
         </div>
       </section>
+
+      <ContactForm />
     </main>
   );
 }

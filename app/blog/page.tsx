@@ -3,6 +3,7 @@ import client from "@/lib/apollo";
 import { GET_ALL_POSTS } from "@/lib/queries";
 import BlogCard from "@/components/BlogCard";
 import PageHero from "@/components/PageHero";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Blog – wiedza o pożyczkach i kredytach | PODHIPOTEKE24.PL",
@@ -76,6 +77,8 @@ export default async function BlogPage() {
           </div>
         </div>
       </section>
+
+      <ContactForm />
     </main>
   );
 }

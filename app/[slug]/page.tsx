@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const city = getCityBySlug(slug);
     if (city) {
       return {
-        title: `Pożyczka pod zastaw nieruchomości ${city.locative} – bez BIK | PODHIPOTEKE24.PL`,
+        title: `Pożyczka pod zastaw nieruchomości w ${city.locative} – bez BIK | PODHIPOTEKE24.PL`,
         description: `Pozabankowa pożyczka pod zastaw nieruchomości w ${city.locative}. Bez BIK, bez zdolności kredytowej. Decyzja w 24h, wypłata nawet tego samego dnia. Obsługujemy wszystkie dzielnice ${city.genitive}.`,
       };
     }
@@ -108,7 +108,7 @@ export default async function DynamicPage({ params }: Props) {
     return (
       <main>
         <PageHero
-          heading={`Pożyczka pod zastaw nieruchomości ${city.locative} – bez BIK`}
+          heading={`Pożyczka pod zastaw nieruchomości w ${city.locative} – bez BIK`}
           subtitle={`Pozabankowe pożyczki pod zastaw nieruchomości w ${city.locative}. Decyzja w 24h, bez sprawdzania BIK.`}
           bgImage="/images/slide-1.jpg"
           breadcrumbs={[
