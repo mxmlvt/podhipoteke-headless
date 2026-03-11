@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContactForm from "@/components/ContactForm";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import LoanEstimator from "@/components/tools/LoanEstimator";
@@ -117,6 +118,7 @@ export default function IleMogePozyczycPage() {
           </Link>
         </div>
       </section>
+      <ContactForm />
     </main>
   );
 }

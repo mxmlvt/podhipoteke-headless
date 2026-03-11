@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContactForm from "@/components/ContactForm";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import RateCalculator from "@/components/tools/RateCalculator";
@@ -174,6 +175,7 @@ export default function KalkulatorRatyPage() {
           </div>
         </div>
       </section>
+      <ContactForm />
     </main>
   );
 }

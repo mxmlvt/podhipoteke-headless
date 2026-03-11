@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContactForm from "@/components/ContactForm";
 import Link from "next/link";
 import { ChevronRight, ShieldCheck, Clock, Star } from "lucide-react";
 import DiagnosticQuiz from "@/components/tools/DiagnosticQuiz";
@@ -160,7 +161,8 @@ export default function DiagnostykaPage() {
             </Link>
           </div>
         </section>
-      </main>
+        <ContactForm />
+    </main>
     </>
   );
 }

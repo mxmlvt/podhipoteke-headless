@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContactForm from "@/components/ContactForm";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import LoanComparison from "@/components/tools/LoanComparison";
@@ -107,6 +108,7 @@ export default function PorownywarkaPage() {
           </Link>
         </div>
       </section>
+      <ContactForm />
     </main>
   );
 }
