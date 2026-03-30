@@ -5,6 +5,8 @@ import BlogCard from "@/components/BlogCard";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/ContactForm";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Blog – wiedza o pożyczkach i kredytach | PODHIPOTEKE24.PL",
   description:
