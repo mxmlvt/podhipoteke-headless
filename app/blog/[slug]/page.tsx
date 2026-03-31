@@ -297,7 +297,7 @@ export default async function SinglePost({ params }: Props) {
             <div className="sticky top-24 space-y-5">
               {/* CTA 1: Diagnostyka */}
               <div className="bg-[#1c435e] rounded-2xl p-5 text-white">
-                <h3 className="font-bold text-base mb-2">Sprawdź czy się kwalifikujesz</h3>
+                <h3 className="font-bold text-base mb-2 text-white">Sprawdź czy się kwalifikujesz</h3>
                 <p className="text-white/75 text-sm mb-4">Diagnostyka finansowa w 2 minuty.</p>
                 <Link
                   href="/narzedzia/diagnostyka"
