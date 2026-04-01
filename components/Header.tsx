@@ -220,7 +220,17 @@ export default function Header() {
                 <Search className="w-4 h-4" />
               </button>
             )}
-            <div className="flex items-center gap-1.5 border-r border-[#e5e7eb] pr-3">
+            <a
+              href="tel:577873616"
+              className="flex items-center gap-1.5 text-[#1c435e] font-semibold text-sm hover:text-[#2299AA] transition-colors"
+            >
+              <Phone className="w-4 h-4" />
+              577 873 616
+            </a>
+            <a href="#formularz" className="btn-cta-shine !px-6 !py-2 !text-sm">
+              Złóż wniosek
+            </a>
+            <div className="flex items-center gap-1.5 border-l border-[#e5e7eb] pl-3">
               {socialLinks.map(({ label, href, path }) => (
                 <a
                   key={label}
@@ -236,16 +246,6 @@ export default function Header() {
                 </a>
               ))}
             </div>
-            <a
-              href="tel:577873616"
-              className="flex items-center gap-1.5 text-[#1c435e] font-semibold text-sm hover:text-[#2299AA] transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              577 873 616
-            </a>
-            <a href="#formularz" className="btn-cta-shine !px-6 !py-2 !text-sm">
-              Złóż wniosek
-            </a>
           </div>
 
           {/* ── Mobile: search + phone + hamburger ─────────────── */}
