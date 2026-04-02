@@ -150,15 +150,32 @@ export default function GoogleReviews() {
   const [current, setCurrent] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const touchStartX = useRef<number>(0);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const total = REVIEWS.length;
-  const visible = 1; // cards visible in carousel (mobile = 1)
+  const maxIndex = Math.max(0, total - visibleCount);
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
+  // Responsive: 1 mobile, 2 tablet, 3 desktop
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setVisibleCount(w >= 1024 ? 3 : w >= 640 ? 2 : 1);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Clamp current when visibleCount changes
+  useEffect(() => {
+    setCurrent((c) => Math.min(c, maxIndex));
+  }, [maxIndex]);
+
+  const next = useCallback(() => setCurrent((c) => (c >= maxIndex ? 0 : c + 1)), [maxIndex]);
+  const prev = useCallback(() => setCurrent((c) => (c <= 0 ? maxIndex : c - 1)), [maxIndex]);
 
   // Autoplay
   useEffect(() => {
@@ -218,10 +235,14 @@ export default function GoogleReviews() {
             <div
               ref={trackRef}
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${current * 100}%)` }}
+              style={{ transform: `translateX(-${current * (100 / visibleCount)}%)` }}
             >
               {REVIEWS.map((r, i) => (
-                <div key={i} className="w-full shrink-0 px-1">
+                <div
+                  key={i}
+                  className="shrink-0 px-2"
+                  style={{ width: `${100 / visibleCount}%` }}
+                >
                   <ReviewCard r={r} expanded={false} />
                 </div>
               ))}
@@ -245,7 +266,7 @@ export default function GoogleReviews() {
 
             {/* Dots */}
             <div className="flex justify-center gap-1.5 mt-4">
-              {REVIEWS.map((_, i) => (
+              {Array.from({ length: maxIndex + 1 }).map((_, i) => (
                 <button
                   key={i}
                   onClick={() => { setCurrent(i); setPaused(true); setTimeout(() => setPaused(false), 3000); }}
