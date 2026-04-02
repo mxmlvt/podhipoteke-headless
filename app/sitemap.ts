@@ -15,6 +15,7 @@ const EXCLUDED_SLUGS = [
   "faq",
   "kontakt",
   "blog",
+  "polityka-plikow-cookies-eu",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -128,7 +129,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     ...servicePages,
-    ...cityPages,
     ...newCityPages,
     ...blogPages,
     ...otherPages,
