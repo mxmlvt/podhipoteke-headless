@@ -4,6 +4,8 @@ import { GET_ALL_SLUGS, GET_ALL_PAGE_SLUGS } from "@/lib/queries";
 import { isServicePageSlug, isCityPageSlug } from "@/lib/page-templates";
 import { CITIES } from "@/lib/city-data";
 
+export const revalidate = 86400; // regenerate sitemap every 24h
+
 const BASE_URL = "https://podhipoteke24.pl";
 
 const EXCLUDED_SLUGS = [
@@ -67,8 +69,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     query: GET_ALL_SLUGS,
   });
   const blogPages: MetadataRoute.Sitemap = postsData.posts.nodes.map(
-    (post: { slug: string }) => ({
+    (post: { slug: string; modified: string }) => ({
       url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: post.modified ? new Date(post.modified) : undefined,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })

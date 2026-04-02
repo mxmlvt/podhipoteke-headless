@@ -76,6 +76,7 @@ export const GET_ALL_SLUGS = gql`
 		posts(first: 100) {
 			nodes {
 				slug
+				modified
 			}
 		}
 	}
